@@ -20,6 +20,12 @@ const eslintConfig = [
       "next-env.d.ts",
     ],
   },
+  {
+    files: ['jest.config.js', '**/*.js', '**/*.cjs'], // Aplica-se a arquivos .js, .cjs e especificamente jest.config.js
+    rules: {
+      '@typescript-eslint/no-require-imports': 'off', // Desabilita a regra para esses arquivos
+    },
+  },
 ];
 
 export default eslintConfig;
