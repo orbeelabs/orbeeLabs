@@ -27,16 +27,42 @@ export default function ContactForm() {
     reset,
   } = useForm<ContactFormData>({
     mode: 'onChange',
+    defaultValues: {
+      name: '',
+      email: '',
+      phone: '',
+      company: '',
+      website: '',
+      revenue: '',
+      objective: '',
+      challenge: '',
+    },
   });
 
   const onSubmit = async (data: ContactFormData) => {
     setIsSubmitting(true);
     
     try {
-      // Simular envio para API
-      await new Promise(resolve => setTimeout(resolve, 2000));
-      
-      console.log('Dados do formulário:', data);
+      // Enviar para API real
+      const response = await fetch('/api/contato', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          nome: data.name,
+          email: data.email,
+          telefone: data.phone,
+          empresa: data.company,
+          mensagem: data.challenge,
+        }),
+      });
+
+      const result = await response.json();
+
+      if (!response.ok) {
+        throw new Error(result.error || 'Erro ao enviar mensagem');
+      }
       
       // Mostrar toast de sucesso
       toast({
@@ -47,7 +73,8 @@ export default function ContactForm() {
       
       // Resetar formulário
       reset();
-    } catch {
+    } catch (error) {
+      console.error('Erro ao enviar formulário:', error);
       toast({
         title: "Erro",
         description: "Erro ao enviar mensagem. Tente novamente.",
@@ -101,7 +128,7 @@ export default function ContactForm() {
               Nome Completo *
             </label>
             <input
-              {...register('name')}
+              {...register('name', { required: 'Nome é obrigatório' })}
               type="text"
               className={`w-full px-4 py-3 bg-white/10 border rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all duration-300 ${
                 errors.name ? 'border-red-500' : 'border-white/20'
@@ -123,7 +150,13 @@ export default function ContactForm() {
               Email *
             </label>
             <input
-              {...register('email')}
+              {...register('email', { 
+                required: 'Email é obrigatório',
+                pattern: {
+                  value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                  message: 'Email inválido'
+                }
+              })}
               type="email"
               className={`w-full px-4 py-3 bg-white/10 border rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all duration-300 ${
                 errors.email ? 'border-red-500' : 'border-white/20'
@@ -154,7 +187,7 @@ export default function ContactForm() {
               WhatsApp *
             </label>
             <input
-              {...register('phone')}
+              {...register('phone', { required: 'Telefone é obrigatório' })}
               type="tel"
               onChange={(e) => {
                 const formatted = formatPhone(e.target.value);
@@ -305,7 +338,13 @@ export default function ContactForm() {
             Conte sobre seu maior desafio atual *
           </label>
           <textarea
-            {...register('challenge')}
+            {...register('challenge', { 
+              required: 'Mensagem é obrigatória',
+              minLength: {
+                value: 5,
+                message: 'Mensagem deve ter pelo menos 5 caracteres'
+              }
+            })}
             rows={4}
             className={`w-full px-4 py-3 bg-black/20 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-primary transition-colors duration-300 resize-none ${
               errors.challenge ? 'border-red-500' : 'border-gray-600'
