@@ -8,7 +8,8 @@ async function main() {
 
   try {
     // Criar usuário admin
-    const hashedPassword = await hash('SSJC**!1908D1&1za', 10);
+    const adminPassword = process.env.ADMIN_PASSWORD || 'admin123';
+    const hashedPassword = await hash(adminPassword, 10);
            await prisma.user.upsert({
       where: { email: 'admin@orbeelabs.com' },
       update: {
