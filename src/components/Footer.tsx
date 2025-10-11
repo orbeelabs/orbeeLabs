@@ -170,7 +170,7 @@ export default function Footer() {
               <p>
                 © {currentYear} Orbee Labs. Todos os direitos reservados.
               </p>
-              <div className="flex space-x-6">
+              <div className="flex flex-wrap justify-center gap-4 sm:gap-6">
                 <Link
                   href="/privacidade"
                   className="hover:text-primary transition-colors duration-300"
@@ -182,6 +182,12 @@ export default function Footer() {
                   className="hover:text-primary transition-colors duration-300"
                 >
                   Termos de Uso
+                </Link>
+                <Link
+                  href="/cookies"
+                  className="hover:text-primary transition-colors duration-300"
+                >
+                  Política de Cookies
                 </Link>
               </div>
             </div>
