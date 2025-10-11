@@ -4,8 +4,19 @@ import { motion } from 'framer-motion';
 import Link from 'next/link';
 import Navigation from '@/components/Navigation';
 import Footer from '@/components/Footer';
+import { BreadcrumbStructuredData } from '@/components/StructuredData';
+import { useEffect } from 'react';
 
 export default function SobrePage() {
+  const breadcrumbItems = [
+    { name: "Início", url: "https://orbeelabs.com" },
+    { name: "Sobre", url: "https://orbeelabs.com/sobre" },
+  ];
+
+  useEffect(() => {
+    document.title = "Sobre a Orbee Labs | Equipe de Especialistas em Marketing Digital e Desenvolvimento Web";
+  }, []);
+
   const team = [
     {
       name: 'Diana Camila',
@@ -13,7 +24,7 @@ export default function SobrePage() {
       description:
         'Especialista em desenvolvimento Fullstack com React, Next.js, Python e metodologias ágeis. Criadora da metodologia "SEO Cabuloso" que integra tecnologia e marketing.',
       image: '/assets/team/diana.jpg',
-      linkedin: 'https://linkedin.com/in/dianacamila',
+      linkedin: 'Em breve',
       specialties: ['React/Next.js', 'Python', 'SEO Técnico', 'TDD'],
     },
     {
@@ -22,281 +33,266 @@ export default function SobrePage() {
       description:
         'Especialista em design estratégico, UX/UI e identidade visual. Responsável por criar experiências digitais que conectam marcas aos seus públicos de forma autêntica.',
       image: '/assets/team/izabela.jpg',
-      linkedin: 'https://linkedin.com/in/izabelafissicaro',
+      linkedin: 'Em breve',
       specialties: ['UX/UI Design', 'Branding', 'Design Systems', 'CRO'],
     }
   ];
 
   const values = [
     {
-      title: 'Excelência Data-Driven',
-      description:
-        'Todas as nossas decisões são embasadas em dados, garantindo a máxima eficácia e otimização. Não apostamos; analisamos e validamos.',
-      icon: '📊',
+      icon: '🎯',
+      title: 'Resultados Mensuráveis',
+      description: 'Focamos em métricas claras e ROI comprovado. Cada estratégia é medida e otimizada para garantir o máximo retorno sobre investimento.'
     },
     {
-      title: 'Inovação e Vanguarda',
-      description:
-        'Estamos sempre à frente, explorando novas tecnologias como IA em marketing e SEO para oferecer as melhores soluções.',
       icon: '🚀',
+      title: 'Inovação Tecnológica',
+      description: 'Utilizamos as tecnologias mais modernas e metodologias ágeis para entregar soluções robustas e escaláveis.'
     },
     {
-      title: 'Transparência e Confiança',
-      description:
-        'Construímos relacionamentos duradouros com base na honestidade, clareza na comunicação e integridade em todas as ações.',
-      icon: '🔍',
-    },
-    {
-      title: 'Resultados Tangíveis',
-      description:
-        'Nosso foco é a entrega de ROI real e mensurável para nossos clientes, transformando investimentos em crescimento.',
-      icon: '📈',
-    },
-    {
-      title: 'Paixão por Aprender',
-      description:
-        'Valorizamos o conhecimento contínuo e a troca de experiências, tanto internamente quanto com nossa comunidade.',
-      icon: '📚',
-    },
-    {
-      title: 'Humanização da Tecnologia',
-      description:
-        'Acreditamos que a tecnologia deve servir ao propósito humano, tornando as interações mais significativas e eficientes.',
       icon: '🤝',
+      title: 'Parceria Estratégica',
+      description: 'Não somos apenas fornecedores, somos parceiros estratégicos comprometidos com o crescimento sustentável do seu negócio.'
     },
+    {
+      icon: '📊',
+      title: 'Transparência Total',
+      description: 'Relatórios detalhados, métricas transparentes e comunicação clara em todas as etapas do processo.'
+    }
   ];
 
-  const stats = [
-    { value: '150+', label: 'Projetos Entregues' },
-    { value: '95%', label: 'Taxa de Sucesso' },
-    { value: '8', label: 'Anos de Experiência' },
-    { value: '50+', label: 'Clientes Satisfeitos' },
+  const methodology = [
+    {
+      step: '01',
+      title: 'Análise Profunda',
+      description: 'Auditoria completa do seu negócio, concorrência e mercado para identificar oportunidades únicas.'
+    },
+    {
+      step: '02',
+      title: 'Estratégia Personalizada',
+      description: 'Desenvolvimento de estratégias customizadas baseadas nos objetivos específicos do seu negócio.'
+    },
+    {
+      step: '03',
+      title: 'Implementação Ágil',
+      description: 'Execução rápida e eficiente usando metodologias ágeis e tecnologias de ponta.'
+    },
+    {
+      step: '04',
+      title: 'Otimização Contínua',
+      description: 'Monitoramento constante e ajustes estratégicos para maximizar resultados e ROI.'
+    }
   ];
 
   return (
     <>
+      <BreadcrumbStructuredData items={breadcrumbItems} />
       <Navigation />
-
-      {/* Hero Section */}
-      <section className="relative pt-32 pb-20 overflow-hidden bg-gradient-to-br from-background via-card to-background">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <motion.div
-            initial={{ opacity: 0, y: 50 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            className="text-center mb-16"
-          >
-            <h1 className="heading-xl text-white mb-6">
-              Por Trás da <span className="text-gradient">Orbee Labs</span>
-            </h1>
-            <h2 className="text-2xl md:text-3xl font-semibold text-white mb-4">
-              Nossa Paixão por Tecnologia e Marketing
-            </h2>
-            <p className="text-body max-w-3xl mx-auto">
-              Somos Diana Camila e Izabela Fissicaro, a força motriz por trás da Orbee Labs. 
-              Com anos de experiência em desenvolvimento Fullstack, SEO de alta performance e design estratégico, 
-              unimos nossas paixões para construir soluções digitais que realmente funcionam.
-            </p>
-          </motion.div>
-        </div>
-      </section>
-
-      {/* Mission Section */}
-      <section className="py-20 bg-gradient-to-br from-card to-background">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+      <div className="min-h-screen bg-background text-foreground">
+        {/* Hero Section */}
+        <section className="relative pt-32 pb-20 overflow-hidden bg-gradient-to-br from-background via-card to-background">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <motion.div
-              initial={{ opacity: 0, x: -50 }}
-              whileInView={{ opacity: 1, x: 0 }}
+              initial={{ opacity: 0, y: 50 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8 }}
+              className="text-center mb-16"
+            >
+              <h1 className="heading-xl text-white mb-6">
+                Sobre a <span className="text-gradient">Orbee Labs</span>
+              </h1>
+              <p className="text-body max-w-4xl mx-auto">
+                Somos uma agência de marketing digital e desenvolvimento web especializada em transformar 
+                negócios através de estratégias data-driven e tecnologia de ponta. Nossa metodologia 
+                proprietária &quot;SEO Cabuloso&quot; combina análise técnica avançada com estratégias de conteúdo 
+                para garantir resultados mensuráveis e crescimento sustentável.
+              </p>
+            </motion.div>
+          </div>
+        </section>
+
+        {/* Team Section */}
+        <section className="py-20 bg-gradient-to-br from-card to-background">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <motion.div
+              initial={{ opacity: 0, y: 50 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8 }}
+              viewport={{ once: true }}
+              className="text-center mb-16"
+            >
+              <h2 className="heading-lg text-white mb-6">
+                Nossa <span className="text-gradient">Equipe</span>
+              </h2>
+              <p className="text-body max-w-3xl mx-auto">
+                Especialistas apaixonados por tecnologia e marketing digital, unidos pela missão de 
+                transformar negócios através de estratégias inovadoras e resultados comprovados.
+              </p>
+            </motion.div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+              {team.map((member, index) => (
+                <motion.div
+                  key={member.name}
+                  initial={{ opacity: 0, y: 50 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.6, delay: index * 0.2 }}
+                  viewport={{ once: true }}
+                  className="glass glass-hover rounded-2xl p-8"
+                >
+                  <div className="flex flex-col md:flex-row items-center md:items-start space-y-4 md:space-y-0 md:space-x-6">
+                    <div className="w-32 h-32 bg-gradient-to-r from-primary to-yellow-500 rounded-full flex items-center justify-center text-primary-foreground font-bold text-4xl">
+                      {member.name.charAt(0)}
+                    </div>
+                    <div className="flex-1 text-center md:text-left">
+                      <h3 className="text-2xl font-bold text-white mb-2">{member.name}</h3>
+                      <p className="text-primary font-semibold mb-4">{member.role}</p>
+                      <p className="text-gray-300 mb-4">{member.description}</p>
+                      <div className="flex flex-wrap gap-2 justify-center md:justify-start">
+                        {member.specialties.map((specialty, idx) => (
+                          <span key={idx} className="bg-primary/20 text-primary px-3 py-1 rounded-full text-sm font-medium">
+                            {specialty}
+                          </span>
+                        ))}
+                      </div>
+                      <div className="mt-4">
+                        {member.linkedin !== 'Em breve' ? (
+                          <Link
+                            href={member.linkedin}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-primary hover:text-primary/80 font-semibold transition-colors"
+                          >
+                            LinkedIn →
+                          </Link>
+                        ) : (
+                          <span className="text-gray-400 font-semibold">
+                            LinkedIn em breve
+                          </span>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* Values Section */}
+        <section className="py-20 bg-gradient-to-br from-background to-card">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <motion.div
+              initial={{ opacity: 0, y: 50 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8 }}
+              viewport={{ once: true }}
+              className="text-center mb-16"
+            >
+              <h2 className="heading-lg text-white mb-6">
+                Nossos <span className="text-gradient">Valores</span>
+              </h2>
+              <p className="text-body max-w-3xl mx-auto">
+                Os princípios que guiam nosso trabalho e definem nossa abordagem única 
+                para transformar negócios através do marketing digital e tecnologia.
+              </p>
+            </motion.div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+              {values.map((value, index) => (
+                <motion.div
+                  key={value.title}
+                  initial={{ opacity: 0, y: 50 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.6, delay: index * 0.1 }}
+                  viewport={{ once: true }}
+                  className="glass glass-hover rounded-2xl p-6 text-center"
+                >
+                  <div className="text-5xl mb-4">{value.icon}</div>
+                  <h3 className="text-xl font-bold text-white mb-3">{value.title}</h3>
+                  <p className="text-gray-300 text-sm">{value.description}</p>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* Methodology Section */}
+        <section className="py-20 bg-gradient-to-br from-card to-background">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <motion.div
+              initial={{ opacity: 0, y: 50 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8 }}
+              viewport={{ once: true }}
+              className="text-center mb-16"
+            >
+              <h2 className="heading-lg text-white mb-6">
+                Nossa <span className="text-gradient">Metodologia</span>
+              </h2>
+              <p className="text-body max-w-3xl mx-auto">
+                Um processo estruturado e comprovado que garante resultados consistentes 
+                e crescimento sustentável para nossos clientes.
+              </p>
+            </motion.div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+              {methodology.map((step, index) => (
+                <motion.div
+                  key={step.step}
+                  initial={{ opacity: 0, y: 50 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.6, delay: index * 0.1 }}
+                  viewport={{ once: true }}
+                  className="glass glass-hover rounded-2xl p-6"
+                >
+                  <div className="flex items-center mb-4">
+                    <div className="w-12 h-12 bg-gradient-to-r from-primary to-yellow-500 rounded-full flex items-center justify-center text-primary-foreground font-bold text-lg mr-4">
+                      {step.step}
+                    </div>
+                    <h3 className="text-xl font-bold text-white">{step.title}</h3>
+                  </div>
+                  <p className="text-gray-300">{step.description}</p>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* CTA Section */}
+        <section className="py-20 bg-gradient-to-r from-primary/20 to-yellow-500/20">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <motion.div
+              initial={{ opacity: 0, y: 50 }}
+              whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8 }}
               viewport={{ once: true }}
             >
               <h2 className="heading-lg text-white mb-6">
-                Nossa <span className="text-gradient">Missão</span>
+                Pronto para trabalhar <span className="text-gradient">conosco</span>?
               </h2>
-              <p className="text-body mb-8">
-                Capacitar empresas e profissionais a alcançar o domínio digital através da fusão de 
-                estratégias de marketing digital de ponta e soluções tecnológicas robustas, 
-                gerando resultados mensuráveis e sustentáveis.
+              <p className="text-body max-w-3xl mx-auto mb-8">
+                Descubra como nossa equipe de especialistas pode transformar seu negócio 
+                através de estratégias inovadoras e resultados comprovados.
               </p>
-              <p className="text-body">
-                Ser a agência de referência no Brasil para o marketing digital de alta performance 
-                e desenvolvimento web Fullstack, reconhecida pela entrega de resultados excepcionais, 
-                inovação contínua e a humanização da tecnologia.
-              </p>
-            </motion.div>
-
-            <motion.div
-              initial={{ opacity: 0, x: 50 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.8 }}
-              viewport={{ once: true }}
-              className="grid grid-cols-2 gap-8"
-            >
-              {stats.map((stat) => (
-                <div
-                  key={stat.label}
-                  className="glass glass-hover rounded-2xl p-6 text-center"
+              <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                <Link
+                  href="/contato"
+                  className="bg-gradient-to-r from-primary to-yellow-500 text-primary-foreground font-semibold py-4 px-8 rounded-full text-lg hover:shadow-lg hover:scale-105 transition-all duration-300"
                 >
-                  <div className="text-4xl font-bold text-primary mb-2">
-                    {stat.value}
-                  </div>
-                  <div className="text-gray-300 text-sm">
-                    {stat.label}
-                  </div>
-                </div>
-              ))}
+                  Agendar Consultoria Gratuita
+                </Link>
+                <Link
+                  href="/servicos"
+                  className="border-2 border-primary text-primary font-semibold py-4 px-8 rounded-full text-lg hover:bg-primary hover:text-primary-foreground transition-all duration-300"
+                >
+                  Conhecer Nossos Serviços
+                </Link>
+              </div>
             </motion.div>
           </div>
-        </div>
-      </section>
-
-      {/* Values Section */}
-      <section className="py-20 bg-gradient-to-br from-background to-card">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <motion.div
-            initial={{ opacity: 0, y: 50 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            viewport={{ once: true }}
-            className="text-center mb-16"
-          >
-            <h2 className="heading-lg text-white mb-6">
-              Nossos <span className="text-gradient">Valores</span>
-            </h2>
-            <p className="text-body max-w-3xl mx-auto">
-              Estes são os princípios que guiam todas as nossas decisões
-              e definem como trabalhamos com nossos clientes e parceiros.
-            </p>
-          </motion.div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            {values.map((value, index) => (
-              <motion.div
-                key={value.title}
-                initial={{ opacity: 0, y: 50 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: index * 0.2 }}
-                viewport={{ once: true }}
-                className="glass glass-hover rounded-2xl p-8"
-              >
-                <div className="text-6xl mb-6">{value.icon}</div>
-                <h3 className="text-2xl font-bold text-white mb-4">
-                  {value.title}
-                </h3>
-                <p className="text-gray-300">
-                  {value.description}
-                </p>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Team Section */}
-      <section className="py-20 bg-gradient-to-br from-card to-background">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <motion.div
-            initial={{ opacity: 0, y: 50 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            viewport={{ once: true }}
-            className="text-center mb-16"
-          >
-            <h2 className="heading-lg text-white mb-6">
-              Nossa <span className="text-gradient">Equipe</span>
-            </h2>
-            <p className="text-body max-w-3xl mx-auto">
-              Conheça os especialistas que tornam possível a transformação
-              digital dos nossos clientes através de estratégias inovadoras.
-            </p>
-          </motion.div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            {team.map((member, index) => (
-              <motion.div
-                key={member.name}
-                initial={{ opacity: 0, y: 50 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: index * 0.1 }}
-                viewport={{ once: true }}
-                className="glass glass-hover rounded-2xl p-8 text-center group"
-              >
-                <div className="w-24 h-24 bg-gradient-to-r from-primary to-yellow-500 rounded-full flex items-center justify-center text-3xl text-primary-foreground font-bold mx-auto mb-6 group-hover:scale-110 transition-transform duration-300">
-                  {member.name.split(' ').map(n => n[0]).join('')}
-                </div>
-                
-                <h3 className="text-xl font-bold text-white mb-2">
-                  {member.name}
-                </h3>
-                
-                <p className="text-primary font-semibold mb-4">
-                  {member.role}
-                </p>
-                
-                <p className="text-gray-300 text-sm mb-6">
-                  {member.description}
-                </p>
-
-                <div className="flex flex-wrap gap-2 justify-center mb-6">
-                  {member.specialties.map((specialty) => (
-                    <span
-                      key={specialty}
-                      className="px-3 py-1 bg-primary/20 text-primary text-xs rounded-full"
-                    >
-                      {specialty}
-                    </span>
-                  ))}
-                </div>
-
-                <a
-                  href={member.linkedin}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center justify-center w-10 h-10 bg-blue-600 text-white rounded-full hover:bg-blue-700 transition-colors duration-300"
-                >
-                  💼
-                </a>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* CTA Section */}
-      <section className="py-20 bg-gradient-to-r from-primary/20 to-yellow-500/20">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <motion.div
-            initial={{ opacity: 0, y: 50 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            viewport={{ once: true }}
-          >
-            <h2 className="heading-lg text-white mb-6">
-              Pronto para <span className="text-gradient">Começar</span>?
-            </h2>
-            <p className="text-body max-w-3xl mx-auto mb-8">
-              Quer saber mais sobre como podemos ajudar seu negócio a crescer?
-              Entre em contato conosco e vamos construir algo incrível juntos.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link
-                href="/contato"
-                className="bg-gradient-to-r from-primary to-yellow-500 text-primary-foreground px-8 py-4 rounded-full font-semibold text-lg hover:shadow-lg hover:scale-105 transition-all duration-300"
-              >
-                Fale Conosco
-              </Link>
-              <Link
-                href="/servicos"
-                className="border-2 border-primary text-primary px-8 py-4 rounded-full font-semibold text-lg hover:bg-primary hover:text-primary-foreground transition-all duration-300"
-              >
-                Ver Nossos Serviços
-              </Link>
-            </div>
-          </motion.div>
-        </div>
-      </section>
-
+        </section>
+      </div>
       <Footer />
     </>
   );

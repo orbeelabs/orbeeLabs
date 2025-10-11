@@ -10,6 +10,7 @@ import StaggerItem from '@/components/animations/StaggerItem';
 import ParticleField from '@/components/animations/ParticleField';
 import ScrollIndicator from '@/components/animations/ScrollIndicator';
 import { motion } from 'framer-motion';
+import Link from 'next/link';
 
 export default function Home() {
   return (
@@ -33,7 +34,7 @@ export default function Home() {
                 transition={{ duration: 1, delay: 0.2 }}
               >
                 Orbee Labs: Domine o{' '}
-                <span className="text-gradient">Digital</span>
+                <span className="text-gradient">Marketing Digital</span> com SEO Técnico Avançado
               </motion.h1>
               
               <motion.h2
@@ -42,7 +43,7 @@ export default function Home() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, delay: 0.3 }}
               >
-                Marketing Estratégico e Tecnologia Fullstack para Resultados Reais
+                Metodologia &quot;SEO Cabuloso&quot; e Desenvolvimento Web Fullstack para Resultados Mensuráveis
               </motion.h2>
               
               <motion.p
@@ -51,8 +52,8 @@ export default function Home() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, delay: 0.4 }}
               >
-                Transformamos sua presença online em uma máquina de crescimento, do código à conversão. 
-                Aplicamos nossa metodologia &quot;SEO Cabuloso&quot; para garantir que seu negócio não apenas apareça, mas domine os resultados de busca.
+                Transformamos sua presença online em uma máquina de crescimento sustentável, do desenvolvimento técnico à conversão otimizada. 
+                Nossa metodologia proprietária &quot;SEO Cabuloso&quot; combina análise técnica avançada, estratégias de conteúdo data-driven e desenvolvimento web fullstack para garantir que seu negócio não apenas apareça, mas domine os resultados de busca orgânica com ROI mensurável.
               </motion.p>
               
               <motion.div
@@ -61,20 +62,24 @@ export default function Home() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, delay: 0.6 }}
               >
-                <Button
-                  variant="primary"
-                  size="lg"
-                  className="bg-gradient-to-r from-primary to-yellow-500 text-primary-foreground px-8 py-4 rounded-full font-semibold text-lg hover:shadow-lg hover:scale-105 transition-all duration-300"
-                >
-                  Fale com um Especialista
-                </Button>
-                <Button
-                  variant="outline"
-                  size="lg"
-                  className="border-2 border-primary text-primary px-8 py-4 rounded-full font-semibold text-lg hover:bg-primary hover:text-primary-foreground transition-all duration-300"
-                >
-                  Veja Nossos Cases
-                </Button>
+                <Link href="/contato">
+                  <Button
+                    variant="primary"
+                    size="lg"
+                    className="bg-gradient-to-r from-primary to-yellow-500 text-primary-foreground px-8 py-4 rounded-full font-semibold text-lg hover:shadow-lg hover:scale-105 transition-all duration-300"
+                  >
+                    Fale com um Especialista
+                  </Button>
+                </Link>
+                <Link href="/portfolio">
+                  <Button
+                    variant="outline"
+                    size="lg"
+                    className="border-2 border-primary text-primary px-8 py-4 rounded-full font-semibold text-lg hover:bg-primary hover:text-primary-foreground transition-all duration-300"
+                  >
+                    Veja Nossos Cases
+                  </Button>
+                </Link>
               </motion.div>
             </motion.div>
           </div>
@@ -89,10 +94,11 @@ export default function Home() {
             <FadeInUp>
               <div className="text-center mb-16">
                 <h2 className="heading-lg text-white mb-6">
-                  Nossos <span className="text-gradient">Serviços</span>
+                  Serviços de <span className="text-gradient">Marketing Digital</span> e Desenvolvimento Web
                 </h2>
                 <p className="text-body max-w-3xl mx-auto">
-                  Oferecemos soluções completas em marketing digital e desenvolvimento web, com foco em resultados mensuráveis e crescimento sustentável.
+                  Oferecemos soluções completas em marketing digital estratégico, SEO técnico avançado e desenvolvimento web fullstack, 
+                  com foco em resultados mensuráveis, crescimento sustentável e ROI comprovado para empresas que buscam dominar o mercado digital.
                 </p>
               </div>
             </FadeInUp>
@@ -102,20 +108,23 @@ export default function Home() {
                 {[
                   {
                     icon: '🔍',
-                    title: 'SEO Cabuloso',
-                    description: 'Nossa metodologia proprietária que combina SEO técnico, estratégia de conteúdo e link building para dominar os resultados orgânicos',
+                    title: 'SEO Técnico Avançado',
+                    subtitle: 'Metodologia "SEO Cabuloso"',
+                    description: 'Nossa metodologia proprietária que combina auditoria técnica completa, estratégia de conteúdo data-driven e link building ético para dominar os resultados orgânicos do Google',
                     metrics: ['+400%', 'tráfego orgânico'],
                   },
                   {
                     icon: '💻',
-                    title: 'Desenvolvimento Fullstack',
-                    description: 'Soluções tecnológicas robustas com React, Next.js, Python e IA. Sites que são máquinas de conversão',
-                    metrics: ['+98%', 'score performance'],
+                    title: 'Desenvolvimento Web Fullstack',
+                    subtitle: 'React, Next.js, Python & IA',
+                    description: 'Soluções tecnológicas robustas e escaláveis com React, Next.js, Python e integração com IA. Sites otimizados que são verdadeiras máquinas de conversão',
+                    metrics: ['98+', 'score performance'],
                   },
                   {
                     icon: '📊',
-                    title: 'Marketing Alta Performance',
-                    description: 'Estratégias data-driven para Líderes Digitais Ambiciosos com foco em ROI mensurável',
+                    title: 'Marketing Digital de Alta Performance',
+                    subtitle: 'Estratégias Data-Driven',
+                    description: 'Estratégias baseadas em dados para Líderes Digitais Ambiciosos com foco em ROI mensurável, crescimento sustentável e métricas transparentes',
                     metrics: ['5x', 'ROI médio clientes'],
                   },
                 ].map((service, index) => (
@@ -123,12 +132,19 @@ export default function Home() {
                     <AnimatedCard delay={index * 0.2}>
                       <div className="glass glass-hover rounded-2xl p-8 text-center">
                         <div className="text-6xl mb-6">{service.icon}</div>
-                        <h3 className="text-2xl font-bold text-white mb-4">{service.title}</h3>
+                        <h3 className="text-2xl font-bold text-white mb-2">{service.title}</h3>
+                        <p className="text-primary font-semibold mb-4">{service.subtitle}</p>
                         <p className="text-gray-300 mb-6">{service.description}</p>
-                        <div className="flex items-center justify-center space-x-2">
+                        <div className="flex items-center justify-center space-x-2 mb-4">
                           <span className="text-3xl font-bold text-primary">{service.metrics[0]}</span>
                           <span className="text-gray-400">{service.metrics[1]}</span>
                         </div>
+                        <Link 
+                          href={index === 0 ? "/auditoria-seo" : index === 1 ? "/portfolio" : "/calculadora-roi"}
+                          className="text-primary hover:text-primary/80 font-semibold transition-colors"
+                        >
+                          Saiba mais →
+                        </Link>
                       </div>
                     </AnimatedCard>
                   </StaggerItem>
@@ -153,7 +169,7 @@ export default function Home() {
               </h2>
               <p className="text-body max-w-3xl mx-auto">
                 Veja como nossa metodologia única tem transformado negócios e gerado
-                resultados excepcionais para nossos parceiros.
+                resultados excepcionais para nossos parceiros. Conheça nossos <Link href="/portfolio" className="text-primary hover:text-primary/80 font-semibold">cases de sucesso</Link> e veja como podemos ajudar seu negócio a crescer.
               </p>
             </motion.div>
 
@@ -213,13 +229,26 @@ export default function Home() {
             </FadeInUp>
             
             <FadeInUp delay={0.4}>
-              <Button
-                variant="primary"
-                size="lg"
-                className="bg-gradient-to-r from-primary to-yellow-500 text-primary-foreground px-8 py-4 rounded-full font-semibold text-lg hover:shadow-lg hover:scale-105 transition-all duration-300"
-              >
-                Solicitar Proposta Gratuita
-              </Button>
+              <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                <Link href="/contato">
+                  <Button
+                    variant="primary"
+                    size="lg"
+                    className="bg-gradient-to-r from-primary to-yellow-500 text-primary-foreground px-8 py-4 rounded-full font-semibold text-lg hover:shadow-lg hover:scale-105 transition-all duration-300"
+                  >
+                    Solicitar Proposta Gratuita
+                  </Button>
+                </Link>
+                <Link href="/auditoria-seo">
+                  <Button
+                    variant="outline"
+                    size="lg"
+                    className="border-2 border-primary text-primary px-8 py-4 rounded-full font-semibold text-lg hover:bg-primary hover:text-primary-foreground transition-all duration-300"
+                  >
+                    Auditoria SEO Gratuita
+                  </Button>
+                </Link>
+              </div>
             </FadeInUp>
           </div>
         </section>

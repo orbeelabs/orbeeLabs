@@ -197,7 +197,7 @@ export default function ContactForm() {
               className={`w-full px-4 py-3 bg-white/10 border rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all duration-300 ${
                 errors.phone ? 'border-red-500' : 'border-white/20'
               }`}
-              placeholder="(11) 99999-9999"
+              placeholder="(31) 98255-6751"
             />
             {errors.phone && (
               <motion.p

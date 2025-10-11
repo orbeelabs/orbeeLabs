@@ -495,7 +495,7 @@ export default function AuditoriaSEO() {
                       <Label htmlFor="telefone">Telefone</Label>
                       <Input
                         id="telefone"
-                        placeholder="(11) 99999-9999"
+                        placeholder="(31) 98255-6751"
                         value={dados.telefone}
                         onChange={(e) => handleInputChange('telefone', e.target.value)}
                       />

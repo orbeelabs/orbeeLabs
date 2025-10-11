@@ -36,7 +36,7 @@ export default function Footer() {
   const socialLinks = [
     {
       name: 'LinkedIn',
-      href: 'https://linkedin.com/company/orbeelabs',
+      href: '#',
       icon: '💼',
     },
     { name: 'Instagram', href: 'https://instagram.com/orbeelabs', icon: '📸' },
