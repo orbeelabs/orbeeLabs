@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { sendContactEmail } from "@/lib/email";
+import prisma from "@/lib/prisma";
 import { z } from "zod";
 
 // Schema de validação
@@ -18,6 +19,19 @@ export async function POST(request: NextRequest) {
     // Validar dados
     const validated = contactSchema.parse(body);
     
+    // Salvar no banco de dados
+    const contact = await prisma.contact.create({
+      data: {
+        name: validated.nome,
+        email: validated.email,
+        phone: validated.telefone,
+        company: validated.empresa,
+        message: validated.mensagem,
+        source: 'website',
+        status: 'NEW',
+      },
+    });
+
     // Enviar emails
     await sendContactEmail({
       nome: validated.nome,
@@ -29,11 +43,12 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json({ 
       success: true,
-      message: "Email enviado com sucesso!" 
+      message: "Contato salvo e email enviado com sucesso!",
+      contactId: contact.id
     });
 
   } catch (error) {
-    console.error("Erro no envio de email:", error);
+    console.error("Erro no envio de contato:", error);
     
     if (error instanceof z.ZodError) {
       return NextResponse.json(

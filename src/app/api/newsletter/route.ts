@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { sendNewsletterEmail } from "@/lib/email";
+import prisma from "@/lib/prisma";
 import { z } from "zod";
 
 // Schema de validação
@@ -15,6 +16,21 @@ export async function POST(request: NextRequest) {
     // Validar dados
     const validated = newsletterSchema.parse(body);
     
+    // Salvar no banco de dados
+    const subscriber = await prisma.newsletterSubscriber.upsert({
+      where: { email: validated.email },
+      update: {
+        name: validated.nome,
+        status: 'ACTIVE',
+      },
+      create: {
+        email: validated.email,
+        name: validated.nome,
+        source: 'website',
+        status: 'ACTIVE',
+      },
+    });
+    
     // Enviar email de boas-vindas
     await sendNewsletterEmail({
       email: validated.email,
@@ -23,7 +39,8 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json({ 
       success: true,
-      message: "Inscrição realizada com sucesso!" 
+      message: "Inscrição realizada com sucesso!",
+      subscriberId: subscriber.id
     });
 
   } catch (error) {

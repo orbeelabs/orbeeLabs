@@ -4,11 +4,13 @@ import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import { useSession, signOut } from 'next-auth/react';
 
 export default function Navigation() {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const pathname = usePathname();
+  const { data: session } = useSession();
 
   const navItems = [
     { name: 'Início', href: '/' },
@@ -101,19 +103,36 @@ export default function Navigation() {
             ))}
           </div>
 
-          {/* CTA Button */}
+          {/* CTA Button / Admin Link */}
           <motion.div
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.5, delay: 0.6 }}
-            className="hidden lg:block"
+            className="hidden lg:flex items-center space-x-4"
           >
-            <Link
-              href="/contato"
-              className="bg-gradient-to-r from-primary to-yellow-500 text-primary-foreground px-6 py-3 rounded-full font-semibold hover:shadow-lg hover:scale-105 transition-all duration-300"
-            >
-              Fale Conosco
-            </Link>
+            {session ? (
+              <>
+                <Link
+                  href="/admin"
+                  className="text-white hover:text-primary transition-colors duration-300"
+                >
+                  Admin
+                </Link>
+                <button
+                  onClick={() => signOut()}
+                  className="text-gray-300 hover:text-white transition-colors duration-300"
+                >
+                  Sair
+                </button>
+              </>
+            ) : (
+              <Link
+                href="/contato"
+                className="bg-gradient-to-r from-primary to-yellow-500 text-primary-foreground px-6 py-3 rounded-full font-semibold hover:shadow-lg hover:scale-105 transition-all duration-300"
+              >
+                Fale Conosco
+              </Link>
+            )}
           </motion.div>
 
           {/* Mobile menu button */}
