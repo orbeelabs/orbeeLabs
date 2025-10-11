@@ -106,13 +106,10 @@ export default function LoginPage() {
 
             <div className="mt-8 text-center">
               <p className="text-gray-400 text-sm">
-                Credenciais de teste:
+                Entre em contato para obter acesso administrativo
               </p>
               <p className="text-gray-300 text-sm mt-1">
-                Email: <span className="text-primary">admin@orbeelabs.com</span>
-              </p>
-              <p className="text-gray-300 text-sm">
-                Senha: <span className="text-primary">SSJC**!1908D1&1za</span>
+                Email: <span className="text-primary">contato@orbeelabs.com</span>
               </p>
             </div>
           </motion.div>
