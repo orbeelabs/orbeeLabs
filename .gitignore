@@ -56,3 +56,13 @@ check-tables.js
 
 # Auditoria de segurança (pode conter informações sensíveis)
 SECURITY_AUDIT.md
+
+# Documentos e guias temporários
+*.txt
+!.gitignore
+REDEPLOY_URGENTE.txt
+scripts/setup-vercel-env.sh
+scripts/setup-vercel.sh
+
+# Configurações do VS Code (locais)
+.vscode/
