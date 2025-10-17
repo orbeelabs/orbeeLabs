@@ -45,4 +45,14 @@ next-env.d.ts
 documentos/
 
 # Scripts temporários
-check-admin.js
+scripts/check-admin.js
+scripts/diagnostico-vercel.js
+scripts/ver-dados.js
+check-tables.js
+
+# Backups de ambiente
+.env.local.backup*
+.env.local.limpo
+
+# Auditoria de segurança (pode conter informações sensíveis)
+SECURITY_AUDIT.md
