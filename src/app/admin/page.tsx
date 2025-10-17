@@ -42,25 +42,14 @@ export default function AdminDashboard() {
 
   const fetchStats = async () => {
     try {
-      const [contactsRes, subscribersRes, auditsRes, roiRes] = await Promise.all([
-        fetch('/api/admin/contacts/count'),
-        fetch('/api/admin/newsletter/count'),
-        fetch('/api/admin/audits/count'),
-        fetch('/api/admin/roi/count'),
-      ]);
-
-      const [contacts, subscribers, audits, roi] = await Promise.all([
-        contactsRes.json(),
-        subscribersRes.json(),
-        roiRes.json(),
-        auditsRes.json(),
-      ]);
-
+      // Temporariamente usando dados mockados até as APIs funcionarem
+      console.log('⚠️ Usando dados mockados - APIs admin não funcionam na Vercel');
+      
       setStats({
-        contacts: contacts.count || 0,
-        subscribers: subscribers.count || 0,
-        audits: audits.count || 0,
-        roiCalculations: roi.count || 0,
+        contacts: 0,
+        subscribers: 0,
+        audits: 0,
+        roiCalculations: 0,
       });
     } catch (error) {
       console.error('Erro ao buscar estatísticas:', error);
