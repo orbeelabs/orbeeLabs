@@ -1,5 +1,9 @@
 const { PrismaClient } = require('@prisma/client');
 const { hash } = require('bcryptjs');
+const { config } = require('dotenv');
+
+// Carregar variáveis de ambiente
+config({ path: '.env.local' });
 
 const prisma = new PrismaClient();
 
