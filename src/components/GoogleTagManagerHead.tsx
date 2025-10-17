@@ -1,8 +1,12 @@
 import Script from 'next/script';
 
-const GTM_ID = process.env.NEXT_PUBLIC_GTM_ID || 'GTM-PVZZNVGZ';
+const GTM_ID = process.env.NEXT_PUBLIC_GTM_ID;
 
 export default function GoogleTagManagerHead() {
+  if (!GTM_ID) {
+    return null;
+  }
+
   return (
     <Script
       id="google-tag-manager-head"

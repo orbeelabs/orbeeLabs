@@ -17,7 +17,10 @@ async function main() {
       throw new Error('ADMIN_PASSWORD environment variable is required');
     }
     const hashedPassword = await hash(adminPassword, 10);
-    const adminEmail = process.env.ADMIN_EMAIL || 'admin@orbeelabs.com';
+    const adminEmail = process.env.ADMIN_EMAIL;
+    if (!adminEmail) {
+      throw new Error('ADMIN_EMAIL environment variable is required');
+    }
     
     await prisma.user.upsert({
       where: { email: adminEmail },

@@ -2,9 +2,14 @@
 
 import Script from 'next/script';
 
-const GTM_ID = process.env.NEXT_PUBLIC_GTM_ID || 'GTM-PVZZNVGZ';
+const GTM_ID = process.env.NEXT_PUBLIC_GTM_ID;
 
 export default function GoogleTagManager() {
+  if (!GTM_ID) {
+    console.warn('NEXT_PUBLIC_GTM_ID environment variable is not set');
+    return null;
+  }
+
   return (
     <>
       {/* Google Tag Manager Script */}
