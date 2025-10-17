@@ -11,12 +11,27 @@ export async function middleware(request: NextRequest) {
   const isAdmin = token?.role === 'ADMIN';
   const isAdminRoute = request.nextUrl.pathname.startsWith('/admin');
 
+  console.log('🔍 Middleware Debug:', {
+    path: request.nextUrl.pathname,
+    isLoggedIn,
+    isAdmin,
+    isAdminRoute,
+    tokenRole: token?.role,
+    tokenEmail: token?.email
+  });
+
   if (isAdminRoute && !isLoggedIn) {
+    console.log('❌ Redirecionando para login - usuário não logado');
     return NextResponse.redirect(new URL('/login', request.url));
   }
 
   if (isAdminRoute && !isAdmin) {
+    console.log('❌ Redirecionando para login - usuário não é admin');
     return NextResponse.redirect(new URL('/login', request.url));
+  }
+
+  if (isAdminRoute && isLoggedIn && isAdmin) {
+    console.log('✅ Acesso autorizado ao admin');
   }
 
   return NextResponse.next();

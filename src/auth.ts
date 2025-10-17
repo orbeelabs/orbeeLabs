@@ -63,6 +63,14 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       }
       return session;
     },
+    async redirect({ url, baseUrl }) {
+      // Se a URL é relativa, usar baseUrl
+      if (url.startsWith("/")) return `${baseUrl}${url}`;
+      // Se a URL é do mesmo domínio, usar ela
+      else if (new URL(url).origin === baseUrl) return url;
+      // Caso contrário, redirecionar para admin
+      return `${baseUrl}/admin`;
+    },
   },
   pages: {
     signIn: "/login",

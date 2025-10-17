@@ -43,3 +43,6 @@ next-env.d.ts
 
 # Documentos sensíveis
 documentos/
+
+# Scripts temporários
+check-admin.js
