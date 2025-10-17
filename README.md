@@ -117,9 +117,19 @@ Acesse [http://localhost:3000](http://localhost:3000) no seu navegador.
 
 ## 🔐 Acesso ao Painel Administrativo
 
-- **URL**: `http://localhost:3000/login`
-- **Email**: `admin@orbeelabs.com`
+- **URL Local**: `http://localhost:3000/login`
+- **URL Produção**: `https://orbeelabs.com/login`
+- **Email**: `[CONFIGURAR NO .env.local]`
 - **Senha**: `[CONFIGURAR NO .env.local]`
+
+### Configuração das Credenciais
+
+Configure as variáveis de ambiente no arquivo `.env.local`:
+
+```env
+ADMIN_EMAIL="seu-email@orbeelabs.com"
+ADMIN_PASSWORD="sua-senha-segura"
+```
 
 ## 📚 Funcionalidades Detalhadas
 

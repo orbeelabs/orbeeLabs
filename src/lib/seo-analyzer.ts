@@ -93,8 +93,12 @@ export class SEOAnalyzer {
   private async getPageSpeedData(url: string): Promise<unknown> {
     try {
       // Simular dados do PageSpeed Insights (em produção, usar API real)
+      const apiKey = process.env.GOOGLE_PAGESPEED_API_KEY;
+      if (!apiKey) {
+        throw new Error('GOOGLE_PAGESPEED_API_KEY environment variable is required');
+      }
       const response = await axios.get(
-        `https://www.googleapis.com/pagespeedonline/v5/runPagespeed?url=${encodeURIComponent(url)}&key=YOUR_API_KEY`
+        `https://www.googleapis.com/pagespeedonline/v5/runPagespeed?url=${encodeURIComponent(url)}&key=${apiKey}`
       );
       return response.data;
     } catch {

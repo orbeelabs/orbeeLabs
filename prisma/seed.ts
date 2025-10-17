@@ -1,5 +1,9 @@
 import { PrismaClient } from '@prisma/client';
 import { hash } from 'bcryptjs';
+import { config } from 'dotenv';
+
+// Carregar variáveis de ambiente
+config({ path: '.env.local' });
 
 const prisma = new PrismaClient();
 
@@ -8,16 +12,21 @@ async function main() {
 
   try {
     // Criar usuário admin
-    const adminPassword = process.env.ADMIN_PASSWORD || 'admin123';
+    const adminPassword = process.env.ADMIN_PASSWORD;
+    if (!adminPassword) {
+      throw new Error('ADMIN_PASSWORD environment variable is required');
+    }
     const hashedPassword = await hash(adminPassword, 10);
-           await prisma.user.upsert({
-      where: { email: 'admin@orbeelabs.com' },
+    const adminEmail = process.env.ADMIN_EMAIL || 'admin@orbeelabs.com';
+    
+    await prisma.user.upsert({
+      where: { email: adminEmail },
       update: {
         password: hashedPassword,
       },
       create: {
         name: 'Admin Orbee Labs',
-        email: 'admin@orbeelabs.com',
+        email: adminEmail,
         password: hashedPassword,
         role: 'ADMIN',
       },
