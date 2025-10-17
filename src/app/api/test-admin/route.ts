@@ -6,8 +6,8 @@ export async function GET() {
     console.log('🔍 Testando API admin...');
     
     const contactsCount = await prisma.contact.count();
-    const newsletterCount = await prisma.newsletter.count();
-    const auditsCount = await prisma.audit.count();
+    const newsletterCount = await prisma.newsletterSubscriber.count();
+    const auditsCount = await prisma.seoAudit.count();
     const roiCount = await prisma.roiCalculation.count();
 
     return NextResponse.json({
