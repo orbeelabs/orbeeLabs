@@ -1,15 +1,12 @@
 'use client';
 
-import React from 'react';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
-import Navigation from '@/components/Navigation';
-import Footer from '@/components/Footer';
+import { PageLayout } from '@/components/layout';
 import AnimatedCard from '@/components/animations/AnimatedCard';
 import StaggerContainer from '@/components/animations/StaggerContainer';
 import StaggerItem from '@/components/animations/StaggerItem';
-import { BreadcrumbStructuredData } from '@/components/StructuredData';
-import { useEffect } from 'react';
+import { usePageTitle } from '@/hooks/core';
 
 export default function ServicesPage() {
   const breadcrumbItems = [
@@ -17,9 +14,7 @@ export default function ServicesPage() {
     { name: "Serviços", url: "https://orbeelabs.com/servicos" },
   ];
 
-  useEffect(() => {
-    document.title = "Serviços de Marketing Digital | SEO Técnico e Desenvolvimento Web - Orbee Labs";
-  }, []);
+  usePageTitle("Serviços de Marketing Digital | SEO Técnico e Desenvolvimento Web - Orbee Labs");
 
   const seoMethodology = {
     title: 'SEO Cabuloso',
@@ -117,10 +112,7 @@ export default function ServicesPage() {
   ];
 
   return (
-    <>
-      <BreadcrumbStructuredData items={breadcrumbItems} />
-      <Navigation />
-      <div className="min-h-screen bg-background text-foreground">
+    <PageLayout breadcrumbItems={breadcrumbItems}>
         {/* Hero Section */}
         <section className="relative py-20 bg-gradient-to-br from-background via-card to-background">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -281,8 +273,6 @@ export default function ServicesPage() {
             </motion.div>
           </div>
         </section>
-      </div>
-      <Footer />
-    </>
+    </PageLayout>
   );
 }

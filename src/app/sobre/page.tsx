@@ -1,11 +1,9 @@
 'use client';
 
+import { usePageTitle } from '@/hooks/core';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
-import Navigation from '@/components/Navigation';
-import Footer from '@/components/Footer';
-import { BreadcrumbStructuredData } from '@/components/StructuredData';
-import { useEffect } from 'react';
+import { PageLayout } from '@/components/layout';
 
 export default function SobrePage() {
   const breadcrumbItems = [
@@ -13,9 +11,7 @@ export default function SobrePage() {
     { name: "Sobre", url: "https://orbeelabs.com/sobre" },
   ];
 
-  useEffect(() => {
-    document.title = "Sobre a Orbee Labs | Equipe de Especialistas em Marketing Digital e Desenvolvimento Web";
-  }, []);
+  usePageTitle("Sobre a Orbee Labs | Equipe de Especialistas em Marketing Digital e Desenvolvimento Web");
 
   const team = [
     {
@@ -85,10 +81,7 @@ export default function SobrePage() {
   ];
 
   return (
-    <>
-      <BreadcrumbStructuredData items={breadcrumbItems} />
-      <Navigation />
-      <div className="min-h-screen bg-background text-foreground">
+    <PageLayout breadcrumbItems={breadcrumbItems}>
         {/* Hero Section */}
         <section className="relative pt-32 pb-20 overflow-hidden bg-gradient-to-br from-background via-card to-background">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -292,8 +285,6 @@ export default function SobrePage() {
             </motion.div>
           </div>
         </section>
-      </div>
-      <Footer />
-    </>
+    </PageLayout>
   );
 }

@@ -4,8 +4,7 @@ import { useEffect } from 'react';
 import { usePathname } from 'next/navigation';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
-import Navigation from '@/components/Navigation';
-import Footer from '@/components/Footer';
+import { PageLayout } from '@/components/layout';
 
 export default function NotFound() {
   const pathname = usePathname();
@@ -15,9 +14,7 @@ export default function NotFound() {
   }, [pathname]);
 
   return (
-    <>
-      <Navigation />
-      
+    <PageLayout>
       <div className="min-h-screen bg-background text-foreground flex items-center justify-center">
         <motion.div
           initial={{ opacity: 0, y: 50 }}
@@ -112,8 +109,6 @@ export default function NotFound() {
           </motion.div>
         </motion.div>
       </div>
-
-      <Footer />
-    </>
+    </PageLayout>
   );
 }

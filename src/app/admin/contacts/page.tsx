@@ -4,8 +4,7 @@ import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
-import Navigation from '@/components/Navigation';
-import Footer from '@/components/Footer';
+import { PageLayout } from '@/components/layout';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -173,9 +172,7 @@ export default function ContactsPage() {
   }
 
   return (
-    <>
-      <Navigation />
-      <div className="min-h-screen bg-background text-foreground pt-20">
+    <PageLayout>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           {/* Header */}
           <div className="flex items-center justify-between mb-8">
@@ -339,7 +336,6 @@ export default function ContactsPage() {
             </Card>
           )}
         </div>
-      </div>
 
       {/* Contact Details Modal */}
       {selectedContact && (
@@ -537,8 +533,6 @@ export default function ContactsPage() {
           </motion.div>
         </div>
       )}
-
-      <Footer />
-    </>
+    </PageLayout>
   );
 }

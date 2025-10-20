@@ -2,20 +2,17 @@
 
 import { useState } from 'react';
 import { signIn } from 'next-auth/react';
-import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import Navigation from '@/components/Navigation';
-import Footer from '@/components/Footer';
+import { PageLayout } from '@/components/layout';
 import { toast } from 'sonner';
 
 export default function LoginPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const router = useRouter();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -53,9 +50,7 @@ export default function LoginPage() {
   };
 
   return (
-    <>
-      <Navigation />
-      <div className="min-h-screen bg-background text-foreground pt-20">
+    <PageLayout>
         <div className="max-w-md mx-auto px-4 py-16">
           <motion.div
             initial={{ opacity: 0, y: 50 }}
@@ -125,8 +120,6 @@ export default function LoginPage() {
             </div>
           </motion.div>
         </div>
-      </div>
-      <Footer />
-    </>
+    </PageLayout>
   );
 }

@@ -1,20 +1,15 @@
 'use client';
 
 import Link from 'next/link';
-import Navigation from '@/components/Navigation';
-import Footer from '@/components/Footer';
+import { PageLayout } from '@/components/layout';
 import { motion } from 'framer-motion';
-import { useEffect } from 'react';
+import { usePageTitle } from '@/hooks/core';
 
 export default function PrivacidadePage() {
-  useEffect(() => {
-    document.title = 'Política de Privacidade - Orbee Labs';
-  }, []);
+  usePageTitle("Política de Privacidade | Orbee Labs - Proteção de Dados e LGPD");
 
   return (
-    <>
-      <Navigation />
-      <div className="min-h-screen bg-background text-foreground">
+    <PageLayout>
         {/* Hero Section */}
         <section className="relative py-20 bg-gradient-to-br from-background via-card to-background">
           <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -182,8 +177,6 @@ export default function PrivacidadePage() {
             </motion.div>
           </div>
         </section>
-      </div>
-      <Footer />
-    </>
+    </PageLayout>
   );
 }

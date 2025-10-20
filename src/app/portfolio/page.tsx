@@ -4,8 +4,7 @@ import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Link from 'next/link';
 import Image from 'next/image';
-import Navigation from '@/components/Navigation';
-import Footer from '@/components/Footer';
+import { PageLayout } from '@/components/layout';
 
 export default function PortfolioPage() {
   const [activeFilter, setActiveFilter] = useState('todos');
@@ -150,9 +149,7 @@ export default function PortfolioPage() {
     : caseStudies.filter(project => project.category === activeFilter);
 
   return (
-    <>
-      <Navigation />
-
+    <PageLayout>
       {/* Hero Section */}
       <section className="relative pt-32 pb-20 overflow-hidden bg-gradient-to-br from-background via-card to-background">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -402,9 +399,7 @@ export default function PortfolioPage() {
           </motion.div>
         </div>
       </section>
-
-      <Footer />
-    </>
+    </PageLayout>
   );
 }
 

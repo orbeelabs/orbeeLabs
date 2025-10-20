@@ -1,23 +1,30 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextRequest } from "next/server";
 import { sendContactEmail } from "@/lib/email";
 import prisma from "@/lib/prisma";
-import { z } from "zod";
+import { 
+  createSuccessResponse, 
+  createErrorResponse, 
+  validateData,
+  withRateLimit 
+} from "@/lib/api";
+import { contactSchema } from "@/lib/api/validation";
+import { logApiError, logApiSuccess } from "@/lib/logger";
 
-// Schema de validação
-const contactSchema = z.object({
-  nome: z.string().min(2, "Nome deve ter pelo menos 2 caracteres"),
-  email: z.string().email("Email inválido"),
-  telefone: z.string().optional(),
-  empresa: z.string().optional(),
-  mensagem: z.string().min(5, "Mensagem deve ter pelo menos 5 caracteres"),
-});
-
-export async function POST(request: NextRequest) {
+async function handleContact(request: NextRequest) {
   try {
     const body = await request.json();
     
     // Validar dados
-    const validated = contactSchema.parse(body);
+    const validation = validateData(contactSchema, body);
+    if (!validation.success) {
+      return createErrorResponse(
+        "Dados inválidos",
+        validation.error.issues,
+        400
+      );
+    }
+    
+    const validated = validation.data;
     
     // Salvar no banco de dados
     const contact = await prisma.contact.create({
@@ -32,6 +39,8 @@ export async function POST(request: NextRequest) {
       },
     });
 
+    logApiSuccess('POST', '/api/contato', { contactId: contact.id });
+
     // Enviar emails
     await sendContactEmail({
       nome: validated.nome,
@@ -41,32 +50,15 @@ export async function POST(request: NextRequest) {
       mensagem: validated.mensagem,
     });
 
-    return NextResponse.json({ 
-      success: true,
-      message: "Contato salvo e email enviado com sucesso!",
-      contactId: contact.id
-    });
+    return createSuccessResponse(
+      { contactId: contact.id },
+      "Contato salvo e email enviado com sucesso!"
+    );
 
   } catch (error) {
-    console.error("Erro no envio de contato:", error);
-    
-    if (error instanceof z.ZodError) {
-      return NextResponse.json(
-        { 
-          success: false,
-          error: "Dados inválidos",
-          details: error.issues 
-        },
-        { status: 400 }
-      );
-    }
-
-    return NextResponse.json(
-      { 
-        success: false,
-        error: "Erro interno do servidor" 
-      },
-      { status: 500 }
-    );
+    logApiError(error as Error, '/api/contato', 'POST', { message: 'Erro no envio de contato' });
+    return createErrorResponse("Erro interno do servidor");
   }
 }
+
+export const POST = withRateLimit('contact', handleContact);

@@ -2,9 +2,8 @@
 
 import { useState, useEffect, useCallback } from 'react';
 import { motion } from 'framer-motion';
-import Button from '@/components/Button';
-import Navigation from '@/components/Navigation';
-import Footer from '@/components/Footer';
+import { Button } from '@/components/ui/button';
+import { PageLayout } from '@/components/layout';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -131,10 +130,7 @@ export default function CalculadoraROI() {
   })) : [];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-background via-card to-background">
-      {/* Navigation */}
-      <Navigation />
-      
+    <PageLayout>
       {/* Header */}
       <section className="relative py-20 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto text-center">
@@ -499,8 +495,6 @@ export default function CalculadoraROI() {
         </div>
       </section>
 
-      {/* Footer */}
-      <Footer />
-    </div>
+    </PageLayout>
   );
 }

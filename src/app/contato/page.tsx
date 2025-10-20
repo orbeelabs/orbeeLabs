@@ -1,11 +1,9 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import Navigation from '@/components/Navigation';
-import Footer from '@/components/Footer';
+import { PageLayout } from '@/components/layout';
 import ContactForm from '@/components/forms/ContactForm';
-import { BreadcrumbStructuredData } from '@/components/StructuredData';
-import { useEffect } from 'react';
+import { usePageTitle } from '@/hooks/core';
 
 export default function ContatoPage() {
   const breadcrumbItems = [
@@ -13,16 +11,10 @@ export default function ContatoPage() {
     { name: "Contato", url: "https://orbeelabs.com/contato" },
   ];
 
-  useEffect(() => {
-    document.title = "Contato - Orbee Labs | Consultoria Gratuita de Marketing Digital";
-  }, []);
+  usePageTitle("Contato - Orbee Labs | Consultoria Gratuita de Marketing Digital");
 
   return (
-    <>
-      <BreadcrumbStructuredData items={breadcrumbItems} />
-      <Navigation />
-
-      {/* Hero Section */}
+    <PageLayout breadcrumbItems={breadcrumbItems}>
       <section className="relative pt-32 pb-20 overflow-hidden bg-gradient-to-br from-background via-card to-background">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
@@ -120,7 +112,6 @@ export default function ContatoPage() {
           </div>
         </div>
       </section>
-      <Footer />
-    </>
+    </PageLayout>
   );
 }

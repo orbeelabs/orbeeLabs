@@ -1,20 +1,30 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextRequest } from "next/server";
 import { sendNewsletterEmail } from "@/lib/email";
 import prisma from "@/lib/prisma";
-import { z } from "zod";
+import { 
+  createSuccessResponse, 
+  createErrorResponse, 
+  validateData,
+  withRateLimit 
+} from "@/lib/api";
+import { newsletterSchema } from "@/lib/api/validation";
+import { logApiError, logApiSuccess } from "@/lib/logger";
 
-// Schema de validação
-const newsletterSchema = z.object({
-  email: z.string().email("Email inválido"),
-  nome: z.string().optional(),
-});
-
-export async function POST(request: NextRequest) {
+async function handleNewsletter(request: NextRequest) {
   try {
     const body = await request.json();
     
     // Validar dados
-    const validated = newsletterSchema.parse(body);
+    const validation = validateData(newsletterSchema, body);
+    if (!validation.success) {
+      return createErrorResponse(
+        "Email inválido",
+        validation.error.issues,
+        400
+      );
+    }
+    
+    const validated = validation.data;
     
     // Salvar no banco de dados
     const subscriber = await prisma.newsletterSubscriber.upsert({
@@ -30,6 +40,8 @@ export async function POST(request: NextRequest) {
         status: 'ACTIVE',
       },
     });
+
+    logApiSuccess('POST', '/api/newsletter', { subscriberId: subscriber.id });
     
     // Enviar email de boas-vindas
     await sendNewsletterEmail({
@@ -37,32 +49,15 @@ export async function POST(request: NextRequest) {
       nome: validated.nome,
     });
 
-    return NextResponse.json({ 
-      success: true,
-      message: "Inscrição realizada com sucesso!",
-      subscriberId: subscriber.id
-    });
+    return createSuccessResponse(
+      { subscriberId: subscriber.id },
+      "Inscrição realizada com sucesso!"
+    );
 
   } catch (error) {
-    console.error("Erro na inscrição da newsletter:", error);
-    
-    if (error instanceof z.ZodError) {
-      return NextResponse.json(
-        { 
-          success: false,
-          error: "Email inválido",
-          details: error.issues 
-        },
-        { status: 400 }
-      );
-    }
-
-    return NextResponse.json(
-      { 
-        success: false,
-        error: "Erro interno do servidor" 
-      },
-      { status: 500 }
-    );
+    logApiError(error as Error, '/api/newsletter', 'POST', { message: 'Erro na inscrição da newsletter' });
+    return createErrorResponse("Erro interno do servidor");
   }
 }
+
+export const POST = withRateLimit('newsletter', handleNewsletter);

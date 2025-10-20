@@ -1,20 +1,15 @@
 'use client';
 
 import Link from 'next/link';
-import Navigation from '@/components/Navigation';
-import Footer from '@/components/Footer';
 import { motion } from 'framer-motion';
-import { useEffect } from 'react';
+import { usePageTitle } from '@/hooks/core';
+import { PageLayout } from '@/components/layout';
 
 export default function CookiesPage() {
-  useEffect(() => {
-    document.title = 'Política de Cookies - Orbee Labs';
-  }, []);
+  usePageTitle("Política de Cookies | Orbee Labs - Transparência e Privacidade");
 
   return (
-    <>
-      <Navigation />
-      <div className="min-h-screen bg-background text-foreground">
+    <PageLayout>
         {/* Hero Section */}
         <section className="relative py-20 bg-gradient-to-br from-background via-card to-background">
           <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -196,8 +191,6 @@ export default function CookiesPage() {
             </motion.div>
           </div>
         </section>
-      </div>
-      <Footer />
-    </>
+    </PageLayout>
   );
 }
