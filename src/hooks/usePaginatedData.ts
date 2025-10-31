@@ -27,8 +27,6 @@ export function usePaginatedData<T>({
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  const filtersString = useMemo(() => JSON.stringify(filters), [filters]);
-
   const fetchData = useCallback(async () => {
     if (!enabled) return;
 
@@ -58,7 +56,8 @@ export function usePaginatedData<T>({
     } finally {
       setIsLoading(false);
     }
-  }, [endpoint, enabled, filtersString]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [endpoint, enabled, JSON.stringify(filters)]);
 
   useEffect(() => {
     fetchData();

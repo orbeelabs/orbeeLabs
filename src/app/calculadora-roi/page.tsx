@@ -9,7 +9,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { useToast } from '@/components/ui/use-toast';
+// import { useToast } from '@/components/ui/use-toast';
 // import { Badge } from '@/components/ui/badge';
 import { Calculator, TrendingUp, DollarSign, Target, BarChart3, Download } from 'lucide-react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, BarChart, Bar } from 'recharts';
@@ -36,7 +36,7 @@ interface CalculoROI {
 }
 
 export default function CalculadoraROI() {
-  const { toast } = useToast();
+  // const { toast } = useToast();
   const [dados, setDados] = useState<ROIData>({
     investimentoInicial: 5000,
     investimentoMensal: 2000,

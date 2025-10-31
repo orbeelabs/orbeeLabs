@@ -11,7 +11,7 @@ import { Search, Calendar, User, ArrowRight, Tag } from 'lucide-react';
 import { format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 import { usePaginatedData } from '@/hooks/usePaginatedData';
-import type { Post } from '@/types/blog';
+import type { PostPreview } from '@/types/blog';
 
 export default function BlogPage() {
   const [activeCategory, setActiveCategory] = useState('all');
@@ -37,7 +37,7 @@ export default function BlogPage() {
     return filterObj;
   }, [activeCategory, searchTerm]);
 
-  const { data: posts, isLoading } = usePaginatedData<Post>({
+  const { data: posts, isLoading } = usePaginatedData<PostPreview>({
     endpoint: '/api/blog',
     filters,
   });

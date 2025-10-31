@@ -2,6 +2,7 @@ import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import prisma from '@/lib/prisma';
 import BlogCategoryPage from '@/components/blog/BlogCategoryPage';
+import type { PostPreview } from '@/types/blog';
 
 interface BlogCategoryProps {
   params: Promise<{ categoria: string }>;
@@ -35,7 +36,7 @@ export default async function BlogCategory({ params }: BlogCategoryProps) {
   }
 
   // Buscar posts da categoria
-  const posts = await prisma.post.findMany({
+  const posts: PostPreview[] = await prisma.post.findMany({
     where: {
       category: categoryName,
       published: true,

@@ -8,11 +8,11 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Calendar, User, ArrowRight, Tag, ArrowLeft } from 'lucide-react';
 import { format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
-import type { Post } from '@/types/blog';
+import type { PostPreview } from '@/types/blog';
 
 interface BlogCategoryPageProps {
   categoryName: string;
-  posts: Post[];
+  posts: PostPreview[];
   breadcrumbItems: Array<{ name: string; url: string }>;
 }
 
