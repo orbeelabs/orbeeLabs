@@ -9,6 +9,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { useToast } from '@/components/ui/use-toast';
 // import { Badge } from '@/components/ui/badge';
 import { Calculator, TrendingUp, DollarSign, Target, BarChart3, Download } from 'lucide-react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, BarChart, Bar } from 'recharts';
@@ -35,6 +36,7 @@ interface CalculoROI {
 }
 
 export default function CalculadoraROI() {
+  const { toast } = useToast();
   const [dados, setDados] = useState<ROIData>({
     investimentoInicial: 5000,
     investimentoMensal: 2000,
@@ -52,7 +54,7 @@ export default function CalculadoraROI() {
     setIsCalculating(true);
     
     // Simular cálculo (em produção, seria mais complexo)
-    setTimeout(() => {
+    setTimeout(async () => {
       const { investimentoInicial, investimentoMensal, tempoInvestimento, receitaMensal, crescimentoMensal } = dados;
       
       const receitaProjetada = [];
@@ -78,7 +80,7 @@ export default function CalculadoraROI() {
       const roi = (lucro / investimentoTotal) * 100;
       const payback = investimentoInicial / (receitaMensal - investimentoMensal);
       
-      setCalculo({
+      const resultadoCalculo = {
         receitaTotal,
         investimentoTotal,
         lucro,
@@ -87,11 +89,40 @@ export default function CalculadoraROI() {
         receitaProjetada,
         investimentoProjetado,
         lucroProjetado
-      });
+      };
+      
+      setCalculo(resultadoCalculo);
+      
+      // Salvar cálculo no banco de dados
+      try {
+        const response = await fetch('/api/roi', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            data: dados,
+            result: resultadoCalculo,
+          }),
+        });
+
+        const result = await response.json();
+
+        if (response.ok && result.success) {
+          // Opcional: mostrar mensagem de sucesso (silencioso por padrão)
+          // toast({
+          //   title: "Sucesso!",
+          //   description: "Cálculo salvo com sucesso.",
+          // });
+        }
+      } catch (error) {
+        // Erro silencioso - não quebra a calculadora se a API falhar
+        console.error('Erro ao salvar cálculo ROI (calculadora continua funcionando):', error);
+      }
       
       setIsCalculating(false);
     }, 1000);
-  }, [dados]);
+  }, [dados, toast]);
 
   useEffect(() => {
     calcularROI();

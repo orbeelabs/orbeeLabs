@@ -17,6 +17,7 @@ export default function Navigation() {
     { name: 'Sobre', href: '/sobre' },
     { name: 'Serviços', href: '/servicos' },
     { name: 'Portfolio', href: '/portfolio' },
+    { name: 'Blog', href: '/blog' },
     { name: 'Calculadora ROI', href: '/calculadora-roi' },
     { name: 'Auditoria SEO', href: '/auditoria-seo' },
     { name: 'Contato', href: '/contato' },

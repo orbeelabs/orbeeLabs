@@ -76,3 +76,63 @@ model RoiCalculation {
 
   @@map("roi_calculations")
 }
+
+// Posts do Blog
+model Post {
+  id            String   @id @default(cuid())
+  slug          String   @unique
+  title         String
+  excerpt       String?  @db.Text
+  content       String   @db.Text
+  author        String
+  authorImage   String?
+  category      String   // "SEO Avançado" | "Desenvolvimento Web" | "Marketing Digital" | "Cases Reais"
+  tags          String[] // Array de tags
+  featured      Boolean  @default(false)
+  published     Boolean  @default(false)
+  publishedAt   DateTime?
+  seoTitle      String?
+  seoDescription String? @db.Text
+  ogImage       String?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  @@map("posts")
+  @@index([category])
+  @@index([published])
+}
+
+// Cases de Sucesso (Portfolio)
+model CaseStudy {
+  id          String   @id @default(cuid())
+  slug        String   @unique
+  title       String
+  description String   @db.Text
+  clientName  String?
+  industry    String   // "Saúde" | "Educação" | "E-commerce" | "Jurídico" | "SaaS/Tech" | etc.
+  services    String[] // Array de serviços aplicados
+  technologies String[] // Array de tecnologias usadas
+  challenge   String   @db.Text
+  solution    String   @db.Text
+  results     String   @db.Text // JSON string com métricas
+  duration    String
+  timeline    String?  @db.Text // Timeline opcional
+  learnings   String?  @db.Text // "O que faríamos diferente"
+  heroImage   String?  // URL da imagem hero (opcional)
+  gallery     String[] // Array de URLs de imagens (opcional)
+  gscBefore   String?  // Print do Google Search Console antes (opcional)
+  gscAfter    String?  // Print do Google Search Console depois (opcional)
+  ga4Before   String?  // Print do Google Analytics antes (opcional)
+  ga4After    String?  // Print do Google Analytics depois (opcional)
+  cwvBefore   String?  // Print dos Core Web Vitals antes (opcional)
+  cwvAfter    String?  // Print dos Core Web Vitals depois (opcional)
+  featured    Boolean  @default(false)
+  published   Boolean  @default(true)
+  publishedAt DateTime @default(now())
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("case_studies")
+  @@index([industry])
+  @@index([published])
+}
