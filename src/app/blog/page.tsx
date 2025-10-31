@@ -152,7 +152,7 @@ export default function BlogPage() {
 }
 
 interface PostCardProps {
-  post: Post;
+  post: PostPreview;
   featured?: boolean;
   delay?: number;
 }
