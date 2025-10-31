@@ -5,7 +5,6 @@ import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { PageLayout } from '@/components/layout';
 import { FAQStructuredData } from '@/components/StructuredData';
-import AnimatedCard from '@/components/animations/AnimatedCard';
 import StaggerContainer from '@/components/animations/StaggerContainer';
 import StaggerItem from '@/components/animations/StaggerItem';
 import { usePageTitle } from '@/hooks/core';
@@ -396,7 +395,7 @@ export default function SEOPage() {
                     </div>
 
                     <div className="bg-gradient-to-r from-primary/20 to-yellow-500/20 rounded-lg p-4">
-                      <p className="text-gray-200 italic">"{caseItem.meaning}"</p>
+                      <p className="text-gray-200 italic">&quot;{caseItem.meaning}&quot;</p>
                     </div>
                   </div>
                 </motion.div>
@@ -557,7 +556,7 @@ export default function SEOPage() {
                   <ul className="list-disc list-inside ml-4 space-y-2 text-gray-300">
                     <li>Teoria aleatória</li>
                     <li>Promessas falsas</li>
-                    <li>"Melhor agência de SEO"</li>
+                    <li>&quot;Melhor agência de SEO&quot;</li>
                     <li>Marketing vazio</li>
                   </ul>
                 </div>

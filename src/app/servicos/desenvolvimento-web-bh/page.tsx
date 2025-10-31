@@ -5,7 +5,6 @@ import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { PageLayout } from '@/components/layout';
 import { FAQStructuredData } from '@/components/StructuredData';
-import AnimatedCard from '@/components/animations/AnimatedCard';
 import StaggerContainer from '@/components/animations/StaggerContainer';
 import StaggerItem from '@/components/animations/StaggerItem';
 import { usePageTitle } from '@/hooks/core';
@@ -213,10 +212,10 @@ export default function DesenvolvimentoWebPage() {
                   Resultado: Site bonito que ninguém encontra.
                 </p>
                 <p>
-                  Enquanto isso, concorrente com site "feio" mas rápido e otimizado ranqueia melhor.
+                  Enquanto isso, concorrente com site &quot;feio&quot; mas rápido e otimizado ranqueia melhor.
                 </p>
                 <p className="mt-4">
-                  <strong className="text-white">O problema:</strong> Maioria das agências web entrega "design" bonito. 
+                  <strong className="text-white">O problema:</strong> Maioria das agências web entrega &quot;design&quot; bonito. 
                   Esquecem de performance e SEO.
                 </p>
               </div>

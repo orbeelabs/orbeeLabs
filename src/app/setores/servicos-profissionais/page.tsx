@@ -5,11 +5,9 @@ import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { PageLayout } from '@/components/layout';
 import { FAQStructuredData } from '@/components/StructuredData';
-import StaggerContainer from '@/components/animations/StaggerContainer';
-import StaggerItem from '@/components/animations/StaggerItem';
 import { usePageTitle } from '@/hooks/core';
 import { Button } from '@/components/ui/button';
-import { ChevronDown, Check } from 'lucide-react';
+import { ChevronDown } from 'lucide-react';
 
 export default function ServicosProfissionaisPage() {
   const breadcrumbItems = [
