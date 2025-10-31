@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useMemo } from 'react';
 
 interface UsePaginatedDataOptions {
   endpoint: string;
@@ -26,6 +26,8 @@ export function usePaginatedData<T>({
   const [data, setData] = useState<T[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+
+  const filtersString = useMemo(() => JSON.stringify(filters), [filters]);
 
   const fetchData = useCallback(async () => {
     if (!enabled) return;
@@ -56,7 +58,7 @@ export function usePaginatedData<T>({
     } finally {
       setIsLoading(false);
     }
-  }, [endpoint, enabled, JSON.stringify(filters)]);
+  }, [endpoint, enabled, filtersString]);
 
   useEffect(() => {
     fetchData();

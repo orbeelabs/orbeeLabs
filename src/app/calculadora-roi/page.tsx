@@ -122,7 +122,7 @@ export default function CalculadoraROI() {
       
       setIsCalculating(false);
     }, 1000);
-  }, [dados, toast]);
+  }, [dados]);
 
   useEffect(() => {
     calcularROI();

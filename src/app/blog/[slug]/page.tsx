@@ -2,8 +2,6 @@ import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import prisma from '@/lib/prisma';
 import BlogPostContent from '@/components/blog/BlogPostContent';
-import { format } from 'date-fns';
-import { ptBR } from 'date-fns/locale';
 
 interface BlogPostPageProps {
   params: Promise<{ slug: string }>;
