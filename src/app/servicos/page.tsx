@@ -172,12 +172,22 @@ export default function ServicesPage() {
                           </div>
                         </div>
 
-                        <Link
-                          href={service.ctaLink}
-                          className="w-full bg-gradient-to-r from-primary to-yellow-500 text-primary-foreground font-semibold py-3 px-6 rounded-lg text-center hover:shadow-lg hover:scale-105 transition-all duration-300"
-                        >
-                          {service.cta}
-                        </Link>
+                        <div className="flex flex-col gap-2">
+                          <Link
+                            href={service.ctaLink}
+                            className="w-full bg-gradient-to-r from-primary to-yellow-500 text-primary-foreground font-semibold py-3 px-6 rounded-lg text-center hover:shadow-lg hover:scale-105 transition-all duration-300"
+                          >
+                            {service.cta}
+                          </Link>
+                          {service.title === 'SEO Técnico & Estratégico' && (
+                            <Link
+                              href="/servicos/seo-bh"
+                              className="w-full border border-primary/50 text-primary font-semibold py-2 px-6 rounded-lg text-center hover:bg-primary/10 transition-all duration-300 text-sm"
+                            >
+                              Ver Página Completa de SEO →
+                            </Link>
+                          )}
+                        </div>
                       </div>
                     </AnimatedCard>
                   </StaggerItem>

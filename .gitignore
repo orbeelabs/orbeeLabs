@@ -1,68 +1,146 @@
-# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+# ===================================================================
+# GITIGNORE - ORBEE LABS 2.0
+# ===================================================================
+# Este arquivo define quais arquivos e pastas NÃO devem ser commitados
+# no repositório Git por questões de segurança, performance e organização
+# ===================================================================
 
-# dependencies
-/node_modules
-/.pnp
-.pnp.*
-.yarn/*
-!.yarn/patches
-!.yarn/plugins
-!.yarn/releases
-!.yarn/versions
+# ===================================================================
+# DEPENDÊNCIAS E ARQUIVOS DO NPM/YARN
+# ===================================================================
+# Ignora node_modules e arquivos de gerenciamento de pacotes
+# Esses arquivos são muito grandes e podem ser reinstalados via npm install
+/node_modules          # Pacotes Node.js instalados (grande volume)
+/.pnp                  # Plug and Play do Yarn
+.pnp.*                 # Arquivos do Plug and Play
+.yarn/*                # Cache e configurações do Yarn
+!.yarn/patches         # Mantém patches do Yarn (se necessário)
+!.yarn/plugins         # Mantém plugins do Yarn (se necessário)
+!.yarn/releases        # Mantém releases do Yarn (se necessário)
+!.yarn/versions        # Mantém versões do Yarn (se necessário)
 
-# testing
-/coverage
+# ===================================================================
+# TESTES E COBERTURA
+# ===================================================================
+# Ignora relatórios de testes e cobertura de código
+/coverage              # Relatórios de cobertura de testes
 
-# next.js
-/.next/
-/out/
+# ===================================================================
+# NEXT.JS - ARQUIVOS GERADOS
+# ===================================================================
+# Next.js gera esses arquivos automaticamente durante build/dev
+# Não devem ser commitados pois são gerados automaticamente
+/.next/                # Build de desenvolvimento e produção
+/out/                  # Build estático de exportação
 
-# production
-/build
+# ===================================================================
+# BUILD E PRODUÇÃO
+# ===================================================================
+# Ignora arquivos de build e distribuição
+/build                 # Build do projeto (se houver)
 
-# misc
-.DS_Store
-*.pem
+# ===================================================================
+# ARQUIVOS DO SISTEMA OPERACIONAL
+# ===================================================================
+# Ignora arquivos específicos de sistemas operacionais
+.DS_Store              # Arquivos do macOS (Finder)
+*.pem                  # Certificados privados (segurança)
 
-# debug
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-.pnpm-debug.log*
+# ===================================================================
+# LOGS E DEBUG
+# ===================================================================
+# Ignora arquivos de log e debug de diferentes gerenciadores de pacote
+npm-debug.log*         # Logs de erro do npm
+yarn-debug.log*         # Logs de erro do Yarn
+yarn-error.log*         # Logs de erro do Yarn (formato diferente)
+.pnpm-debug.log*        # Logs de erro do pnpm
 
-# env files (can opt-in for committing if needed)
-.env*
-!.env.example
+# ===================================================================
+# VARIÁVEIS DE AMBIENTE (.env)
+# ===================================================================
+# CRÍTICO: Protege credenciais e configurações sensíveis
+# .env.local contém senhas, API keys, URLs de banco de dados, etc.
+# IMPORTANTE: Manter !.env.example para documentar variáveis necessárias
+.env*                  # Ignora todos os arquivos .env (incluindo .env.local)
+!.env.example          # EXCEÇÃO: Mantém .env.example como template/documentação
 
-# vercel
-.vercel
+# ===================================================================
+# VERCEL - DEPLOY E CONFIGURAÇÕES
+# ===================================================================
+# Ignora configurações locais do Vercel
+# Essas configurações são específicas de cada ambiente
+.vercel                # Configurações e cache do Vercel CLI
 
-# typescript
-*.tsbuildinfo
-next-env.d.ts
+# ===================================================================
+# TYPESCRIPT - ARQUIVOS COMPILADOS
+# ===================================================================
+# Ignora arquivos gerados pelo TypeScript
+*.tsbuildinfo          # Informações de build incremental do TypeScript
+next-env.d.ts          # Arquivos gerados automaticamente pelo Next.js
 
-# Documentos sensíveis
-documentos/
+# ===================================================================
+# DOCUMENTOS SENSÍVEIS - CRÍTICO PARA SEGURANÇA
+# ===================================================================
+# A pasta documentos/ contém:
+# - CREDENCIAIS_COMPLETAS.md (senhas, API keys, URLs de banco)
+# - CONFIGURACAO_TECNICA.md (configurações detalhadas)
+# - STATUS_EVOLUCAO.md (evolução do projeto)
+# - DESENVOLVIMENTO_FUTURO.md (roadmap estratégico)
+# - Blueprint completo da marca Orbee Labs
+# 
+# NÃO COMMITAR: Esses arquivos contêm informações sensíveis como:
+#   - Credenciais do banco de dados (Neon)
+#   - API keys (Resend, Google)
+#   - Senhas de admin
+#   - URLs e configurações de produção
+#   - Estratégias proprietárias
+documentos/            # NÃO COMMITAR: Contém credenciais, API keys e informações sensíveis
+# ATENÇÃO: A pasta documentos/ contém CREDENCIAIS_COMPLETAS.md com senhas e API keys
 
-# Scripts temporários
-scripts/check-admin.js
-scripts/diagnostico-vercel.js
-scripts/ver-dados.js
-check-tables.js
+# Ignora todos os arquivos .md na raiz EXCETO README.md
+*.md                   # Ignora todos os arquivos .md
+!README.md             # EXCEÇÃO: Mantém README.md da raiz (documentação pública)
 
-# Backups de ambiente
-.env.local.backup*
-.env.local.limpo
+# ===================================================================
+# SCRIPTS TEMPORÁRIOS E DE DIAGNÓSTICO
+# ===================================================================
+# Ignora scripts usados para debugging e diagnósticos temporários
+# Esses scripts não fazem parte do código de produção
+scripts/check-admin.js           # Script temporário para verificar admin
+scripts/diagnostico-vercel.js    # Script de diagnóstico do Vercel
+scripts/ver-dados.js             # Script temporário para visualizar dados
+check-tables.js                  # Script temporário de verificação
 
-# Auditoria de segurança (pode conter informações sensíveis)
-SECURITY_AUDIT.md
+# ===================================================================
+# BACKUPS DE AMBIENTE
+# ===================================================================
+# Ignora arquivos de backup de .env.local
+# Esses backups podem conter credenciais antigas
+.env.local.backup*     # Backups do arquivo .env.local
+.env.local.limpo       # Versão "limpa" do .env (pode conter dados sensíveis)
 
-# Documentos e guias temporários
-*.txt
-!.gitignore
-REDEPLOY_URGENTE.txt
-scripts/setup-vercel-env.sh
-scripts/setup-vercel.sh
+# ===================================================================
+# AUDITORIA E SEGURANÇA
+# ===================================================================
+# Ignora arquivos de auditoria que podem conter informações sensíveis
+SECURITY_AUDIT.md      # Relatórios de auditoria de segurança (dados sensíveis)
 
-# Configurações do VS Code (locais)
-.vscode/
+# ===================================================================
+# DOCUMENTOS TEMPORÁRIOS E GUIAS
+# ===================================================================
+# Ignora arquivos de texto temporários e guias locais
+# Mantém !.gitignore pois é necessário para o Git funcionar
+*.txt                  # Todos os arquivos .txt (exceto exceções abaixo)
+!.gitignore            # EXCEÇÃO: Mantém o próprio .gitignore
+REDEPLOY_URGENTE.txt   # Notas temporárias de redeploy
+scripts/setup-vercel-env.sh  # Scripts de setup específicos de ambiente
+scripts/setup-vercel.sh      # Scripts de configuração do Vercel
+
+# ===================================================================
+# CONFIGURAÇÕES DO EDITOR (VS CODE)
+# ===================================================================
+# Ignora configurações pessoais do VS Code
+# Cada desenvolvedor pode ter suas próprias configurações
+# As configurações compartilhadas do time devem ir em .vscode/settings.json
+# mas este arquivo não está no gitignore, então pode ser commitado se necessário
+.vscode/               # Configurações locais do VS Code (extensões, debug, etc)

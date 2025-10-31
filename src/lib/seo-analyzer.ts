@@ -92,17 +92,36 @@ export class SEOAnalyzer {
 
   private async getPageSpeedData(url: string): Promise<unknown> {
     try {
-      // Simular dados do PageSpeed Insights (em produção, usar API real)
       const apiKey = process.env.GOOGLE_PAGESPEED_API_KEY;
-      if (!apiKey) {
-        throw new Error('GOOGLE_PAGESPEED_API_KEY environment variable is required');
+      
+      if (apiKey) {
+        console.log(`🔍 Buscando dados reais do PageSpeed Insights para: ${url}`);
+        
+        const pageSpeedUrl = `https://www.googleapis.com/pagespeedonline/v5/runPagespeed?url=${encodeURIComponent(url)}&key=${apiKey}&strategy=mobile&category=performance`;
+        
+        const response = await axios.get(pageSpeedUrl, {
+          timeout: 15000,
+        });
+        
+        console.log(`✅ Dados do PageSpeed Insights obtidos para: ${url}`);
+        return response.data;
+      } else {
+        console.warn('⚠️ GOOGLE_PAGESPEED_API_KEY não configurada, usando dados simulados');
+        console.warn('💡 Para métricas reais, adicione GOOGLE_PAGESPEED_API_KEY no .env.local');
+        throw new Error('API key não configurada');
       }
-      const response = await axios.get(
-        `https://www.googleapis.com/pagespeedonline/v5/runPagespeed?url=${encodeURIComponent(url)}&key=${apiKey}`
-      );
-      return response.data;
-    } catch {
-      // Fallback para dados simulados baseados em padrões
+    } catch (error) {
+      // Fallback para dados simulados se API key não estiver configurada ou falhar
+      if (axios.isAxiosError(error)) {
+        console.warn('⚠️ Erro ao buscar PageSpeed Insights:', error.response?.status, error.response?.statusText);
+        if (error.response?.status === 400) {
+          console.warn('💡 Dica: Verifique se a URL está completa (com https://) e se a API key está correta');
+        }
+      } else {
+        console.warn('⚠️ Erro ao buscar PageSpeed Insights (usando dados simulados):', 
+          error instanceof Error ? error.message : 'Erro desconhecido'
+        );
+      }
       return this.generateSimulatedPageSpeedData();
     }
   }
@@ -343,8 +362,9 @@ export class SEOAnalyzer {
       // Analisar HTML
       const htmlAnalysis = this.analyzeHTML(html, normalizedUrl);
 
-      // Buscar dados de performance (simulado por enquanto)
-      const pageSpeedData = await this.getPageSpeedData(url) as {
+      // Buscar dados de performance do Google PageSpeed Insights
+      // IMPORTANTE: Usar normalizedUrl (com protocolo) para a API do PageSpeed
+      const pageSpeedData = await this.getPageSpeedData(normalizedUrl) as {
         lighthouseResult?: {
           categories?: {
             performance?: { score?: number };
@@ -353,7 +373,9 @@ export class SEOAnalyzer {
             'first-contentful-paint'?: { numericValue?: number };
             'largest-contentful-paint'?: { numericValue?: number };
             'cumulative-layout-shift'?: { numericValue?: number };
-            'max-potential-fid'?: { numericValue?: number };
+            'max-potential-fid'?: { numericValue?: number }; // Legado (FID)
+            'interaction-to-next-paint'?: { numericValue?: number }; // Moderno (INP)
+            'total-blocking-time'?: { numericValue?: number }; // Fallback (TBT)
           };
         };
       };
@@ -388,16 +410,33 @@ export class SEOAnalyzer {
         warnings.push('Otimização mobile pode ser melhorada');
       }
 
+      // Extrair métricas de performance com fallbacks modernos
+      const audits = pageSpeedData.lighthouseResult?.audits || {};
+      
+      // Performance Score (0-1, converter para 0-100)
+      const performanceScore = pageSpeedData.lighthouseResult?.categories?.performance?.score || 0.5;
+      
+      // Core Web Vitals com fallbacks
+      const fcp = audits['first-contentful-paint']?.numericValue || 0;
+      const lcp = audits['largest-contentful-paint']?.numericValue || 0;
+      const cls = audits['cumulative-layout-shift']?.numericValue || 0;
+      
+      // FID foi substituído por INP (Interaction to Next Paint) e TBT (Total Blocking Time)
+      // Usar INP se disponível, senão TBT, senão max-potential-fid (legado)
+      const fid = audits['interaction-to-next-paint']?.numericValue || 
+                  audits['total-blocking-time']?.numericValue || 
+                  audits['max-potential-fid']?.numericValue || 0;
+
       return {
         url: normalizedUrl,
         timestamp: new Date().toISOString(),
         performance: {
-          score: Math.round((pageSpeedData.lighthouseResult?.categories?.performance?.score || 0.5) * 100),
+          score: Math.round(performanceScore * 100),
           metrics: {
-            firstContentfulPaint: pageSpeedData.lighthouseResult?.audits?.['first-contentful-paint']?.numericValue || 0,
-            largestContentfulPaint: pageSpeedData.lighthouseResult?.audits?.['largest-contentful-paint']?.numericValue || 0,
-            cumulativeLayoutShift: pageSpeedData.lighthouseResult?.audits?.['cumulative-layout-shift']?.numericValue || 0,
-            firstInputDelay: pageSpeedData.lighthouseResult?.audits?.['max-potential-fid']?.numericValue || 0,
+            firstContentfulPaint: Math.round(fcp),
+            largestContentfulPaint: Math.round(lcp),
+            cumulativeLayoutShift: Math.round(cls * 100) / 100, // Manter 2 casas decimais
+            firstInputDelay: Math.round(fid),
           },
         },
         ...htmlAnalysis,

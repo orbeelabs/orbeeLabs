@@ -11,14 +11,17 @@ export async function middleware(request: NextRequest) {
   const isAdmin = token?.role === 'ADMIN';
   const isAdminRoute = request.nextUrl.pathname.startsWith('/admin');
 
-  console.log('🔍 Middleware Debug:', {
-    path: request.nextUrl.pathname,
-    isLoggedIn,
-    isAdmin,
-    isAdminRoute,
-    tokenRole: token?.role,
-    tokenEmail: token?.email
-  });
+  // Debug apenas em desenvolvimento - não expor email em produção
+  if (process.env.NODE_ENV === 'development') {
+    console.log('🔍 Middleware Debug:', {
+      path: request.nextUrl.pathname,
+      isLoggedIn,
+      isAdmin,
+      isAdminRoute,
+      tokenRole: token?.role,
+      // tokenEmail removido para não expor emails em logs
+    });
+  }
 
   if (isAdminRoute && !isLoggedIn) {
     console.log('❌ Redirecionando para login - usuário não logado');

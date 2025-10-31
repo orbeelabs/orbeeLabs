@@ -13,23 +13,48 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       },
       async authorize(credentials) {
         if (!credentials?.email || !credentials?.password) {
+          console.log('❌ Credenciais faltando:', { hasEmail: !!credentials?.email, hasPassword: !!credentials?.password });
           return null;
+        }
+
+        const email = (credentials.email as string).trim().toLowerCase();
+        // Log apenas em desenvolvimento - não expor email em logs de produção
+        if (process.env.NODE_ENV === 'development') {
+          console.log('🔐 Tentando autenticar:', { email: email.substring(0, 3) + '***' });
         }
 
         const user = await prisma.user.findUnique({
           where: {
-            email: credentials.email as string
+            email: email
           }
         });
 
         if (!user) {
+          // Não logar email em produção por segurança
+          if (process.env.NODE_ENV === 'development') {
+            console.log('❌ Usuário não encontrado');
+          }
           return null;
+        }
+
+        // Log apenas em desenvolvimento - não expor email em logs de produção
+        if (process.env.NODE_ENV === 'development') {
+          console.log('✅ Usuário encontrado:', { id: user.id, role: user.role });
         }
 
         const isPasswordValid = await compare(credentials.password as string, user.password);
 
         if (!isPasswordValid) {
+          // Não logar email em produção por segurança
+          if (process.env.NODE_ENV === 'development') {
+            console.log('❌ Senha inválida');
+          }
           return null;
+        }
+
+        // Log apenas em desenvolvimento - não expor email em produção
+        if (process.env.NODE_ENV === 'development') {
+          console.log('✅✅✅ Autenticação bem-sucedida');
         }
 
         return {

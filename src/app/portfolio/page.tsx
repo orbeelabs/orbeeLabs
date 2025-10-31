@@ -25,7 +25,7 @@ export default function PortfolioPage() {
     {
       title: 'Clínica Odontológica - São Paulo',
       description: 'Transformação digital completa de clínica odontológica com foco em agendamentos online.',
-      image: '/placeholder.svg',
+      image: null,
       category: 'Saúde',
       industry: 'Saúde',
       results: [
@@ -45,7 +45,7 @@ export default function PortfolioPage() {
     {
       title: 'E-commerce de Cosméticos',
       description: 'Aumento de 400% nas vendas online através de SEO técnico e otimização de conversão.',
-      image: '/placeholder.svg',
+      image: null,
       category: 'E-commerce',
       industry: 'E-commerce',
       results: [
@@ -65,7 +65,7 @@ export default function PortfolioPage() {
     {
       title: 'Escritório de Advocacia',
       description: 'Posicionamento como referência em direito empresarial através de conteúdo estratégico.',
-      image: '/placeholder.svg',
+      image: null,
       category: 'Jurídico',
       industry: 'Jurídico',
       results: [
@@ -85,7 +85,7 @@ export default function PortfolioPage() {
     {
       title: 'SaaS de Gestão Empresarial',
       description: 'Crescimento de MRR através de SEO técnico e marketing de produto.',
-      image: '/placeholder.svg',
+      image: null,
       category: 'SaaS/Tech',
       industry: 'SaaS/Tech',
       results: [
@@ -105,7 +105,7 @@ export default function PortfolioPage() {
     {
       title: 'Franquia de Alimentação',
       description: 'Expansão digital para 50+ unidades com SEO local e automação de marketing.',
-      image: '/placeholder.svg',
+      image: null,
       category: 'Franquias',
       industry: 'Franquias',
       results: [
@@ -125,7 +125,7 @@ export default function PortfolioPage() {
     {
       title: 'Construtora - Imóveis de Luxo',
       description: 'Geração de leads qualificados para imóveis de alto padrão através de SEO premium.',
-      image: '/placeholder.svg',
+      image: null,
       category: 'Imobiliário',
       industry: 'Imobiliário',
       results: [
@@ -210,12 +210,18 @@ export default function PortfolioPage() {
                   <div className="absolute top-4 left-4 bg-black/50 backdrop-blur-sm px-3 py-1 rounded-full">
                     <span className="text-white text-sm font-semibold">{study.category}</span>
                   </div>
-                  <Image
-                    src={study.image}
-                    alt={study.title}
-                    fill
-                    className="object-cover"
-                  />
+                  {study.image ? (
+                    <Image
+                      src={study.image}
+                      alt={study.title}
+                      fill
+                      className="object-cover"
+                    />
+                  ) : (
+                    <div className="absolute inset-0 flex items-center justify-center">
+                      <span className="text-primary/50 text-4xl font-bold">{study.title.charAt(0)}</span>
+                    </div>
+                  )}
                 </div>
                 
                 <div className="p-6">
