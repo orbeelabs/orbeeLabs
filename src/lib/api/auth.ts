@@ -26,9 +26,8 @@ export async function requireAdmin() {
     return session; // Retorna erro de auth
   }
   
-  // Verificar se é admin (assumindo que o email está na sessão)
-  const adminEmail = process.env.ADMIN_EMAIL;
-  if (session.user?.email !== adminEmail) {
+  // Verificar se é admin usando role (mais seguro que apenas email)
+  if (session.user?.role !== 'ADMIN') {
     return NextResponse.json(
       { 
         success: false,

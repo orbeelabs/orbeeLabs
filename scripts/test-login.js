@@ -40,7 +40,7 @@ async function testLogin() {
       console.log('');
       console.log('💡 Verifique se está digitando:');
       console.log('   Email:', adminEmail);
-      console.log('   Senha:', adminPassword);
+      console.log('   Senha: [PROTEGIDA - não exibida por segurança]');
     } else {
       console.log('❌❌❌ SENHA ESTÁ INCORRETA no banco!');
       console.log('💡 Vamos atualizar a senha no banco...');

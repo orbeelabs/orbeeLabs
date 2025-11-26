@@ -1,4 +1,7 @@
-export default function sitemap() {
+import { MetadataRoute } from 'next';
+import prisma from '@/lib/prisma';
+
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = 'https://orbeelabs.com';
   
   // Páginas estáticas principais
@@ -10,13 +13,31 @@ export default function sitemap() {
       priority: 1,
     },
     {
+      url: '/sobre',
+      lastModified: new Date(),
+      changeFrequency: 'monthly' as const,
+      priority: 0.8,
+    },
+    {
       url: '/servicos',
       lastModified: new Date(),
       changeFrequency: 'monthly' as const,
       priority: 0.9,
     },
     {
-      url: '/sobre',
+      url: '/servicos/seo-bh',
+      lastModified: new Date(),
+      changeFrequency: 'monthly' as const,
+      priority: 0.8,
+    },
+    {
+      url: '/servicos/desenvolvimento-web-bh',
+      lastModified: new Date(),
+      changeFrequency: 'monthly' as const,
+      priority: 0.8,
+    },
+    {
+      url: '/servicos/trafego-pago-bh',
       lastModified: new Date(),
       changeFrequency: 'monthly' as const,
       priority: 0.8,
@@ -26,6 +47,30 @@ export default function sitemap() {
       lastModified: new Date(),
       changeFrequency: 'weekly' as const,
       priority: 0.8,
+    },
+    {
+      url: '/blog',
+      lastModified: new Date(),
+      changeFrequency: 'weekly' as const,
+      priority: 0.8,
+    },
+    {
+      url: '/setores/saude',
+      lastModified: new Date(),
+      changeFrequency: 'monthly' as const,
+      priority: 0.7,
+    },
+    {
+      url: '/setores/educacao',
+      lastModified: new Date(),
+      changeFrequency: 'monthly' as const,
+      priority: 0.7,
+    },
+    {
+      url: '/setores/servicos-profissionais',
+      lastModified: new Date(),
+      changeFrequency: 'monthly' as const,
+      priority: 0.7,
     },
     {
       url: '/contato',
@@ -65,10 +110,112 @@ export default function sitemap() {
     },
   ];
 
-  return staticPages.map((page) => ({
-    url: `${baseUrl}${page.url}`,
-    lastModified: page.lastModified,
-    changeFrequency: page.changeFrequency,
-    priority: page.priority,
-  }));
+  // Buscar posts do blog publicados
+  let blogPosts: Array<{ url: string; lastModified: Date; changeFrequency: 'weekly' | 'monthly'; priority: number }> = [];
+  try {
+    const posts = await prisma.post.findMany({
+      where: { published: true },
+      select: {
+        slug: true,
+        updatedAt: true,
+        publishedAt: true,
+      },
+    });
+
+    blogPosts = posts.map((post) => ({
+      url: `/blog/${post.slug}`,
+      lastModified: post.updatedAt || post.publishedAt || new Date(),
+      changeFrequency: 'monthly' as const,
+      priority: 0.7,
+    }));
+  } catch (error) {
+    console.error('Erro ao buscar posts do blog para sitemap:', error);
+  }
+
+  // Buscar cases do portfolio publicados
+  let portfolioCases: Array<{ url: string; lastModified: Date; changeFrequency: 'weekly' | 'monthly'; priority: number }> = [];
+  try {
+    const cases = await prisma.caseStudy.findMany({
+      where: { published: true },
+      select: {
+        slug: true,
+        updatedAt: true,
+        publishedAt: true,
+      },
+    });
+
+    portfolioCases = cases.map((caseStudy) => ({
+      url: `/portfolio/${caseStudy.slug}`,
+      lastModified: caseStudy.updatedAt || caseStudy.publishedAt || new Date(),
+      changeFrequency: 'monthly' as const,
+      priority: 0.7,
+    }));
+  } catch (error) {
+    console.error('Erro ao buscar cases do portfolio para sitemap:', error);
+  }
+
+  // Buscar categorias únicas do blog para páginas de categoria
+  // Usar o mesmo mapeamento da página de categoria
+  const categoryMap: Record<string, string> = {
+    'seo-avancado': 'SEO Avançado',
+    'desenvolvimento-web': 'Desenvolvimento Web',
+    'marketing-digital': 'Marketing Digital',
+    'cases-reais': 'Cases Reais',
+  };
+
+  let blogCategories: Array<{ url: string; lastModified: Date; changeFrequency: 'weekly' | 'monthly'; priority: number }> = [];
+  try {
+    const categories = await prisma.post.findMany({
+      where: { published: true },
+      select: { category: true },
+      distinct: ['category'],
+    });
+
+    // Criar mapeamento reverso (category name -> slug)
+    const reverseCategoryMap: Record<string, string> = {};
+    Object.entries(categoryMap).forEach(([slug, name]) => {
+      reverseCategoryMap[name] = slug;
+    });
+
+    blogCategories = categories
+      .filter((post) => reverseCategoryMap[post.category]) // Apenas categorias válidas
+      .map((post) => ({
+        url: `/blog/categoria/${reverseCategoryMap[post.category]}`,
+        lastModified: new Date(),
+        changeFrequency: 'weekly' as const,
+        priority: 0.6,
+      }));
+  } catch (error) {
+    console.error('Erro ao buscar categorias do blog para sitemap:', error);
+  }
+
+  // Combinar todas as páginas
+  const allPages = [
+    ...staticPages.map((page) => ({
+      url: `${baseUrl}${page.url}`,
+      lastModified: page.lastModified,
+      changeFrequency: page.changeFrequency,
+      priority: page.priority,
+    })),
+    ...blogPosts.map((page) => ({
+      url: `${baseUrl}${page.url}`,
+      lastModified: page.lastModified,
+      changeFrequency: page.changeFrequency,
+      priority: page.priority,
+    })),
+    ...portfolioCases.map((page) => ({
+      url: `${baseUrl}${page.url}`,
+      lastModified: page.lastModified,
+      changeFrequency: page.changeFrequency,
+      priority: page.priority,
+    })),
+    ...blogCategories.map((page) => ({
+      url: `${baseUrl}${page.url}`,
+      lastModified: page.lastModified,
+      changeFrequency: page.changeFrequency,
+      priority: page.priority,
+    })),
+  ];
+
+  return allPages;
 }
