@@ -61,19 +61,19 @@ async function handleAnalyzeSEO(request: NextRequest) {
 
         if (crmResponse.success) {
           logApiSuccess('CRM', 'createContact (SEO Audit)', { 
-            auditId, 
+            auditId: auditId || undefined, 
             crmContactId: crmResponse.contactId 
           });
         } else {
           Logger.warn('CRM retornou erro (não bloqueia)', {
-            auditId,
+            auditId: auditId || undefined,
             error: crmResponse.error,
           });
         }
       } catch (crmError) {
         // Não quebrar o fluxo se CRM falhar
         Logger.error('Erro ao enviar para CRM (não bloqueia)', {
-          auditId,
+          auditId: auditId || undefined,
         }, crmError as Error);
       }
     }
