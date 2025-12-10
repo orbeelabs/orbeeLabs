@@ -765,7 +765,7 @@ export default function AuditoriaSEO() {
                           <p className="text-sm text-muted-foreground mb-3">Compartilhar auditoria:</p>
                           <ShareButtons
                             url={typeof window !== 'undefined' ? window.location.href : ''}
-                            title={`Auditoria SEO: ${auditoriaData.url} - Score ${resultado.score}/100`}
+                            title={`Auditoria SEO: ${dados.url} - Score ${resultado.score}/100`}
                             description={`Realizei uma auditoria SEO completa do meu site. Score: ${resultado.score}/100. Veja os resultados!`}
                             size="sm"
                           />
