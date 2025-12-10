@@ -138,6 +138,9 @@ export default function ShareButtons({
     lg: 'w-5 h-5'
   };
 
+  // Mapear 'md' para 'default' pois Button não aceita 'md'
+  const buttonSizeProp = size === 'md' ? 'default' : size;
+
   const renderButton = (
     onClick: () => void,
     icon: React.ReactNode,
@@ -145,9 +148,6 @@ export default function ShareButtons({
     show: boolean = true
   ) => {
     if (!show) return null;
-
-    // Mapear 'md' para 'default' pois Button não aceita 'md'
-    const buttonSizeProp = size === 'md' ? 'default' : size;
     
     return (
       <Button
