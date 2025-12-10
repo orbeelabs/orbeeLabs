@@ -28,6 +28,8 @@ type ContactFormData = {
   revenue: string;
   objective: string;
   challenge: string;
+  consentimentoLGPD: boolean;
+  consentimentoCRM: boolean;
 };
 
 export default function ContactForm() {
@@ -50,6 +52,8 @@ export default function ContactForm() {
       revenue: '',
       objective: '',
       challenge: '',
+      consentimentoLGPD: false,
+      consentimentoCRM: false,
     },
   });
 
@@ -69,6 +73,8 @@ export default function ContactForm() {
           telefone: data.phone,
           empresa: data.company,
           mensagem: data.challenge,
+          consentimentoLGPD: data.consentimentoLGPD,
+          consentimentoCRM: data.consentimentoCRM,
         }),
       });
 
@@ -214,6 +220,47 @@ export default function ContactForm() {
           title="O que você receberá GRÁTIS:"
           benefits={formBenefits}
         />
+
+        {/* Consentimento LGPD */}
+        <FormField delay={0.8}>
+          <div className="space-y-3">
+            <label className="flex items-start gap-3 cursor-pointer group">
+              <input
+                type="checkbox"
+                {...register('consentimentoLGPD', {
+                  required: "Você deve aceitar a Política de Privacidade",
+                })}
+                className="mt-1 w-4 h-4 text-primary bg-background border-gray-300 rounded focus:ring-primary focus:ring-2"
+              />
+              <span className="text-sm text-gray-300 group-hover:text-white transition-colors">
+                Li e aceito a{' '}
+                <a
+                  href="/privacidade"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-primary hover:text-primary/80 underline"
+                >
+                  Política de Privacidade
+                </a>
+                {' '}e autorizo o tratamento dos meus dados pessoais conforme a LGPD. *
+              </span>
+            </label>
+            {errors.consentimentoLGPD && (
+              <p className="text-sm text-red-400">{errors.consentimentoLGPD.message}</p>
+            )}
+
+            <label className="flex items-start gap-3 cursor-pointer group">
+              <input
+                type="checkbox"
+                {...register('consentimentoCRM')}
+                className="mt-1 w-4 h-4 text-primary bg-background border-gray-300 rounded focus:ring-primary focus:ring-2"
+              />
+              <span className="text-sm text-gray-300 group-hover:text-white transition-colors">
+                Autorizo o compartilhamento dos meus dados com parceiros estratégicos (CRM) para melhor atendimento.
+              </span>
+            </label>
+          </div>
+        </FormField>
 
         {/* Botão de Submit */}
         <FormSubmitButton isLoading={isSubmitting}>

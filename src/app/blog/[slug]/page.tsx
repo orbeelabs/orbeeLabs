@@ -1,6 +1,6 @@
 import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
-import prisma from '@/lib/prisma';
+import { fetchBlogPost, fetchBlogPosts } from '@/lib/cms';
 import BlogPostContent from '@/components/blog/BlogPostContent';
 
 interface BlogPostPageProps {
@@ -9,9 +9,7 @@ interface BlogPostPageProps {
 
 export async function generateMetadata({ params }: BlogPostPageProps): Promise<Metadata> {
   const { slug } = await params;
-  const post = await prisma.post.findUnique({
-    where: { slug },
-  });
+  const post = await fetchBlogPost(slug);
 
   if (!post || !post.published) {
     return {
@@ -43,35 +41,25 @@ export async function generateMetadata({ params }: BlogPostPageProps): Promise<M
 export default async function BlogPostPage({ params }: BlogPostPageProps) {
   const { slug } = await params;
 
-  const post = await prisma.post.findUnique({
-    where: { slug },
-  });
+  const post = await fetchBlogPost(slug);
 
   if (!post || !post.published) {
     notFound();
   }
 
   // Buscar posts relacionados
-  const relatedPosts = await prisma.post.findMany({
-    where: {
-      category: post.category,
-      published: true,
-      id: { not: post.id },
-    },
-    take: 3,
-    orderBy: { publishedAt: 'desc' },
-    select: {
-      id: true,
-      slug: true,
-      title: true,
-      excerpt: true,
-      author: true,
-      category: true,
-      tags: true,
-      publishedAt: true,
-      ogImage: true,
-    },
+  const { posts: relatedPostsData } = await fetchBlogPosts({
+    category: post.category,
+    published: true,
+    limit: 3,
+    sortBy: 'publishedAt',
+    sortOrder: 'desc',
   });
+  
+  // Filtrar o post atual dos relacionados
+  const relatedPosts = relatedPostsData
+    .filter((p) => p.id !== post.id)
+    .slice(0, 3);
 
   const breadcrumbItems = [
     { name: 'Início', url: '/' },

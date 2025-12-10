@@ -1,17 +1,20 @@
 import { NextRequest, NextResponse } from 'next/server';
 import prisma from '@/lib/prisma';
 import { seoAnalyzer } from '@/lib/seo-analyzer';
+import { getCRMAdapter } from '@/lib/integrations/crm/factory';
+import { logApiSuccess, Logger, logApiError } from '@/lib/logger';
+import { withRateLimit } from '@/lib/api';
 
-export async function POST(request: NextRequest) {
+async function handleAnalyzeSEO(request: NextRequest) {
   try {
-    const { url } = await request.json();
+    const { url, formData } = await request.json();
 
     if (!url) {
       return NextResponse.json({ error: 'URL é obrigatória' }, { status: 400 });
     }
 
     // Usar o SEOAnalyzer para fazer a análise completa
-    console.log(`🔍 Iniciando análise SEO para: ${url}`);
+    Logger.info('Iniciando análise SEO', { url });
     const result = await seoAnalyzer.analyze(url);
 
     // Persistir auditoria no banco de dados
@@ -25,10 +28,54 @@ export async function POST(request: NextRequest) {
         },
       });
       auditId = audit.id;
-      console.log(`✅ Auditoria SEO salva no banco: ${auditId} para URL: ${result.url}`);
+      Logger.info('Auditoria SEO salva no banco', { auditId, url: result.url });
     } catch (dbError) {
       // Não quebrar a API se a persistência falhar
-      console.error('⚠️ Erro ao salvar auditoria no banco (continua funcionando):', dbError);
+      Logger.error('Erro ao salvar auditoria no banco (continua funcionando)', {
+        url: result.url,
+      }, dbError as Error);
+    }
+
+    // Enviar para CRM se dados do formulário foram fornecidos
+    if (formData && formData.email && formData.nomeEmpresa) {
+      const crmAdapter = getCRMAdapter();
+      try {
+        const crmResponse = await crmAdapter.createContact({
+          name: formData.nomeEmpresa,
+          email: formData.email,
+          phone: formData.telefone,
+          company: formData.nomeEmpresa,
+          website: url,
+          message: `Auditoria SEO solicitada. Objetivo: ${formData.objetivo || 'N/A'}. Setor: ${formData.setor || 'N/A'}.`,
+          source: 'seo-audit',
+          tags: ['lead', 'seo-audit', 'auditoria', formData.setor || 'geral'],
+          customFields: {
+            cf_setor: formData.setor,
+            cf_faturamento: formData.faturamento,
+            cf_objetivo: formData.objetivo,
+            cf_palavras_chave: formData.palavrasChave,
+            cf_concorrentes: formData.concorrentes,
+            cf_seo_score: result.overallScore.toString(),
+          },
+        });
+
+        if (crmResponse.success) {
+          logApiSuccess('CRM', 'createContact (SEO Audit)', { 
+            auditId, 
+            crmContactId: crmResponse.contactId 
+          });
+        } else {
+          Logger.warn('CRM retornou erro (não bloqueia)', {
+            auditId,
+            error: crmResponse.error,
+          });
+        }
+      } catch (crmError) {
+        // Não quebrar o fluxo se CRM falhar
+        Logger.error('Erro ao enviar para CRM (não bloqueia)', {
+          auditId,
+        }, crmError as Error);
+      }
     }
 
     // Retornar resultado com ID da auditoria (se foi salva)
@@ -38,7 +85,7 @@ export async function POST(request: NextRequest) {
     });
 
   } catch (error) {
-    console.error('Erro na análise SEO:', error);
+    logApiError(error as Error, '/api/analyze-seo', 'POST', { message: 'Erro na análise SEO' });
     
     // Tratar erros específicos do SEOAnalyzer
     if (error instanceof Error) {
@@ -66,3 +113,5 @@ export async function POST(request: NextRequest) {
     }, { status: 500 });
   }
 }
+
+export const POST = withRateLimit('seo', handleAnalyzeSEO);

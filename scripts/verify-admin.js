@@ -63,7 +63,7 @@ verifyAdmin()
     if (!userExists) {
       console.log('\n🔧 Executando create-admin.js...');
       const { exec } = require('child_process');
-      exec('node scripts/create-admin.js', (error, stdout, stderr) => {
+      exec('node scripts/create-admin.js', (error, stdout) => {
         if (error) {
           console.error('❌ Erro ao criar admin:', error);
           return;

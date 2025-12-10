@@ -6,7 +6,7 @@ import FadeInUp from '@/components/animations/FadeInUp';
 import AnimatedCard from '@/components/animations/AnimatedCard';
 import StaggerContainer from '@/components/animations/StaggerContainer';
 import StaggerItem from '@/components/animations/StaggerItem';
-import ParticleField from '@/components/animations/ParticleField';
+import ParticleFieldCanvas from '@/components/animations/ParticleFieldCanvas';
 import ScrollIndicator from '@/components/animations/ScrollIndicator';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
@@ -16,7 +16,7 @@ export default function Home() {
     <PageLayout>
       {/* Hero Section */}
       <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-br from-background via-card to-background">
-        <ParticleField />
+        <ParticleFieldCanvas />
         
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <motion.div

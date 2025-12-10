@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
-import prisma from "@/lib/prisma";
+import { fetchBlogPost, fetchBlogPosts } from "@/lib/cms";
+import { Logger } from "@/lib/logger";
 
 export async function GET(
   request: NextRequest,
@@ -9,9 +10,7 @@ export async function GET(
     const { slug } = await params;
 
     // Buscar post por slug
-    const post = await prisma.post.findUnique({
-      where: { slug },
-    });
+    const post = await fetchBlogPost(slug);
 
     if (!post) {
       return NextResponse.json(
@@ -29,34 +28,27 @@ export async function GET(
     }
 
     // Buscar posts relacionados (mesma categoria, excluindo o atual)
-    const relatedPosts = await prisma.post.findMany({
-      where: {
-        category: post.category,
-        published: true,
-        id: { not: post.id },
-      },
-      take: 3,
-      orderBy: { publishedAt: 'desc' },
-      select: {
-        id: true,
-        slug: true,
-        title: true,
-        excerpt: true,
-        author: true,
-        category: true,
-        tags: true,
-        featured: true,
-        publishedAt: true,
-        ogImage: true,
-      },
+    const { posts: relatedPostsData } = await fetchBlogPosts({
+      category: post.category,
+      published: true,
+      limit: 3,
+      sortBy: 'publishedAt',
+      sortOrder: 'desc',
     });
+    
+    const relatedPosts = relatedPostsData
+      .filter((p) => p.id !== post.id)
+      .slice(0, 3);
 
     return NextResponse.json({
       ...post,
       relatedPosts,
     });
   } catch (error) {
-    console.error("Erro ao buscar post:", error);
+    Logger.error("Erro ao buscar post", {
+      endpoint: `/api/blog/${slug}`,
+      method: 'GET',
+    }, error as Error);
     return NextResponse.json(
       { error: "Erro interno do servidor" },
       { status: 500 }

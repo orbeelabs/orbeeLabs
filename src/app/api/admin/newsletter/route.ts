@@ -8,6 +8,7 @@ import {
   createSearchFilter,
   createOrderBy
 } from "@/lib/api";
+import { Logger } from "@/lib/logger";
 
 async function handleGetNewsletter(request: NextRequest) {
   try {
@@ -40,7 +41,10 @@ async function handleGetNewsletter(request: NextRequest) {
       "Assinantes recuperados com sucesso"
     );
   } catch (error) {
-    console.error("Erro ao buscar assinantes:", error);
+    Logger.error("Erro ao buscar assinantes", {
+      endpoint: '/api/admin/newsletter',
+      method: 'GET',
+    }, error as Error);
     return createErrorResponse("Erro interno do servidor");
   }
 }

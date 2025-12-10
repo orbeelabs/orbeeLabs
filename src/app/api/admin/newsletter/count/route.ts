@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { auth } from "@/auth";
 import prisma from "@/lib/prisma";
+import { Logger } from "@/lib/logger";
 
 export async function GET() {
   try {
@@ -14,7 +15,10 @@ export async function GET() {
 
     return NextResponse.json({ count });
   } catch (error) {
-    console.error("Erro ao buscar contagem de newsletter:", error);
+    Logger.error("Erro ao buscar contagem de newsletter", {
+      endpoint: '/api/admin/newsletter/count',
+      method: 'GET',
+    }, error as Error);
     return NextResponse.json(
       { error: "Erro interno do servidor" },
       { status: 500 }

@@ -8,6 +8,7 @@ import {
   createSearchFilter,
   createOrderBy
 } from "@/lib/api";
+import { Logger } from "@/lib/logger";
 
 async function handleGetAudits(request: NextRequest) {
   try {
@@ -36,7 +37,10 @@ async function handleGetAudits(request: NextRequest) {
       "Auditorias recuperadas com sucesso"
     );
   } catch (error) {
-    console.error("Erro ao buscar auditorias:", error);
+    Logger.error("Erro ao buscar auditorias", {
+      endpoint: '/api/admin/audits',
+      method: 'GET',
+    }, error as Error);
     return createErrorResponse("Erro interno do servidor");
   }
 }

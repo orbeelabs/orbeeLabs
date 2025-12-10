@@ -6,7 +6,11 @@ const GTM_ID = process.env.NEXT_PUBLIC_GTM_ID;
 
 export default function GoogleTagManager() {
   if (!GTM_ID) {
-    console.warn('NEXT_PUBLIC_GTM_ID environment variable is not set');
+    // GTM_ID é opcional, não precisa logar warning em produção
+    if (process.env.NODE_ENV === 'development') {
+       
+      console.warn('NEXT_PUBLIC_GTM_ID environment variable is not set');
+    }
     return null;
   }
 

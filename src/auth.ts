@@ -2,6 +2,7 @@ import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { compare } from "bcryptjs";
 import prisma from "@/lib/prisma";
+import { Logger, logAuthEvent } from "@/lib/logger";
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
   providers: [
@@ -13,15 +14,18 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       },
       async authorize(credentials) {
         if (!credentials?.email || !credentials?.password) {
-          console.log('❌ Credenciais faltando:', { hasEmail: !!credentials?.email, hasPassword: !!credentials?.password });
+          Logger.warn('Tentativa de login sem credenciais completas', {
+            hasEmail: !!credentials?.email,
+            hasPassword: !!credentials?.password,
+          });
           return null;
         }
 
         const email = (credentials.email as string).trim().toLowerCase();
-        // Log apenas em desenvolvimento - não expor email em logs de produção
-        if (process.env.NODE_ENV === 'development') {
-          console.log('🔐 Tentando autenticar:', { email: email.substring(0, 3) + '***' });
-        }
+        
+        Logger.debug('Tentativa de autenticação', {
+          emailPrefix: email.substring(0, 3) + '***',
+        });
 
         const user = await prisma.user.findUnique({
           where: {
@@ -30,32 +34,30 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         });
 
         if (!user) {
-          // Não logar email em produção por segurança
-          if (process.env.NODE_ENV === 'development') {
-            console.log('❌ Usuário não encontrado');
-          }
+          Logger.warn('Tentativa de login com usuário inexistente', {
+            emailPrefix: email.substring(0, 3) + '***',
+          });
           return null;
         }
 
-        // Log apenas em desenvolvimento - não expor email em logs de produção
-        if (process.env.NODE_ENV === 'development') {
-          console.log('✅ Usuário encontrado:', { id: user.id, role: user.role });
-        }
+        Logger.debug('Usuário encontrado', {
+          userId: user.id,
+          role: user.role,
+        });
 
         const isPasswordValid = await compare(credentials.password as string, user.password);
 
         if (!isPasswordValid) {
-          // Não logar email em produção por segurança
-          if (process.env.NODE_ENV === 'development') {
-            console.log('❌ Senha inválida');
-          }
+          Logger.warn('Tentativa de login com senha inválida', {
+            userId: user.id,
+          });
           return null;
         }
 
-        // Log apenas em desenvolvimento - não expor email em produção
-        if (process.env.NODE_ENV === 'development') {
-          console.log('✅✅✅ Autenticação bem-sucedida');
-        }
+        logAuthEvent('Login bem-sucedido', user.id, {
+          userId: user.id,
+          role: user.role,
+        });
 
         return {
           id: user.id,

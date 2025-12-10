@@ -21,7 +21,7 @@ export { default as FadeInUp } from '@/components/animations/FadeInUp';
 export { default as AnimatedCard } from '@/components/animations/AnimatedCard';
 export { default as StaggerContainer } from '@/components/animations/StaggerContainer';
 export { default as StaggerItem } from '@/components/animations/StaggerItem';
-export { default as ParticleField } from '@/components/animations/ParticleField';
+export { default as ParticleField } from '@/components/animations/ParticleFieldCanvas';
 export { default as ScrollIndicator } from '@/components/animations/ScrollIndicator';
 
 // Core Components

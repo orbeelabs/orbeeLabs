@@ -1,7 +1,15 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getToken } from "next-auth/jwt";
+import { Logger } from "@/lib/logger";
+import { authRateLimitMiddleware } from "./middleware-auth";
 
 export async function middleware(request: NextRequest) {
+  // Aplicar rate limiting em rotas de autenticação
+  const authRateLimit = await authRateLimitMiddleware(request);
+  if (authRateLimit) {
+    return authRateLimit;
+  }
+
   const token = await getToken({ 
     req: request, 
     secret: process.env.NEXTAUTH_SECRET 
@@ -13,33 +21,43 @@ export async function middleware(request: NextRequest) {
 
   // Debug apenas em desenvolvimento - não expor email em produção
   if (process.env.NODE_ENV === 'development') {
-    console.log('🔍 Middleware Debug:', {
-      path: request.nextUrl.pathname,
+    Logger.debug('Middleware Debug', {
+      endpoint: request.nextUrl.pathname,
+      method: request.method,
       isLoggedIn,
       isAdmin,
       isAdminRoute,
       tokenRole: token?.role,
-      // tokenEmail removido para não expor emails em logs
     });
   }
 
   if (isAdminRoute && !isLoggedIn) {
-    console.log('❌ Redirecionando para login - usuário não logado');
+    Logger.warn('Acesso negado - usuário não autenticado', {
+      endpoint: request.nextUrl.pathname,
+      method: request.method,
+    });
     return NextResponse.redirect(new URL('/login', request.url));
   }
 
   if (isAdminRoute && !isAdmin) {
-    console.log('❌ Redirecionando para login - usuário não é admin');
+    Logger.warn('Acesso negado - usuário não é admin', {
+      endpoint: request.nextUrl.pathname,
+      method: request.method,
+      userId: token?.id as string,
+    });
     return NextResponse.redirect(new URL('/login', request.url));
   }
 
   if (isAdminRoute && isLoggedIn && isAdmin) {
-    console.log('✅ Acesso autorizado ao admin');
+    Logger.debug('Acesso autorizado ao admin', {
+      endpoint: request.nextUrl.pathname,
+      userId: token?.id as string,
+    });
   }
 
   return NextResponse.next();
 }
 
 export const config = {
-  matcher: ["/admin/:path*", "/api/admin/:path*"]
+  matcher: ["/admin/:path*", "/api/admin/:path*", "/api/auth/:path*"]
 };

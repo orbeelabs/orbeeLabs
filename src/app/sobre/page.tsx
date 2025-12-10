@@ -31,6 +31,15 @@ export default function SobrePage() {
       image: '/assets/team/izabela.jpg',
       linkedin: 'Em breve',
       specialties: ['UX/UI Design', 'Branding', 'Design Systems', 'CRO'],
+    },
+    {
+      name: 'Gabi Cipriano',
+      role: 'Desenvolvedora Full-Stack & Engenheira de Software',
+      description:
+        'Desenvolvedora full-stack com passagens por Harvard (HarvardX - CS50 - C), Engenheira de Software e certificada em Business Management pela IBM Berlin. Especializada em AI e Web3, com expertise sólida em blockchain e implementação de soluções tecnológicas corporativas. Combina excelência técnica com visão estratégica de negócios para entregar inovação escalável.',
+      image: '/assets/team/gabi.jpg',
+      linkedin: 'Em breve',
+      specialties: ['Full-Stack', 'AI', 'Web3', 'Blockchain', 'Business Management'],
     }
   ];
 
@@ -123,7 +132,7 @@ export default function SobrePage() {
               </p>
             </motion.div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div className="flex flex-col gap-8 max-w-4xl mx-auto">
               {team.map((member, index) => (
                 <motion.div
                   key={member.name}
@@ -133,15 +142,15 @@ export default function SobrePage() {
                   viewport={{ once: true }}
                   className="glass glass-hover rounded-2xl p-8"
                 >
-                  <div className="flex flex-col md:flex-row items-center md:items-start space-y-4 md:space-y-0 md:space-x-6">
-                    <div className="w-32 h-32 bg-gradient-to-r from-primary to-yellow-500 rounded-full flex items-center justify-center text-primary-foreground font-bold text-4xl">
+                  <div className="flex flex-col md:flex-row items-center md:items-start space-y-6 md:space-y-0 md:space-x-8">
+                    <div className="w-32 h-32 bg-gradient-to-r from-primary to-yellow-500 rounded-full flex items-center justify-center text-primary-foreground font-bold text-4xl flex-shrink-0">
                       {member.name.charAt(0)}
                     </div>
                     <div className="flex-1 text-center md:text-left">
                       <h3 className="text-2xl font-bold text-white mb-2">{member.name}</h3>
                       <p className="text-primary font-semibold mb-4">{member.role}</p>
-                      <p className="text-gray-300 mb-4">{member.description}</p>
-                      <div className="flex flex-wrap gap-2 justify-center md:justify-start">
+                      <p className="text-gray-300 mb-4 leading-relaxed">{member.description}</p>
+                      <div className="flex flex-wrap gap-2 justify-center md:justify-start mb-4">
                         {member.specialties.map((specialty, idx) => (
                           <span key={idx} className="bg-primary/20 text-primary px-3 py-1 rounded-full text-sm font-medium">
                             {specialty}

@@ -1,30 +1,35 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { sendEmail } from '@/lib/email';
+import { render } from '@react-email/render';
+import InboundEmail from '@/emails/InboundEmail';
+import { Logger } from '@/lib/logger';
+import { maskEmail } from '@/lib/utils/mask-email';
 
 export async function POST(request: NextRequest) {
   try {
     const inboundEmail = await request.json();
-    console.log('E-mail recebido via webhook:', inboundEmail);
+    // Mascarar email em logs (LGPD)
+    Logger.info('E-mail recebido via webhook', {
+      subject: inboundEmail.subject,
+      from: maskEmail(inboundEmail.from),
+      to: maskEmail(inboundEmail.to),
+    });
 
     // Encaminhar para o email da equipe
+    const inboundEmailHtml = await render(
+      InboundEmail({
+        from: inboundEmail.from,
+        to: inboundEmail.to,
+        subject: inboundEmail.subject,
+        date: inboundEmail.date,
+        content: inboundEmail.html || inboundEmail.text || '',
+      })
+    );
+
     await sendEmail({
       to: process.env.TEAM_EMAIL!,
       subject: `Novo e-mail recebido: ${inboundEmail.subject}`,
-      html: `
-        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
-          <h2 style="color: #333;">E-mail recebido via webhook</h2>
-          <div style="background: #f5f5f5; padding: 20px; border-radius: 8px;">
-            <p><strong>De:</strong> ${inboundEmail.from}</p>
-            <p><strong>Para:</strong> ${inboundEmail.to}</p>
-            <p><strong>Assunto:</strong> ${inboundEmail.subject}</p>
-            <p><strong>Data:</strong> ${new Date(inboundEmail.date).toLocaleString('pt-BR')}</p>
-            <div style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
-              <h3>Conteúdo:</h3>
-              <div>${inboundEmail.html || inboundEmail.text}</div>
-            </div>
-          </div>
-        </div>
-      `,
+      html: inboundEmailHtml,
     });
 
     return NextResponse.json({ 
@@ -32,7 +37,10 @@ export async function POST(request: NextRequest) {
       message: 'E-mail inbound processado com sucesso!' 
     });
   } catch (error) {
-    console.error('Erro ao processar e-mail inbound:', error);
+    Logger.error('Erro ao processar e-mail inbound', {
+      endpoint: '/api/inbound-email',
+      method: 'POST',
+    }, error as Error);
     return NextResponse.json(
       { success: false, error: 'Erro interno do servidor' }, 
       { status: 500 }

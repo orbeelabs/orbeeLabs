@@ -19,30 +19,22 @@ export default function LoginPage() {
     setIsLoading(true);
 
     try {
-      console.log('🔐 Tentando fazer login com:', { email, password: '***' });
-      
       const result = await signIn('credentials', {
         email,
         password,
         redirect: false,
       });
 
-      console.log('📋 Resultado do login:', result);
-
       if (result?.error) {
-        console.error('❌ Erro no login:', result.error);
         toast.error('Credenciais inválidas');
       } else if (result?.ok) {
-        console.log('✅ Login bem-sucedido, redirecionando...');
         toast.success('Login realizado com sucesso!');
         // Usar window.location para garantir o redirecionamento
         window.location.href = '/admin';
       } else {
-        console.error('❌ Login falhou sem erro específico:', result);
         toast.error('Erro inesperado no login');
       }
     } catch (error) {
-      console.error('❌ Erro ao fazer login:', error);
       toast.error('Erro ao fazer login');
     } finally {
       setIsLoading(false);

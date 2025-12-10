@@ -7,7 +7,7 @@ export const LazyPortfolio = lazy(() => import('@/app/portfolio/page'));
 export const LazyAdminPanel = lazy(() => import('@/app/admin/page'));
 
 // Lazy Loading para componentes de animação pesados
-export const LazyParticleField = lazy(() => import('@/components/animations/ParticleField'));
+export const LazyParticleField = lazy(() => import('@/components/animations/ParticleFieldCanvas'));
 export const LazyContactForm = lazy(() => import('@/components/forms/ContactForm'));
 
 // Lazy Loading para bibliotecas externas

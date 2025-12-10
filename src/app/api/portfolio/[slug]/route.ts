@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
-import prisma from "@/lib/prisma";
+import { fetchPortfolioCase, fetchPortfolioCases } from "@/lib/cms";
+import { Logger } from "@/lib/logger";
 
 export async function GET(
   request: NextRequest,
@@ -9,9 +10,7 @@ export async function GET(
     const { slug } = await params;
 
     // Buscar case por slug
-    const caseStudy = await prisma.caseStudy.findUnique({
-      where: { slug },
-    });
+    const caseStudy = await fetchPortfolioCase(slug);
 
     if (!caseStudy) {
       return NextResponse.json(
@@ -29,36 +28,41 @@ export async function GET(
     }
 
     // Buscar cases relacionados (mesma indústria, excluindo o atual)
-    const relatedCases = await prisma.caseStudy.findMany({
-      where: {
-        industry: caseStudy.industry,
-        published: true,
-        id: { not: caseStudy.id },
-      },
-      take: 3,
-      orderBy: { publishedAt: 'desc' },
-      select: {
-        id: true,
-        slug: true,
-        title: true,
-        description: true,
-        clientName: true,
-        industry: true,
-        services: true,
-        technologies: true,
-        duration: true,
-        featured: true,
-        publishedAt: true,
-        heroImage: true,
-      },
+    const { cases: relatedCasesData } = await fetchPortfolioCases({
+      industry: caseStudy.industry,
+      published: true,
+      limit: 3,
+      sortBy: 'publishedAt',
+      sortOrder: 'desc',
     });
+    
+    const relatedCases = relatedCasesData
+      .filter((c) => c.id !== caseStudy.id)
+      .slice(0, 3)
+      .map((c) => ({
+        id: c.id,
+        slug: c.slug,
+        title: c.title,
+        description: c.description,
+        clientName: c.clientName,
+        industry: c.industry,
+        services: c.services,
+        technologies: c.technologies,
+        duration: c.duration,
+        featured: c.featured,
+        publishedAt: c.publishedAt,
+        heroImage: c.heroImage,
+      }));
 
     return NextResponse.json({
       ...caseStudy,
       relatedCases,
     });
   } catch (error) {
-    console.error("Erro ao buscar case:", error);
+    Logger.error("Erro ao buscar case", {
+      endpoint: `/api/portfolio/${slug}`,
+      method: 'GET',
+    }, error as Error);
     return NextResponse.json(
       { error: "Erro interno do servidor" },
       { status: 500 }

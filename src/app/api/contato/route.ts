@@ -8,7 +8,9 @@ import {
   withRateLimit 
 } from "@/lib/api";
 import { contactSchema } from "@/lib/api/validation";
-import { logApiError, logApiSuccess } from "@/lib/logger";
+import { logApiError, logApiSuccess, Logger } from "@/lib/logger";
+import { getCRMAdapter } from "@/lib/integrations/crm/factory";
+import { sanitizeText } from "@/lib/utils/sanitize";
 
 async function handleContact(request: NextRequest) {
   try {
@@ -26,14 +28,23 @@ async function handleContact(request: NextRequest) {
     
     const validated = validation.data;
     
+    // Sanitizar campos de texto para prevenir XSS
+    const sanitizedData = {
+      nome: sanitizeText(validated.nome),
+      email: validated.email, // Email já validado pelo Zod
+      telefone: validated.telefone ? sanitizeText(validated.telefone) : null,
+      empresa: validated.empresa ? sanitizeText(validated.empresa) : null,
+      mensagem: sanitizeText(validated.mensagem),
+    };
+    
     // Salvar no banco de dados
     const contact = await prisma.contact.create({
       data: {
-        name: validated.nome,
-        email: validated.email,
-        phone: validated.telefone,
-        company: validated.empresa,
-        message: validated.mensagem,
+        name: sanitizedData.nome,
+        email: sanitizedData.email,
+        phone: sanitizedData.telefone,
+        company: sanitizedData.empresa,
+        message: sanitizedData.mensagem,
         source: 'website',
         status: 'NEW',
       },
@@ -41,13 +52,47 @@ async function handleContact(request: NextRequest) {
 
     logApiSuccess('POST', '/api/contato', { contactId: contact.id });
 
-    // Enviar emails
+    // Enviar para CRM APENAS se consentimento foi dado
+    if (validated.consentimentoCRM) {
+      const crmAdapter = getCRMAdapter();
+      try {
+        const crmResponse = await crmAdapter.createContact({
+          name: validated.nome,
+          email: validated.email,
+          phone: validated.telefone,
+          company: validated.empresa,
+          website: validated.website,
+          message: validated.mensagem,
+          source: 'website',
+          tags: ['lead', 'website', 'contato'],
+        });
+
+        if (crmResponse.success) {
+          logApiSuccess('CRM', 'createContact', { 
+            contactId: contact.id, 
+            crmContactId: crmResponse.contactId 
+          });
+        } else {
+          Logger.warn('CRM retornou erro (não bloqueia)', {
+            contactId: contact.id,
+            error: crmResponse.error,
+          });
+        }
+      } catch (crmError) {
+        // Não quebrar o fluxo se CRM falhar
+        Logger.error('Erro ao enviar para CRM (não bloqueia)', {
+          contactId: contact.id,
+        }, crmError as Error);
+      }
+    }
+
+    // Enviar emails (usar dados sanitizados)
     await sendContactEmail({
-      nome: validated.nome,
-      email: validated.email,
-      telefone: validated.telefone,
-      empresa: validated.empresa,
-      mensagem: validated.mensagem,
+      nome: sanitizedData.nome,
+      email: sanitizedData.email,
+      telefone: sanitizedData.telefone || undefined,
+      empresa: sanitizedData.empresa || undefined,
+      mensagem: sanitizedData.mensagem,
     });
 
     return createSuccessResponse(

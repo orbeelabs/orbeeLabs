@@ -1,6 +1,6 @@
 import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
-import prisma from '@/lib/prisma';
+import { fetchPortfolioCase, fetchPortfolioCases } from '@/lib/cms';
 import CaseStudyContent from '@/components/portfolio/CaseStudyContent';
 
 interface CaseStudyPageProps {
@@ -9,9 +9,7 @@ interface CaseStudyPageProps {
 
 export async function generateMetadata({ params }: CaseStudyPageProps): Promise<Metadata> {
   const { slug } = await params;
-  const caseStudy = await prisma.caseStudy.findUnique({
-    where: { slug },
-  });
+  const caseStudy = await fetchPortfolioCase(slug);
 
   if (!caseStudy || !caseStudy.published) {
     return {
@@ -34,38 +32,39 @@ export async function generateMetadata({ params }: CaseStudyPageProps): Promise<
 export default async function CaseStudyPage({ params }: CaseStudyPageProps) {
   const { slug } = await params;
 
-  const caseStudy = await prisma.caseStudy.findUnique({
-    where: { slug },
-  });
+  const caseStudy = await fetchPortfolioCase(slug);
 
   if (!caseStudy || !caseStudy.published) {
     notFound();
   }
 
   // Buscar cases relacionados
-  const relatedCases = await prisma.caseStudy.findMany({
-    where: {
-      industry: caseStudy.industry,
-      published: true,
-      id: { not: caseStudy.id },
-    },
-    take: 3,
-    orderBy: { publishedAt: 'desc' },
-    select: {
-      id: true,
-      slug: true,
-      title: true,
-      description: true,
-      clientName: true,
-      industry: true,
-      services: true,
-      technologies: true,
-      duration: true,
-      featured: true,
-      publishedAt: true,
-      heroImage: true,
-    },
+  const { cases: relatedCasesData } = await fetchPortfolioCases({
+    industry: caseStudy.industry,
+    published: true,
+    limit: 3,
+    sortBy: 'publishedAt',
+    sortOrder: 'desc',
   });
+  
+  // Filtrar o case atual dos relacionados
+  const relatedCases = relatedCasesData
+    .filter((c) => c.id !== caseStudy.id)
+    .slice(0, 3)
+    .map((c) => ({
+      id: c.id,
+      slug: c.slug,
+      title: c.title,
+      description: c.description,
+      clientName: c.clientName,
+      industry: c.industry,
+      services: c.services,
+      technologies: c.technologies,
+      duration: c.duration,
+      featured: c.featured,
+      publishedAt: c.publishedAt,
+      heroImage: c.heroImage,
+    }));
 
   const breadcrumbItems = [
     { name: 'Início', url: '/' },

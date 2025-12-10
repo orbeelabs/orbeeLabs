@@ -10,6 +10,7 @@ import {
   createOrderBy,
   validateId
 } from "@/lib/api";
+import { Logger } from "@/lib/logger";
 
 async function handleGetContacts(request: NextRequest) {
   try {
@@ -42,7 +43,10 @@ async function handleGetContacts(request: NextRequest) {
       "Contatos recuperados com sucesso"
     );
   } catch (error) {
-    console.error("Erro ao buscar contatos:", error);
+    Logger.error("Erro ao buscar contatos", {
+      endpoint: '/api/admin/contacts',
+      method: 'GET',
+    }, error as Error);
     return createErrorResponse("Erro interno do servidor");
   }
 }
@@ -73,7 +77,11 @@ async function handleDeleteContact(request: NextRequest) {
       "Contato excluído com sucesso"
     );
   } catch (error) {
-    console.error("Erro ao excluir contato:", error);
+    Logger.error("Erro ao excluir contato", {
+      endpoint: '/api/admin/contacts',
+      method: 'DELETE',
+      contactId: id,
+    }, error as Error);
     return createErrorResponse("Erro interno do servidor");
   }
 }

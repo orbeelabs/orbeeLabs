@@ -2,16 +2,45 @@ import { z } from 'zod';
 
 // Schemas de validação centralizados
 export const contactSchema = z.object({
-  nome: z.string().min(2, "Nome deve ter pelo menos 2 caracteres"),
-  email: z.string().email("Email inválido"),
-  telefone: z.string().optional(),
-  empresa: z.string().optional(),
-  mensagem: z.string().min(5, "Mensagem deve ter pelo menos 5 caracteres"),
+  nome: z.string()
+    .min(2, "Nome deve ter pelo menos 2 caracteres")
+    .max(100, "Nome deve ter no máximo 100 caracteres")
+    .trim(),
+  email: z.string()
+    .email("Email inválido")
+    .toLowerCase()
+    .trim(),
+  telefone: z.string()
+    .max(20, "Telefone deve ter no máximo 20 caracteres")
+    .optional()
+    .transform(val => val?.trim() || undefined),
+  empresa: z.string()
+    .max(100, "Empresa deve ter no máximo 100 caracteres")
+    .optional()
+    .transform(val => val?.trim() || undefined),
+  mensagem: z.string()
+    .min(5, "Mensagem deve ter pelo menos 5 caracteres")
+    .max(5000, "Mensagem deve ter no máximo 5000 caracteres")
+    .trim(),
+  consentimentoLGPD: z.boolean().refine((val) => val === true, {
+    message: "Você deve aceitar a Política de Privacidade para continuar",
+  }),
+  consentimentoCRM: z.boolean().optional().default(false),
 });
 
 export const newsletterSchema = z.object({
-  email: z.string().email("Email inválido"),
-  nome: z.string().optional(),
+  email: z.string()
+    .email("Email inválido")
+    .toLowerCase()
+    .trim(),
+  nome: z.string()
+    .max(100, "Nome deve ter no máximo 100 caracteres")
+    .optional()
+    .transform(val => val?.trim() || undefined),
+  consentimentoLGPD: z.boolean().refine((val) => val === true, {
+    message: "Você deve aceitar a Política de Privacidade para continuar",
+  }),
+  consentimentoCRM: z.boolean().optional().default(false),
 });
 
 export const seoAnalysisSchema = z.object({

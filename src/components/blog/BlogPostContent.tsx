@@ -6,10 +6,10 @@ import Image from 'next/image';
 import { PageLayout } from '@/components/layout';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Calendar, User, ArrowLeft, Share2, Tag, BookOpen } from 'lucide-react';
+import { Calendar, User, ArrowLeft, Tag, BookOpen } from 'lucide-react';
 import { format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
-import { shareContent } from '@/lib/share';
+import ShareButtons from '@/components/ShareButtons';
 import type { Post, RelatedPost } from '@/types/blog';
 
 interface BlogPostContentProps {
@@ -20,14 +20,6 @@ interface BlogPostContentProps {
 
 export default function BlogPostContent({ post, relatedPosts, breadcrumbItems }: BlogPostContentProps) {
   const shareUrl = typeof window !== 'undefined' ? window.location.href : '';
-
-  const handleShare = async () => {
-    await shareContent({
-      title: post.title,
-      text: post.excerpt || '',
-      url: shareUrl,
-    });
-  };
 
   return (
     <PageLayout breadcrumbItems={breadcrumbItems}>
@@ -80,15 +72,14 @@ export default function BlogPostContent({ post, relatedPosts, breadcrumbItems }:
                   <span>{format(new Date(post.publishedAt), "dd 'de' MMMM 'de' yyyy", { locale: ptBR })}</span>
                 </div>
               )}
-              <Button
-                variant="outline"
+              <ShareButtons
+                url={shareUrl}
+                title={post.title}
+                description={post.excerpt || ''}
+                image={post.ogImage}
                 size="sm"
-                onClick={handleShare}
-                className="flex items-center gap-2"
-              >
-                <Share2 className="w-4 h-4" />
-                Compartilhar
-              </Button>
+                showLabels={false}
+              />
             </div>
 
             {/* Excerpt */}

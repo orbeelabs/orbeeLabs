@@ -65,6 +65,8 @@ module.exports = {
         'fade-in-left': 'fadeInLeft 0.6s ease-out',
         'fade-in-right': 'fadeInRight 0.6s ease-out',
         'scale-in': 'scaleIn 0.3s ease-out',
+        'accordion-down': 'accordion-down 0.2s ease-out',
+        'accordion-up': 'accordion-up 0.2s ease-out',
       },
       keyframes: {
         gradientShift: {
@@ -90,6 +92,14 @@ module.exports = {
         scaleIn: {
           '0%': { opacity: '0', transform: 'scale(0.9)' },
           '100%': { opacity: '1', transform: 'scale(1)' },
+        },
+        'accordion-down': {
+          from: { height: '0' },
+          to: { height: 'var(--radix-accordion-content-height)' },
+        },
+        'accordion-up': {
+          from: { height: 'var(--radix-accordion-content-height)' },
+          to: { height: '0' },
         },
       },
     },

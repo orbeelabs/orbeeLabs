@@ -25,6 +25,9 @@ import {
   Target,
   Clock
 } from 'lucide-react';
+import { AgendamentoModal } from '@/components/AgendamentoModal';
+import ShareButtons from '@/components/ShareButtons';
+import { exportAuditToPDF } from '@/lib/pdf-export';
 
 interface AuditoriaData {
   url: string;
@@ -59,6 +62,7 @@ interface ResultadoAuditoria {
 
 export default function AuditoriaSEO() {
   const [step, setStep] = useState(1);
+  const [agendamentoOpen, setAgendamentoOpen] = useState(false);
   const [dados, setDados] = useState<AuditoriaData>({
     url: '',
     nomeEmpresa: '',
@@ -115,7 +119,10 @@ export default function AuditoriaSEO() {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ url: dados.url }),
+        body: JSON.stringify({ 
+          url: dados.url,
+          formData: dados // Enviar dados do formulário para integração com CRM
+        }),
       });
 
       if (!response.ok) {
@@ -329,6 +336,17 @@ export default function AuditoriaSEO() {
     a.download = `auditoria-seo-${dados.nomeEmpresa.replace(/\s+/g, '-').toLowerCase()}-${new Date().toISOString().split('T')[0]}.json`;
     a.click();
     URL.revokeObjectURL(url);
+  };
+
+  const exportarPDF = async () => {
+    if (!resultado) return;
+    
+    try {
+      await exportAuditToPDF(resultado, dados);
+    } catch (error) {
+      console.error('Erro ao exportar PDF:', error);
+      alert('Erro ao gerar PDF. Tente novamente.');
+    }
   };
 
   const getStatusIcon = (status: string) => {
@@ -725,15 +743,34 @@ export default function AuditoriaSEO() {
 
                       {/* Ações */}
                       <div className="flex flex-col sm:flex-row gap-4">
+                        <Button onClick={exportarPDF} variant="outline" className="flex-1">
+                          <FileText className="w-4 h-4 mr-2" />
+                          Exportar PDF
+                        </Button>
                         <Button onClick={exportarRelatorio} variant="outline" className="flex-1">
                           <Download className="w-4 h-4 mr-2" />
-                          Exportar Relatório
+                          Exportar JSON
                         </Button>
-                        <Button className="flex-1 bg-gradient-to-r from-primary to-yellow-500">
+                        <Button 
+                          className="flex-1 bg-gradient-to-r from-primary to-yellow-500"
+                          onClick={() => setAgendamentoOpen(true)}
+                        >
                           <Calendar className="w-4 h-4 mr-2" />
                           Agendar Consultoria
                         </Button>
                       </div>
+                      
+                      {resultado && (
+                        <div className="pt-4 border-t mt-4">
+                          <p className="text-sm text-muted-foreground mb-3">Compartilhar auditoria:</p>
+                          <ShareButtons
+                            url={typeof window !== 'undefined' ? window.location.href : ''}
+                            title={`Auditoria SEO: ${auditoriaData.url} - Score ${resultado.score}/100`}
+                            description={`Realizei uma auditoria SEO completa do meu site. Score: ${resultado.score}/100. Veja os resultados!`}
+                            size="sm"
+                          />
+                        </div>
+                      )}
                     </div>
                   ) : null}
                 </motion.div>
@@ -767,6 +804,11 @@ export default function AuditoriaSEO() {
         </div>
       </section>
 
+      <AgendamentoModal 
+        open={agendamentoOpen} 
+        onClose={() => setAgendamentoOpen(false)}
+        tipoConsulta="Auditoria SEO"
+      />
     </PageLayout>
   );
 }

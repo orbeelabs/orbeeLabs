@@ -8,7 +8,9 @@ import {
   withRateLimit 
 } from "@/lib/api";
 import { newsletterSchema } from "@/lib/api/validation";
-import { logApiError, logApiSuccess } from "@/lib/logger";
+import { logApiError, logApiSuccess, Logger } from "@/lib/logger";
+import { getCRMAdapter } from "@/lib/integrations/crm/factory";
+import { sanitizeText } from "@/lib/utils/sanitize";
 
 async function handleNewsletter(request: NextRequest) {
   try {
@@ -26,16 +28,20 @@ async function handleNewsletter(request: NextRequest) {
     
     const validated = validation.data;
     
+    // Sanitizar dados
+    const sanitizedEmail = validated.email.toLowerCase().trim();
+    const sanitizedName = validated.nome ? sanitizeText(validated.nome) : null;
+    
     // Salvar no banco de dados
     const subscriber = await prisma.newsletterSubscriber.upsert({
-      where: { email: validated.email },
+      where: { email: sanitizedEmail },
       update: {
-        name: validated.nome,
+        name: sanitizedName,
         status: 'ACTIVE',
       },
       create: {
-        email: validated.email,
-        name: validated.nome,
+        email: sanitizedEmail,
+        name: sanitizedName,
         source: 'website',
         status: 'ACTIVE',
       },
@@ -43,10 +49,35 @@ async function handleNewsletter(request: NextRequest) {
 
     logApiSuccess('POST', '/api/newsletter', { subscriberId: subscriber.id });
     
-    // Enviar email de boas-vindas
+    // Enviar para CRM APENAS se consentimento foi dado
+    if (validated.consentimentoCRM) {
+      const crmAdapter = getCRMAdapter();
+      try {
+        const crmResponse = await crmAdapter.createContact({
+          name: validated.nome || validated.email.split('@')[0],
+          email: validated.email,
+          source: 'newsletter',
+          tags: ['newsletter', 'lead'],
+        });
+
+        if (crmResponse.success) {
+          logApiSuccess('CRM', 'createContact (Newsletter)', { 
+            subscriberId: subscriber.id, 
+            crmContactId: crmResponse.contactId 
+          });
+        }
+      } catch (crmError) {
+        // Não quebrar o fluxo se CRM falhar
+        Logger.error('Erro ao enviar para CRM (não bloqueia)', {
+          subscriberId: subscriber.id,
+        }, crmError as Error);
+      }
+    }
+    
+    // Enviar email de boas-vindas (usar dados sanitizados)
     await sendNewsletterEmail({
-      email: validated.email,
-      nome: validated.nome,
+      email: sanitizedEmail,
+      nome: sanitizedName || undefined,
     });
 
     return createSuccessResponse(
