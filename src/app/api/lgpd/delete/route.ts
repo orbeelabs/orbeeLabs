@@ -43,16 +43,10 @@ export async function POST(request: NextRequest) {
     const { email } = validation.data;
 
     // Verificar se há dados para excluir
-    const roiWhere: {
-      userId: string;
-    } = {
-      userId: email,
-    };
-    
     const [hasContact, hasNewsletter, hasROI] = await Promise.all([
       prisma.contact.findFirst({ where: { email } }),
       prisma.newsletterSubscriber.findFirst({ where: { email } }),
-      prisma.roiCalculation.findFirst({ where: roiWhere }),
+      prisma.roiCalculation.findFirst({ where: { userId: email } as any }),
     ]);
 
     if (!hasContact && !hasNewsletter && !hasROI) {
@@ -139,16 +133,10 @@ export async function GET(request: NextRequest) {
     const { email } = tokenData;
 
     // Excluir todos os dados do usuário
-    const roiDeleteWhere: {
-      userId: string;
-    } = {
-      userId: email,
-    };
-    
     await Promise.all([
       prisma.contact.deleteMany({ where: { email } }),
       prisma.newsletterSubscriber.deleteMany({ where: { email } }),
-      prisma.roiCalculation.deleteMany({ where: roiDeleteWhere }),
+      prisma.roiCalculation.deleteMany({ where: { userId: email } as any }),
     ]);
 
     // Remover token
