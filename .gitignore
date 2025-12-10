@@ -104,6 +104,8 @@ documentos/
 # Ignora todos os arquivos .md na raiz EXCETO README.md
 *.md
 !README.md
+# Permitir arquivos de configuração do backend
+!backend/*.md
 
 # ===================================================================
 # SCRIPTS TEMPORÁRIOS E DE DIAGNÓSTICO
@@ -139,6 +141,8 @@ SECURITY_AUDIT.md
 REDEPLOY_URGENTE.txt
 scripts/setup-vercel-env.sh
 scripts/setup-vercel.sh
+# Permitir arquivos de configuração do backend (runtime.txt, etc)
+!backend/*.txt
 
 # ===================================================================
 # PYTHON - ARQUIVOS COMPILADOS E AMBIENTES VIRTUAIS
