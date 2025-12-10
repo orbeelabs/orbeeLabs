@@ -76,7 +76,7 @@ export default function BlogPostContent({ post, relatedPosts, breadcrumbItems }:
                 url={shareUrl}
                 title={post.title}
                 description={post.excerpt || ''}
-                image={post.ogImage}
+                image={post.ogImage || undefined}
                 size="sm"
                 showLabels={false}
               />
