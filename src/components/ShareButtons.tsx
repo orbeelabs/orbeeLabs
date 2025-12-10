@@ -108,7 +108,7 @@ export default function ShareButtons({
 
   // Compartilhamento nativo (se disponível)
   const shareNative = async () => {
-    if (navigator.share) {
+    if ('share' in navigator && navigator.share) {
       try {
         await navigator.share({
           title,
@@ -209,7 +209,7 @@ export default function ShareButtons({
       {/* Compartilhamento nativo ou copiar link */}
       {showAll && (
         <Button
-          onClick={navigator.share ? shareNative : copyLink}
+          onClick={'share' in navigator ? shareNative : copyLink}
           variant={variant}
           size={buttonSizeProp as 'default' | 'icon' | 'sm' | 'lg'}
           className={`${buttonSize[size]} ${showLabels ? 'gap-2' : ''}`}
@@ -221,7 +221,7 @@ export default function ShareButtons({
             </>
           ) : (
             <>
-              {navigator.share ? (
+              {'share' in navigator ? (
                 <>
                   <Share2 className={iconSize[size]} />
                   {showLabels && <span>Compartilhar</span>}
