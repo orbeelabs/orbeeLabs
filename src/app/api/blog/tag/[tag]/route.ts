@@ -65,7 +65,7 @@ export async function GET(
     });
   } catch (error) {
     Logger.error('Erro ao buscar posts por tag', {
-      endpoint: `/api/blog/tag/${tag}`,
+      endpoint: `/api/blog/tag/${params.tag}`,
       method: 'GET',
     }, error as Error);
     return NextResponse.json(
