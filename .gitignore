@@ -122,6 +122,7 @@ check-tables.js
 # Esses backups podem conter credenciais antigas
 .env.local.backup*
 .env.local.limpo
+.env
 
 # ===================================================================
 # AUDITORIA E SEGURANÇA
@@ -138,6 +139,25 @@ SECURITY_AUDIT.md
 REDEPLOY_URGENTE.txt
 scripts/setup-vercel-env.sh
 scripts/setup-vercel.sh
+
+# ===================================================================
+# PYTHON - ARQUIVOS COMPILADOS E AMBIENTES VIRTUAIS
+# ===================================================================
+# Ignora arquivos Python compilados e ambientes virtuais
+# Esses arquivos são gerados automaticamente e não devem ser commitados
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+venv/
+env/
+ENV/
+.venv
+*.egg-info/
+dist/
+build/
+*.egg
 
 # ===================================================================
 # CONFIGURAÇÕES DO EDITOR (VS CODE)

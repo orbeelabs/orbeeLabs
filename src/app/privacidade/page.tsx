@@ -146,13 +146,112 @@ export default function PrivacidadePage() {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.6, delay: 0.8 }}
                 >
-                  <h2 className="text-2xl font-bold text-white mb-4">6. Contato</h2>
+                  <h2 className="text-2xl font-bold text-white mb-4">6. Como Exercer Seus Direitos</h2>
+                  <p className="text-gray-300 leading-relaxed mb-4">
+                    Você pode exercer seus direitos LGPD das seguintes formas:
+                  </p>
+                  
+                  <div className="space-y-4 mb-6">
+                    <div className="p-4 bg-white/5 rounded-lg">
+                      <h3 className="text-lg font-semibold text-white mb-2">📥 Exportar Seus Dados</h3>
+                      <p className="text-gray-300 text-sm mb-3">
+                        Solicite uma cópia de todos os seus dados pessoais armazenados em nosso sistema.
+                      </p>
+                      <p className="text-sm text-gray-400">
+                        Envie um email para <a href="mailto:privacidade@orbeelabs.com" className="text-primary hover:text-primary/80">privacidade@orbeelabs.com</a> com o assunto &quot;Exportação de Dados&quot; e seu email cadastrado.
+                      </p>
+                    </div>
+
+                    <div className="p-4 bg-white/5 rounded-lg">
+                      <h3 className="text-lg font-semibold text-white mb-2">🗑️ Excluir Seus Dados</h3>
+                      <p className="text-gray-300 text-sm mb-3">
+                        Solicite a exclusão completa de todos os seus dados pessoais (direito ao esquecimento).
+                      </p>
+                      <p className="text-sm text-gray-400">
+                        Envie um email para <a href="mailto:privacidade@orbeelabs.com" className="text-primary hover:text-primary/80">privacidade@orbeelabs.com</a> com o assunto &quot;Exclusão de Dados&quot; e seu email cadastrado. Você receberá um link de confirmação por email.
+                      </p>
+                    </div>
+
+                    <div className="p-4 bg-white/5 rounded-lg">
+                      <h3 className="text-lg font-semibold text-white mb-2">✏️ Corrigir Seus Dados</h3>
+                      <p className="text-gray-300 text-sm mb-3">
+                        Solicite a correção de dados incompletos, inexatos ou desatualizados.
+                      </p>
+                      <p className="text-sm text-gray-400">
+                        Envie um email para <a href="mailto:privacidade@orbeelabs.com" className="text-primary hover:text-primary/80">privacidade@orbeelabs.com</a> com o assunto &quot;Correção de Dados&quot;, seu email cadastrado e os dados que precisam ser corrigidos. Você receberá um link de confirmação por email.
+                      </p>
+                    </div>
+
+                    <div className="p-4 bg-white/5 rounded-lg">
+                      <h3 className="text-lg font-semibold text-white mb-2">🚫 Revogar Consentimento</h3>
+                      <p className="text-gray-300 text-sm mb-3">
+                        Você pode revogar seu consentimento para tratamento de dados a qualquer momento.
+                      </p>
+                      <p className="text-sm text-gray-400">
+                        Envie um email para <a href="mailto:privacidade@orbeelabs.com" className="text-primary hover:text-primary/80">privacidade@orbeelabs.com</a> solicitando a revogação.
+                      </p>
+                    </div>
+                  </div>
+                </motion.section>
+
+                <motion.section 
+                  className="mb-8"
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.6, delay: 0.9 }}
+                >
+                  <h2 className="text-2xl font-bold text-white mb-4">7. Política de Retenção de Dados</h2>
+                  <p className="text-gray-300 leading-relaxed mb-4">
+                    Mantemos seus dados pessoais apenas pelo tempo necessário para cumprir as finalidades descritas nesta política:
+                  </p>
+                  <ul className="text-gray-300 list-disc list-inside space-y-2 mb-4">
+                    <li><strong>Contatos:</strong> Mantidos por 3 anos após a criação</li>
+                    <li><strong>Newsletter:</strong> Mantidos até você cancelar a inscrição</li>
+                    <li><strong>Auditorias SEO:</strong> Mantidas por 2 anos após a criação</li>
+                    <li><strong>Cálculos ROI:</strong> Mantidos por 1 ano após a criação</li>
+                  </ul>
+                  <p className="text-gray-300 text-sm">
+                    Após esses períodos, os dados são automaticamente excluídos do nosso sistema, exceto quando a retenção for necessária para cumprimento de obrigações legais.
+                  </p>
+                </motion.section>
+
+                <motion.section 
+                  className="mb-8"
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.6, delay: 1.0 }}
+                >
+                  <h2 className="text-2xl font-bold text-white mb-4">8. Encarregado de Proteção de Dados (DPO)</h2>
+                  <p className="text-gray-300 leading-relaxed mb-4">
+                    A Orbee Labs possui um Encarregado de Proteção de Dados (DPO) responsável por:
+                  </p>
+                  <ul className="text-gray-300 list-disc list-inside space-y-2 mb-4">
+                    <li>Orientar funcionários sobre práticas de proteção de dados</li>
+                    <li>Receber comunicações de titulares de dados</li>
+                    <li>Cooperar com a Autoridade Nacional de Proteção de Dados (ANPD)</li>
+                    <li>Monitorar o cumprimento da LGPD</li>
+                  </ul>
+                  <div className="mt-4 p-4 bg-white/5 rounded-lg">
+                    <p className="text-gray-300">
+                      <strong>Contato do DPO:</strong><br/>
+                      <a href="mailto:privacidade@orbeelabs.com" className="text-primary hover:text-primary/80 transition-colors">privacidade@orbeelabs.com</a>
+                    </p>
+                  </div>
+                </motion.section>
+
+                <motion.section 
+                  className="mb-8"
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.6, delay: 1.1 }}
+                >
+                  <h2 className="text-2xl font-bold text-white mb-4">9. Contato</h2>
                   <p className="text-gray-300 leading-relaxed">
                     Para exercer seus direitos ou esclarecer dúvidas sobre esta política, entre em contato conosco:
                   </p>
                   <div className="mt-4 p-4 bg-white/5 rounded-lg">
                     <p className="text-gray-300">
-                      <strong>E-mail:</strong> <a href="mailto:privacidade@orbeelabs.com" className="text-primary hover:text-primary/80 transition-colors">privacidade@orbeelabs.com</a><br/>
+                      <strong>E-mail LGPD/DPO:</strong> <a href="mailto:privacidade@orbeelabs.com" className="text-primary hover:text-primary/80 transition-colors">privacidade@orbeelabs.com</a><br/>
                       <strong>E-mail geral:</strong> <a href="mailto:contato@orbeelabs.com" className="text-primary hover:text-primary/80 transition-colors">contato@orbeelabs.com</a>
                     </p>
                   </div>

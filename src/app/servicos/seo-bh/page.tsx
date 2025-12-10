@@ -235,6 +235,30 @@ export default function SEOPage() {
     {
       question: 'Qual o investimento?',
       answer: 'Varia. Depende de: Tamanho do seu nicho (competição alta = mais investimento), Situação atual do seu site, Suas metas de crescimento. Sem valores específicos aqui porque cada caso é único. Mas deixa eu te dizer: se o ROI é 5:1 (como vimos com Dra. Laura), vale a pena conversar. Entre em contato para orçamento personalizado.'
+    },
+    {
+      question: 'Vocês trabalham com sites WordPress/Shopify/etc?',
+      answer: 'Sim! Trabalhamos com qualquer plataforma: WordPress, Shopify, Wix, sistemas customizados, Next.js, React, etc. A metodologia SEO Cabuloso é independente da plataforma. O que importa é: estrutura técnica correta, conteúdo otimizado, performance e experiência do usuário. Adaptamos nossa estratégia para cada plataforma, garantindo que seu site tenha o melhor SEO possível, independente da tecnologia usada.'
+    },
+    {
+      question: 'Como funciona o processo SEO Cabuloso?',
+      answer: 'O processo SEO Cabuloso é dividido em 4 fases: 1) AUDITORIA TÉCNICA: Analisamos seu site, concorrentes e mercado para identificar oportunidades. 2) OTIMIZAÇÃO TÉCNICA: Corrigimos problemas de performance, mobile, segurança e estrutura. 3) ESTRATÉGIA DE CONTEÚDO: Criamos conteúdo otimizado que responde às perguntas do seu público. 4) MONITORAMENTO E AJUSTES: Acompanhamos resultados, ranqueamentos e otimizamos continuamente. Tudo com foco em resultados mensuráveis e ROI comprovado.'
+    },
+    {
+      question: 'Qual a diferença entre SEO tradicional e SEO Cabuloso?',
+      answer: 'SEO Tradicional: Foca apenas em palavras-chave, muitas vezes usa técnicas antigas que não funcionam mais. SEO Cabuloso: Combina análise técnica avançada + estratégia de conteúdo data-driven + desenvolvimento web fullstack. Não é só "colocar palavras-chave". É entender o que Google realmente quer: sites rápidos, seguros, com conteúdo relevante e experiência excepcional. Resultado: Rankings sustentáveis e crescimento real de tráfego, não apenas otimizações superficiais.'
+    },
+    {
+      question: 'Como medem o ROI do SEO?',
+      answer: 'Medimos ROI de forma completa: 1) TRÁFEGO: Aumento de visitantes orgânicos (Google Analytics). 2) CONVERSÕES: Leads, agendamentos, vendas geradas (rastreamento de origem). 3) CUSTO POR LEAD: Comparação antes/depois do SEO. 4) RECEITA ATRIBUÍDA: Valor gerado pelos leads do SEO. Exemplo real: Dra. Laura investiu X e gerou 83 leads. Cada lead custou R$ 5,24. Se cada lead vale R$ 200, o ROI foi de 38:1. Mostramos números reais, não promessas vazias.'
+    },
+    {
+      question: 'Vocês trabalham só em Belo Horizonte?',
+      answer: 'Não! Trabalhamos com clientes de todo o Brasil. SEO é digital - não importa onde você está. O que importa é onde seu público está buscando no Google. Nossa metodologia funciona para qualquer cidade, estado ou região. Já atendemos clientes de São Paulo, Rio de Janeiro, Brasília, Porto Alegre e várias outras cidades. O importante é que seu público esteja buscando no Google - e isso acontece em qualquer lugar do país.'
+    },
+    {
+      question: 'O que acontece se eu cancelar o serviço?',
+      answer: 'Você mantém todas as otimizações já feitas no seu site. O SEO não "desaparece" quando você cancela. Porém, SEO é um trabalho contínuo: Google muda algoritmos, concorrentes otimizam, novos conteúdos são necessários. Sem manutenção contínua, você pode perder posições ao longo do tempo. Nossa recomendação: mantenha pelo menos uma manutenção mensal para preservar resultados. Mas todas as melhorias técnicas e conteúdos criados permanecem seus.'
     }
   ];
 

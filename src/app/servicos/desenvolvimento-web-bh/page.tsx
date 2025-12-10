@@ -136,7 +136,7 @@ export default function DesenvolvimentoWebPage() {
     },
     {
       question: 'Vocês integram com [meu software]?',
-      answer: 'Provavelmente. Integramos com: Salesforce, Pipedrive, HubSpot, Shopify, Stripe, Mailchimp, etc.'
+      answer: 'Provavelmente. Integramos com: Salesforce, Pipedrive, RD Station, Shopify, Stripe, Mailchimp, etc.'
     },
     {
       question: 'E depois? Preciso refazer do zero em 2 anos?',
