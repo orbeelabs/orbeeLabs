@@ -7,9 +7,10 @@ export async function GET(
   request: NextRequest,
   { params }: { params: Promise<{ tag: string }> }
 ) {
+  const { tag } = await params;
+  const decodedTag = decodeURIComponent(tag);
+  
   try {
-    const { tag } = await params;
-    const decodedTag = decodeURIComponent(tag);
 
     const { searchParams } = new URL(request.url);
     const limit = parseInt(searchParams.get('limit') || '20');
@@ -65,7 +66,7 @@ export async function GET(
     });
   } catch (error) {
     Logger.error('Erro ao buscar posts por tag', {
-      endpoint: `/api/blog/tag/${params.tag}`,
+      endpoint: `/api/blog/tag/${tag}`,
       method: 'GET',
     }, error as Error);
     return NextResponse.json(
