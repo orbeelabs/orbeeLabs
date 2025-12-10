@@ -151,39 +151,45 @@ export default function CalculadoraROI() {
     };
   }, []);
 
-  // Calcular ROI para o cenário ativo
+  // Calcular ROI para o cenário ativo quando mudar o cenário
   useEffect(() => {
-    const cenarioAtual = cenarios.find(c => c.id === cenarioAtivo);
-    if (cenarioAtual) {
-      const calculo = calcularROIFromData(cenarioAtual.dados);
-      setCalculo(calculo);
-      setDados(cenarioAtual.dados);
-      
-      // Atualizar cálculo no cenário
-      setCenarios(prev => prev.map(c => 
-        c.id === cenarioAtivo ? { ...c, calculo } : c
-      ));
-    }
-  }, [cenarioAtivo, calcularROIFromData, cenarios]);
+    setCenarios(prev => {
+      const cenarioAtual = prev.find(c => c.id === cenarioAtivo);
+      if (cenarioAtual) {
+        const calculo = calcularROIFromData(cenarioAtual.dados);
+        setCalculo(calculo);
+        setDados(cenarioAtual.dados);
+        
+        // Atualizar cálculo no cenário
+        return prev.map(c => 
+          c.id === cenarioAtivo ? { ...c, calculo } : c
+        );
+      }
+      return prev;
+    });
+  }, [cenarioAtivo, calcularROIFromData]);
 
   // Recalcular quando dados do cenário ativo mudarem
   useEffect(() => {
-    const cenarioAtual = cenarios.find(c => c.id === cenarioAtivo);
-    if (cenarioAtual) {
-      const dadosAtuais = JSON.stringify(cenarioAtual.dados);
-      const dadosNovos = JSON.stringify(dados);
-      
-      if (dadosAtuais !== dadosNovos) {
-        const calculo = calcularROIFromData(dados);
-        setCalculo(calculo);
+    setCenarios(prev => {
+      const cenarioAtual = prev.find(c => c.id === cenarioAtivo);
+      if (cenarioAtual) {
+        const dadosAtuais = JSON.stringify(cenarioAtual.dados);
+        const dadosNovos = JSON.stringify(dados);
         
-        // Atualizar dados e cálculo no cenário
-        setCenarios(prev => prev.map(c => 
-          c.id === cenarioAtivo ? { ...c, dados, calculo } : c
-        ));
+        if (dadosAtuais !== dadosNovos) {
+          const calculo = calcularROIFromData(dados);
+          setCalculo(calculo);
+          
+          // Atualizar dados e cálculo no cenário
+          return prev.map(c => 
+            c.id === cenarioAtivo ? { ...c, dados, calculo } : c
+          );
+        }
       }
-    }
-  }, [dados, cenarioAtivo, cenarios, calcularROIFromData]);
+      return prev;
+    });
+  }, [dados, cenarioAtivo, calcularROIFromData]);
 
   const handleInputChange = (field: keyof ROIData, value: string | number) => {
     setDados(prev => ({
