@@ -61,7 +61,6 @@ async function handleContact(request: NextRequest) {
           email: validated.email,
           phone: validated.telefone,
           company: validated.empresa,
-          website: validated.website,
           message: validated.mensagem,
           source: 'website',
           tags: ['lead', 'website', 'contato'],
