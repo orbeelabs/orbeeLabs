@@ -51,7 +51,7 @@ export async function POST(request: NextRequest) {
     Logger.error('Erro ao revalidar rota', {
       endpoint: '/api/revalidate',
       method: 'POST',
-      path: searchParams.get('path'),
+      path: searchParams.get('path') || undefined,
     }, error as Error);
     return NextResponse.json(
       { error: 'Erro ao revalidar rota' },
