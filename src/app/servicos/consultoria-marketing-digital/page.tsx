@@ -181,7 +181,7 @@ export default function ConsultoriaMarketingDigitalPage() {
             <StaggerContainer>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {services.map((service, index) => (
-                  <StaggerItem key={index} index={index}>
+                  <StaggerItem key={index}>
                     <div className="glass glass-hover p-6 rounded-xl">
                       <div className="text-primary mb-4">{service.icon}</div>
                       <h3 className="text-xl font-bold text-white mb-3">{service.title}</h3>

@@ -176,7 +176,7 @@ export default function LandingPagesPage() {
             <StaggerContainer>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 {features.map((feature, index) => (
-                  <StaggerItem key={index} index={index}>
+                  <StaggerItem key={index}>
                     <div className="glass glass-hover p-6 rounded-xl">
                       <div className="text-primary mb-4">{feature.icon}</div>
                       <h3 className="text-xl font-bold text-white mb-3">{feature.title}</h3>

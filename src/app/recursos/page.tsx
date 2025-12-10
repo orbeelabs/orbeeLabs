@@ -156,7 +156,7 @@ export default function RecursosPage() {
             <StaggerContainer>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {filteredResources.map((resource, index) => (
-                  <StaggerItem key={resource.id} index={index}>
+                  <StaggerItem key={resource.id}>
                     <Card className="glass glass-hover h-full flex flex-col">
                       <CardHeader>
                         <div className="text-4xl mb-4">{resource.image}</div>
