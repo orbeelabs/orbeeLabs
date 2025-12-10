@@ -32,7 +32,8 @@ export default function WebinarsPage() {
       speaker: 'Equipe Orbee Labs',
       description: 'Aprenda técnicas avançadas de SEO que realmente funcionam em 2025',
       attendees: 0,
-      image: '🎯'
+      image: '🎯',
+      recording: false
     },
     {
       id: 2,
@@ -42,7 +43,8 @@ export default function WebinarsPage() {
       speaker: 'Equipe Orbee Labs',
       description: 'Estratégias específicas para médicos, clínicas e profissionais da saúde',
       attendees: 0,
-      image: '🏥'
+      image: '🏥',
+      recording: false
     },
     {
       id: 3,
@@ -52,7 +54,8 @@ export default function WebinarsPage() {
       speaker: 'Equipe Orbee Labs',
       description: 'Aprenda a medir e otimizar o retorno sobre investimento das suas campanhas',
       attendees: 0,
-      image: '📊'
+      image: '📊',
+      recording: false
     }
   ];
 
