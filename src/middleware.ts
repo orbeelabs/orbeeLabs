@@ -27,7 +27,7 @@ export async function middleware(request: NextRequest) {
       isLoggedIn,
       isAdmin,
       isAdminRoute,
-      tokenRole: token?.role,
+      tokenRole: token?.role || undefined,
     });
   }
 
