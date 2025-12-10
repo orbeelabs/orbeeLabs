@@ -10,8 +10,9 @@ import { revalidateRoute } from '@/lib/cms';
 import { Logger } from '@/lib/logger';
 
 export async function POST(request: NextRequest) {
+  const { searchParams } = new URL(request.url);
+  
   try {
-    const { searchParams } = new URL(request.url);
     const secret = searchParams.get('secret');
     const path = searchParams.get('path');
 
