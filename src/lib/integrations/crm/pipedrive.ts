@@ -74,10 +74,15 @@ export class PipedriveAdapter implements CRMAdapter {
         contactId,
       };
     } catch (error) {
-      logApiError(error, 'Pipedrive', 'createContact', { email: data.email });
+      logApiError(error as Error, 'Pipedrive', 'createContact', { email: data.email });
+      
+      // Verificar se é um erro do axios
+      const axiosError = error && typeof error === 'object' && 'response' in error 
+        ? error as { response?: { status?: number; data?: { error?: string } } }
+        : null;
       
       // Se o contato já existe, tentar encontrar
-      if (error.response?.status === 400) {
+      if (axiosError?.response?.status === 400) {
         try {
           const existingContact = await this.findContactByEmail(data.email);
           if (existingContact) {
@@ -93,7 +98,7 @@ export class PipedriveAdapter implements CRMAdapter {
 
       return {
         success: false,
-        error: error.response?.data?.error || 'Erro ao criar contato no Pipedrive',
+        error: axiosError?.response?.data?.error || 'Erro ao criar contato no Pipedrive',
       };
     }
   }
@@ -120,10 +125,16 @@ export class PipedriveAdapter implements CRMAdapter {
         dealId: response.data?.data?.id?.toString(),
       };
     } catch (error) {
-      logApiError(error, 'Pipedrive', 'createDeal', { contactId });
+      logApiError(error as Error, 'Pipedrive', 'createDeal', { contactId });
+      
+      // Verificar se é um erro do axios
+      const axiosError = error && typeof error === 'object' && 'response' in error 
+        ? error as { response?: { data?: { error?: string } } }
+        : null;
+      
       return {
         success: false,
-        error: error.response?.data?.error || 'Erro ao criar deal no Pipedrive',
+        error: axiosError?.response?.data?.error || 'Erro ao criar deal no Pipedrive',
       };
     }
   }

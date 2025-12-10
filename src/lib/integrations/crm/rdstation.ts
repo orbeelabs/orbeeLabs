@@ -1,6 +1,6 @@
 import axios from 'axios';
 import type { CRMAdapter, ContactData, CRMResponse, DealData } from './types';
-import { logApiError } from '@/lib/logger';
+import { logApiError, Logger } from '@/lib/logger';
 
 export class RDStationAdapter implements CRMAdapter {
   private publicToken: string;
@@ -83,7 +83,9 @@ export class RDStationAdapter implements CRMAdapter {
         contactId = await this.findContactByEmail(data.email);
       } catch (findError) {
         // Ignorar erro - contato pode ser criado depois
-        console.warn('Contato ainda não encontrado no RD Station (pode ser criado depois)');
+        Logger.warn('Contato ainda não encontrado no RD Station (pode ser criado depois)', {
+          email: data.email,
+        });
       }
 
       return {
@@ -106,9 +108,14 @@ export class RDStationAdapter implements CRMAdapter {
         // Ignorar erro de busca
       }
 
+      // Verificar se é um erro do axios
+      const axiosError = error && typeof error === 'object' && 'response' in error 
+        ? error as { response?: { data?: { error?: string } } }
+        : null;
+      
       return {
         success: false,
-        error: error.response?.data?.error || 'Erro ao criar contato no RD Station',
+        error: axiosError?.response?.data?.error || 'Erro ao criar contato no RD Station',
       };
     }
   }
@@ -141,9 +148,15 @@ export class RDStationAdapter implements CRMAdapter {
       };
     } catch (error) {
       logApiError(error as Error, 'RD Station', 'createDeal', { contactId });
+      
+      // Verificar se é um erro do axios
+      const axiosError = error && typeof error === 'object' && 'response' in error 
+        ? error as { response?: { data?: { error?: string } } }
+        : null;
+      
       return {
         success: false,
-        error: error.response?.data?.error || 'Erro ao criar deal no RD Station',
+        error: axiosError?.response?.data?.error || 'Erro ao criar deal no RD Station',
       };
     }
   }
