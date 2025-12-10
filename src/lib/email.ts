@@ -1,12 +1,24 @@
 import { Resend } from "resend";
+import { render } from "@react-email/render";
+import ContactTeamEmail from "@/emails/ContactTeamEmail";
+import ContactConfirmationEmail from "@/emails/ContactConfirmationEmail";
+import NewsletterWelcomeEmail from "@/emails/NewsletterWelcomeEmail";
+import InboundEmail from "@/emails/InboundEmail";
+import { maskEmail } from "@/lib/utils/mask-email";
+import { Logger } from "@/lib/logger";
 
 const resend = process.env.RESEND_API_KEY ? new Resend(process.env.RESEND_API_KEY) : null;
 
-interface SendEmailOptions {
+export interface SendEmailOptions {
   to: string | string[];
   subject: string;
   html: string;
   from?: string;
+  attachments?: Array<{
+    filename: string;
+    content: string;
+    contentType?: string;
+  }>;
 }
 
 export async function sendEmail({
@@ -14,29 +26,61 @@ export async function sendEmail({
   subject,
   html,
   from = `Orbee Labs <${process.env.FROM_EMAIL}>`,
+  attachments,
 }: SendEmailOptions) {
   if (!resend) {
-    console.warn("Resend não configurado. Email não enviado.");
+    Logger.warn("Resend não configurado. Email não enviado.");
     return { id: "mock-email-id" };
   }
 
   try {
-    const { data, error } = await resend.emails.send({
+    const emailPayload: {
+      from: string;
+      to: string | string[];
+      subject: string;
+      html: string;
+      attachments?: Array<{ filename: string; content: string | Buffer }>;
+    } = {
       from,
       to,
       subject,
       html,
-    });
+    };
+
+    // Adicionar anexos se fornecidos
+    if (attachments && attachments.length > 0) {
+      emailPayload.attachments = attachments.map(att => ({
+        filename: att.filename,
+        content: Buffer.from(att.content).toString('base64'),
+        type: att.contentType || 'application/json',
+      }));
+    }
+
+    const { data, error } = await resend.emails.send(emailPayload);
 
     if (error) {
-      console.error("Resend error:", error);
+      Logger.error("Erro ao enviar email via Resend", {
+        subject,
+        to: Array.isArray(to) ? to.map(maskEmail).join(', ') : maskEmail(to),
+      }, new Error(error.message));
       throw new Error(error.message);
     }
 
-    console.log("Email sent successfully:", data);
+    // Mascarar email em logs (LGPD)
+    const maskedTo = Array.isArray(to) 
+      ? to.map(maskEmail).join(', ')
+      : maskEmail(to);
+    Logger.info("Email enviado com sucesso", {
+      emailId: data?.id,
+      subject,
+      to: maskedTo,
+    });
     return data;
   } catch (error) {
-    console.error("Failed to send email:", error);
+    Logger.error("Falha ao enviar email", {
+      subject,
+      to: Array.isArray(to) ? to.map(maskEmail).join(', ') : maskEmail(to),
+    }, error as Error);
     throw error;
   }
 }
@@ -56,58 +100,33 @@ export async function sendContactEmail({
   mensagem: string;
 }) {
   // Email para a equipe
+  const teamEmailHtml = await render(
+    ContactTeamEmail({
+      nome,
+      email,
+      telefone,
+      empresa,
+      mensagem,
+    })
+  );
+
   await sendEmail({
     to: process.env.TEAM_EMAIL!,
     subject: `Novo contato: ${nome}`,
-    html: `
-      <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
-        <h2 style="color: #333;">Novo contato recebido</h2>
-        <div style="background: #f5f5f5; padding: 20px; border-radius: 8px;">
-          <p><strong>Nome:</strong> ${nome}</p>
-          <p><strong>Email:</strong> ${email}</p>
-          ${telefone ? `<p><strong>Telefone:</strong> ${telefone}</p>` : ''}
-          ${empresa ? `<p><strong>Empresa:</strong> ${empresa}</p>` : ''}
-          <p><strong>Mensagem:</strong></p>
-          <div style="background: white; padding: 15px; border-radius: 4px; margin-top: 10px;">
-            ${mensagem.replace(/\n/g, '<br>')}
-          </div>
-        </div>
-        <p style="margin-top: 20px; color: #666;">
-          <small>Enviado em ${new Date().toLocaleString('pt-BR')}</small>
-        </p>
-      </div>
-    `,
+    html: teamEmailHtml,
   });
 
   // Email de confirmação para o cliente
+  const confirmationEmailHtml = await render(
+    ContactConfirmationEmail({
+      nome,
+    })
+  );
+
   await sendEmail({
     to: email,
     subject: "Contato recebido - Orbee Labs",
-    html: `
-      <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
-        <h2 style="color: #333;">Olá ${nome}!</h2>
-        <p>Recebemos seu contato e nossa equipe entrará em contato em breve.</p>
-        
-        <div style="background: #f0f9ff; padding: 20px; border-radius: 8px; margin: 20px 0;">
-          <h3 style="color: #0369a1; margin-top: 0;">O que acontece agora?</h3>
-          <ul style="color: #0369a1;">
-            <li>Nossa equipe analisará sua mensagem</li>
-            <li>Entraremos em contato em até 24 horas</li>
-            <li>Agendaremos uma conversa para entender suas necessidades</li>
-          </ul>
-        </div>
-
-        <p>Obrigado por escolher a Orbee Labs!</p>
-        
-        <div style="margin-top: 30px; padding-top: 20px; border-top: 1px solid #eee;">
-          <p style="color: #666; font-size: 14px;">
-            <strong>Orbee Labs</strong><br>
-            Agência Digital<br>
-            📧 ${process.env.FROM_EMAIL}
-          </p>
-        </div>
-      </div>
-    `,
+    html: confirmationEmailHtml,
   });
 }
 
@@ -119,34 +138,15 @@ export async function sendNewsletterEmail({
   email: string;
   nome?: string;
 }) {
+  const newsletterEmailHtml = await render(
+    NewsletterWelcomeEmail({
+      nome: nome || undefined,
+    })
+  );
+
   await sendEmail({
     to: email,
     subject: "Bem-vindo à Newsletter Orbee Labs!",
-    html: `
-      <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
-        <h2 style="color: #333;">Bem-vindo${nome ? `, ${nome}` : ''}!</h2>
-        <p>Você foi inscrito com sucesso na nossa newsletter!</p>
-        
-        <div style="background: #f0f9ff; padding: 20px; border-radius: 8px; margin: 20px 0;">
-          <h3 style="color: #0369a1; margin-top: 0;">O que você receberá:</h3>
-          <ul style="color: #0369a1;">
-            <li>Dicas de marketing digital</li>
-            <li>Cases de sucesso</li>
-            <li>Novidades da Orbee Labs</li>
-            <li>Ofertas exclusivas</li>
-          </ul>
-        </div>
-
-        <p>Fique ligado nas nossas próximas atualizações!</p>
-        
-        <div style="margin-top: 30px; padding-top: 20px; border-top: 1px solid #eee;">
-          <p style="color: #666; font-size: 14px;">
-            <strong>Orbee Labs</strong><br>
-            Agência Digital<br>
-            📧 ${process.env.FROM_EMAIL}
-          </p>
-        </div>
-      </div>
-    `,
+    html: newsletterEmailHtml,
   });
 }
