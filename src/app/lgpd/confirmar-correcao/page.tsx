@@ -1,13 +1,14 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, Suspense } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import { PageLayout } from '@/components/layout';
 import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { CheckCircle, XCircle, Loader2 } from 'lucide-react';
+import { Logger } from '@/lib/logger';
 
-export default function ConfirmarCorrecaoPage() {
+function ConfirmarCorrecaoContent() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const [status, setStatus] = useState<'loading' | 'success' | 'error'>('loading');
@@ -37,7 +38,9 @@ export default function ConfirmarCorrecaoPage() {
       .catch((error) => {
         setStatus('error');
         setMessage('Erro ao processar solicitação');
-        console.error('Erro:', error);
+        Logger.error('Erro ao confirmar correção LGPD', {
+          endpoint: '/api/lgpd/update',
+        }, error as Error);
       });
   }, [searchParams]);
 
@@ -108,6 +111,29 @@ export default function ConfirmarCorrecaoPage() {
         </div>
       </section>
     </PageLayout>
+  );
+}
+
+export default function ConfirmarCorrecaoPage() {
+  return (
+    <Suspense
+      fallback={
+        <PageLayout>
+          <section className="relative py-20 bg-gradient-to-br from-background via-card to-background min-h-screen flex items-center">
+            <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8">
+              <div className="glass glass-hover rounded-2xl p-8 md:p-12 text-center">
+                <Loader2 className="w-16 h-16 mx-auto mb-6 text-primary animate-spin" />
+                <h1 className="text-3xl font-bold text-white mb-4">
+                  Carregando...
+                </h1>
+              </div>
+            </div>
+          </section>
+        </PageLayout>
+      }
+    >
+      <ConfirmarCorrecaoContent />
+    </Suspense>
   );
 }
 
