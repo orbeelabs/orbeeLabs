@@ -36,7 +36,7 @@ export default function InboundEmail({
             <Heading style={h1}>E-mail recebido via webhook</Heading>
           </Section>
 
-          <Section style={content}>
+          <Section style={contentSection}>
             <Row>
               <Column>
                 <Text style={label}>De:</Text>
@@ -111,7 +111,7 @@ const h1 = {
   margin: '0',
 };
 
-const content = {
+const contentSection = {
   backgroundColor: '#2a2a2a',
   padding: '20px',
   borderRadius: '8px',
