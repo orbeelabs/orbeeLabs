@@ -5,6 +5,7 @@ import { z } from 'zod';
 import crypto from 'crypto';
 import { sendEmail } from '@/lib/email';
 import { Logger, logApiError } from '@/lib/logger';
+import type { Prisma } from '@prisma/client';
 
 const deleteRequestSchema = z.object({
   email: z.string().email('Email inválido'),
@@ -43,10 +44,14 @@ export async function POST(request: NextRequest) {
     const { email } = validation.data;
 
     // Verificar se há dados para excluir
+    const roiWhere: Prisma.RoiCalculationWhereInput = {
+      userId: email,
+    };
+    
     const [hasContact, hasNewsletter, hasROI] = await Promise.all([
       prisma.contact.findFirst({ where: { email } }),
       prisma.newsletterSubscriber.findFirst({ where: { email } }),
-      prisma.roiCalculation.findFirst({ where: { userId: email } }),
+      prisma.roiCalculation.findFirst({ where: roiWhere }),
     ]);
 
     if (!hasContact && !hasNewsletter && !hasROI) {
@@ -133,10 +138,14 @@ export async function GET(request: NextRequest) {
     const { email } = tokenData;
 
     // Excluir todos os dados do usuário
+    const roiDeleteWhere: Prisma.RoiCalculationWhereInput = {
+      userId: email,
+    };
+    
     await Promise.all([
       prisma.contact.deleteMany({ where: { email } }),
       prisma.newsletterSubscriber.deleteMany({ where: { email } }),
-      prisma.roiCalculation.deleteMany({ where: { userId: email } }),
+      prisma.roiCalculation.deleteMany({ where: roiDeleteWhere }),
     ]);
 
     // Remover token
