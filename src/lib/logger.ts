@@ -21,13 +21,20 @@ export interface LogContext {
   subscriberId?: string;
   auditId?: string;
   message?: string;
+  emailPrefix?: string;
+  [key: string]: string | number | boolean | undefined;
 }
 
 export class Logger {
   private static formatMessage(level: LogLevel, message: string, context?: LogContext, error?: Error): string {
     const timestamp = new Date().toISOString();
     const contextStr = context ? ` [${JSON.stringify(context)}]` : '';
-    const errorStr = error ? `\nError: ${error.message}\nStack: ${error.stack}` : '';
+    // Não expor stack trace em produção (apenas em desenvolvimento)
+    const errorStr = error 
+      ? process.env.NODE_ENV === 'production'
+        ? `\nError: ${error.message}` // Apenas mensagem em produção
+        : `\nError: ${error.message}\nStack: ${error.stack}` // Stack completo em dev
+      : '';
     
     return `[${timestamp}] ${level.toUpperCase()}${contextStr}: ${message}${errorStr}`;
   }

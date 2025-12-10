@@ -34,7 +34,7 @@ export async function POST(request: NextRequest) {
     if (result?.error) {
       Logger.warn('Tentativa de login falhou', {
         emailPrefix: email.substring(0, 3) + '***',
-        error: result.error,
+        message: result.error,
       });
       return createErrorResponse('Credenciais inválidas', null, 401);
     }
