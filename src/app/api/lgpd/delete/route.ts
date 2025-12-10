@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { NextRequest } from 'next/server';
 import prisma from '@/lib/prisma';
 import { createSuccessResponse, createErrorResponse } from '@/lib/api';
 import { z } from 'zod';
@@ -43,6 +43,7 @@ export async function POST(request: NextRequest) {
     const { email } = validation.data;
 
     // Verificar se há dados para excluir
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const [hasContact, hasNewsletter, hasROI] = await Promise.all([
       prisma.contact.findFirst({ where: { email } }),
       prisma.newsletterSubscriber.findFirst({ where: { email } }),
@@ -133,6 +134,7 @@ export async function GET(request: NextRequest) {
     const { email } = tokenData;
 
     // Excluir todos os dados do usuário
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     await Promise.all([
       prisma.contact.deleteMany({ where: { email } }),
       prisma.newsletterSubscriber.deleteMany({ where: { email } }),
