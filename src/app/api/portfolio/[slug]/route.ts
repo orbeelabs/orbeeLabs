@@ -6,8 +6,10 @@ export async function GET(
   request: NextRequest,
   { params }: { params: Promise<{ slug: string }> }
 ) {
+  let slug: string | undefined;
   try {
-    const { slug } = await params;
+    const resolvedParams = await params;
+    slug = resolvedParams.slug;
 
     // Buscar case por slug
     const caseStudy = await fetchPortfolioCase(slug);
@@ -60,7 +62,7 @@ export async function GET(
     });
   } catch (error) {
     Logger.error("Erro ao buscar case", {
-      endpoint: `/api/portfolio/${slug}`,
+      endpoint: `/api/portfolio/${slug || 'unknown'}`,
       method: 'GET',
     }, error as Error);
     return NextResponse.json(

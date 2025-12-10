@@ -6,8 +6,10 @@ export async function GET(
   request: NextRequest,
   { params }: { params: Promise<{ slug: string }> }
 ) {
+  let slug: string | undefined;
   try {
-    const { slug } = await params;
+    const resolvedParams = await params;
+    slug = resolvedParams.slug;
 
     // Buscar post por slug
     const post = await fetchBlogPost(slug);
@@ -46,7 +48,7 @@ export async function GET(
     });
   } catch (error) {
     Logger.error("Erro ao buscar post", {
-      endpoint: `/api/blog/${slug}`,
+      endpoint: `/api/blog/${slug || 'unknown'}`,
       method: 'GET',
     }, error as Error);
     return NextResponse.json(
