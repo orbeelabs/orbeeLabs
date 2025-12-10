@@ -52,11 +52,12 @@ async function handleGetContacts(request: NextRequest) {
 }
 
 async function handleDeleteContact(request: NextRequest) {
-  try {
-    const { searchParams } = new URL(request.url);
-    const contactId = searchParams.get('id');
+  const { searchParams } = new URL(request.url);
+  const contactId = searchParams.get('id');
+  let id: string | undefined;
 
-    const id = validateId(contactId);
+  try {
+    id = validateId(contactId);
 
     // Verificar se o contato existe
     const existingContact = await prisma.contact.findUnique({
@@ -80,7 +81,7 @@ async function handleDeleteContact(request: NextRequest) {
     Logger.error("Erro ao excluir contato", {
       endpoint: '/api/admin/contacts',
       method: 'DELETE',
-      contactId: id,
+      contactId: id || contactId || 'unknown',
     }, error as Error);
     return createErrorResponse("Erro interno do servidor");
   }
