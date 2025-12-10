@@ -126,7 +126,7 @@ export default function CarreirasPage() {
           <StaggerContainer>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
               {benefits.map((benefit, index) => (
-                <StaggerItem key={index} index={index}>
+                <StaggerItem key={index}>
                   <div className="glass glass-hover p-6 rounded-xl text-center">
                     <div className="text-primary mb-4 flex justify-center">{benefit.icon}</div>
                     <h3 className="text-xl font-bold text-white mb-3">{benefit.title}</h3>
