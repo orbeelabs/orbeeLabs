@@ -3,7 +3,6 @@ nixPkgs = ["python312", "python312Packages.pip", "python312Packages.setuptools"]
 
 [phases.install]
 cmds = [
-  "pip install --upgrade pip",
   "pip install -r requirements.txt"
 ]
 
