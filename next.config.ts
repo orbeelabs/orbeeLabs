@@ -11,6 +11,25 @@ const nextConfig: NextConfig = {
     ignoreDuringBuilds: false,
   },
   
+  // Configuração para resolver problemas com jsdom e isomorphic-dompurify
+  webpack: (config, { isServer }) => {
+    if (isServer) {
+      // Não externalizar jsdom no servidor
+      config.externals = config.externals || [];
+      if (Array.isArray(config.externals)) {
+        config.externals = config.externals.filter(
+          (external) => typeof external !== 'string' || !external.includes('jsdom')
+        );
+      }
+    }
+    return config;
+  },
+  
+  // Configuração do Turbopack
+  experimental: {
+    serverExternalPackages: ['jsdom'],
+  },
+  
   // Headers de segurança
   async headers() {
     return [
