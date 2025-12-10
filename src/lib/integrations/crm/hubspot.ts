@@ -82,8 +82,13 @@ export class HubSpotAdapter implements CRMAdapter {
     } catch (error) {
       logApiError(error as Error, 'HubSpot', 'createContact', { email: data.email });
       
+      // Verificar se é um erro do axios
+      const axiosError = error && typeof error === 'object' && 'response' in error 
+        ? error as { response?: { status?: number; data?: { message?: string } } }
+        : null;
+      
       // Se o contato já existe, tentar atualizar
-      if (error.response?.status === 409) {
+      if (axiosError?.response?.status === 409) {
         try {
           const existingContact = await this.findContactByEmail(data.email);
           if (existingContact) {
@@ -99,7 +104,7 @@ export class HubSpotAdapter implements CRMAdapter {
 
       return {
         success: false,
-        error: error.response?.data?.message || 'Erro ao criar contato no HubSpot',
+        error: axiosError?.response?.data?.message || 'Erro ao criar contato no HubSpot',
       };
     }
   }
@@ -139,9 +144,15 @@ export class HubSpotAdapter implements CRMAdapter {
       };
     } catch (error) {
       logApiError(error as Error, 'HubSpot', 'createDeal', { contactId });
+      
+      // Verificar se é um erro do axios
+      const axiosError = error && typeof error === 'object' && 'response' in error 
+        ? error as { response?: { data?: { message?: string } } }
+        : null;
+      
       return {
         success: false,
-        error: error.response?.data?.message || 'Erro ao criar deal no HubSpot',
+        error: axiosError?.response?.data?.message || 'Erro ao criar deal no HubSpot',
       };
     }
   }
