@@ -25,7 +25,7 @@ export class RDStationAdapter implements CRMAdapter {
         personal_phone: string;
         company_name: string;
         website: string;
-        [key: string]: string | number | boolean | undefined;
+        [key: string]: string | number | boolean | string[] | undefined;
       } = {
         name: data.name,
         email: data.email,
