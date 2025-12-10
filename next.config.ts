@@ -11,11 +11,8 @@ const nextConfig: NextConfig = {
     ignoreDuringBuilds: false,
   },
   
-  // Configuração do Turbopack para resolver problemas com jsdom e isomorphic-dompurify
-  experimental: {
-    // Não externalizar jsdom - incluir no bundle
-    serverExternalPackages: [],
-  },
+  // Configuração para resolver problemas com jsdom e isomorphic-dompurify
+  // O jsdom foi adicionado como dependência explícita para garantir que todos os arquivos estejam disponíveis
   
   // Headers de segurança
   async headers() {
