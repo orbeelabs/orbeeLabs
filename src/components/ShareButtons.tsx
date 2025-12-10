@@ -211,7 +211,7 @@ export default function ShareButtons({
         <Button
           onClick={navigator.share ? shareNative : copyLink}
           variant={variant}
-          size={size}
+          size={buttonSizeProp as 'default' | 'icon' | 'sm' | 'lg'}
           className={`${buttonSize[size]} ${showLabels ? 'gap-2' : ''}`}
         >
           {copied ? (
