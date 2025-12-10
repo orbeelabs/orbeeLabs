@@ -114,7 +114,8 @@ export async function createCalendarEvent({
     }, error as Error);
     
     // Se o erro for de autenticação, dar mensagem mais clara
-    if (error.message?.includes('Invalid Credentials') || error.message?.includes('No access')) {
+    const errorMessage = error instanceof Error ? error.message : String(error);
+    if (errorMessage.includes('Invalid Credentials') || errorMessage.includes('No access')) {
       throw new Error('Autenticação Google necessária. Por favor, autorize o acesso primeiro acessando /api/auth/google');
     }
     
@@ -191,7 +192,9 @@ export async function getAvailableTimeSlots(date: string) {
 
     return availableSlots.length > 0 ? availableSlots : defaultSlots;
   } catch (error) {
-    console.error('Erro ao buscar horários do Google Calendar (usando horários padrão):', error);
+    Logger.error('Erro ao buscar horários do Google Calendar (usando horários padrão)', {
+      operation: 'getAvailableTimeSlots',
+    }, error as Error);
     // Se der erro, retornar horários padrão
     return defaultSlots;
   }
