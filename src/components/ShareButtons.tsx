@@ -146,11 +146,14 @@ export default function ShareButtons({
   ) => {
     if (!show) return null;
 
+    // Mapear 'md' para 'default' pois Button não aceita 'md'
+    const buttonSizeProp = size === 'md' ? 'default' : size;
+    
     return (
       <Button
         onClick={onClick}
         variant={variant}
-        size={size}
+        size={buttonSizeProp as 'default' | 'icon' | 'sm' | 'lg'}
         className={`${buttonSize[size]} ${showLabels ? 'gap-2' : ''}`}
       >
         <span className={iconSize[size]}>{icon}</span>
