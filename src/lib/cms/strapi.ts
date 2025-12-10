@@ -207,7 +207,7 @@ export async function fetchBlogPostsFromStrapi(
  */
 export async function fetchBlogPostFromStrapi(slug: string): Promise<Post | null> {
   try {
-    const response = await strapiFetch<StrapiResponse<StrapiPost>>(
+    const response = await strapiFetch<StrapiResponse<StrapiPost[]>>(
       `/posts?filters[slug][$eq]=${slug}&populate=*`
     );
 
@@ -217,7 +217,10 @@ export async function fetchBlogPostFromStrapi(slug: string): Promise<Post | null
 
     return mapStrapiPostToPost(response.data[0]);
   } catch (error) {
-    console.error('Erro ao buscar post do Strapi:', error);
+    Logger.error('Erro ao buscar post do Strapi', {
+      endpoint: '/posts',
+      slug,
+    }, error as Error);
     return null;
   }
 }
@@ -250,7 +253,7 @@ export async function fetchPortfolioCaseFromStrapi(
   slug: string
 ): Promise<CaseStudy | null> {
   try {
-    const response = await strapiFetch<StrapiResponse<StrapiCaseStudy>>(
+    const response = await strapiFetch<StrapiResponse<StrapiCaseStudy[]>>(
       `/case-studies?filters[slug][$eq]=${slug}&populate=*`
     );
 
@@ -260,7 +263,10 @@ export async function fetchPortfolioCaseFromStrapi(
 
     return mapStrapiCaseStudyToCaseStudy(response.data[0]);
   } catch (error) {
-    console.error('Erro ao buscar case do Strapi:', error);
+    Logger.error('Erro ao buscar case do Strapi', {
+      endpoint: '/case-studies',
+      slug,
+    }, error as Error);
     return null;
   }
 }
