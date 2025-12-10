@@ -16,7 +16,7 @@ export function sanitizeHtml(html: string, allowBasicFormatting: boolean = false
     return '';
   }
 
-  const config: DOMPurify.Config = {
+  const config = {
     ALLOWED_TAGS: allowBasicFormatting 
       ? ['p', 'br', 'strong', 'em', 'u', 'a', 'ul', 'ol', 'li']
       : [],
@@ -28,7 +28,7 @@ export function sanitizeHtml(html: string, allowBasicFormatting: boolean = false
     RETURN_DOM: false,
     RETURN_DOM_FRAGMENT: false,
     RETURN_TRUSTED_TYPE: false,
-  };
+  } as const;
 
   return DOMPurify.sanitize(html, config);
 }
