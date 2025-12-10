@@ -43,10 +43,10 @@ export async function POST(request: NextRequest) {
     const { email } = validation.data;
 
     // Verificar se há dados para excluir
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const [hasContact, hasNewsletter, hasROI] = await Promise.all([
       prisma.contact.findFirst({ where: { email } }),
       prisma.newsletterSubscriber.findFirst({ where: { email } }),
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       prisma.roiCalculation.findFirst({ where: { userId: email } as any }),
     ]);
 
@@ -134,10 +134,10 @@ export async function GET(request: NextRequest) {
     const { email } = tokenData;
 
     // Excluir todos os dados do usuário
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     await Promise.all([
       prisma.contact.deleteMany({ where: { email } }),
       prisma.newsletterSubscriber.deleteMany({ where: { email } }),
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       prisma.roiCalculation.deleteMany({ where: { userId: email } as any }),
     ]);
 
