@@ -5,7 +5,6 @@ import { z } from 'zod';
 import crypto from 'crypto';
 import { sendEmail } from '@/lib/email';
 import { Logger, logApiError } from '@/lib/logger';
-import type { Prisma } from '@prisma/client';
 
 const deleteRequestSchema = z.object({
   email: z.string().email('Email inválido'),
@@ -44,7 +43,9 @@ export async function POST(request: NextRequest) {
     const { email } = validation.data;
 
     // Verificar se há dados para excluir
-    const roiWhere: Prisma.RoiCalculationWhereInput = {
+    const roiWhere: {
+      userId: string;
+    } = {
       userId: email,
     };
     
@@ -138,7 +139,9 @@ export async function GET(request: NextRequest) {
     const { email } = tokenData;
 
     // Excluir todos os dados do usuário
-    const roiDeleteWhere: Prisma.RoiCalculationWhereInput = {
+    const roiDeleteWhere: {
+      userId: string;
+    } = {
       userId: email,
     };
     
