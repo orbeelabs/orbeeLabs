@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getToken } from "next-auth/jwt";
+import { auth } from "@/auth";
 import { Logger } from "@/lib/logger";
 import { authRateLimitMiddleware } from "./middleware-auth";
 
@@ -10,13 +10,14 @@ export async function middleware(request: NextRequest) {
     return authRateLimit;
   }
 
-  const token = await getToken({ 
-    req: request, 
-    secret: process.env.NEXTAUTH_SECRET 
+  // Usar auth() do NextAuth v5
+  // No NextAuth v5, precisamos passar o request explicitamente
+  const session = await auth({
+    headers: request.headers,
   });
-
-  const isLoggedIn = !!token;
-  const isAdmin = token?.role === 'ADMIN';
+  
+  const isLoggedIn = !!session?.user;
+  const isAdmin = session?.user?.role === 'ADMIN';
   const isAdminRoute = request.nextUrl.pathname.startsWith('/admin');
 
   // Debug apenas em desenvolvimento - não expor email em produção
@@ -27,7 +28,8 @@ export async function middleware(request: NextRequest) {
       isLoggedIn,
       isAdmin,
       isAdminRoute,
-      tokenRole: token?.role || undefined,
+      userRole: session?.user?.role || undefined,
+      userId: session?.user?.id || undefined,
     });
   }
 
@@ -43,7 +45,7 @@ export async function middleware(request: NextRequest) {
     Logger.warn('Acesso negado - usuário não é admin', {
       endpoint: request.nextUrl.pathname,
       method: request.method,
-      userId: token?.id as string,
+      userId: session?.user?.id as string,
     });
     return NextResponse.redirect(new URL('/login', request.url));
   }
@@ -51,7 +53,7 @@ export async function middleware(request: NextRequest) {
   if (isAdminRoute && isLoggedIn && isAdmin) {
     Logger.debug('Acesso autorizado ao admin', {
       endpoint: request.nextUrl.pathname,
-      userId: token?.id as string,
+      userId: session?.user?.id as string,
     });
   }
 

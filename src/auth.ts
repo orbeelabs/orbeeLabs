@@ -70,6 +70,20 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
   ],
   session: {
     strategy: "jwt",
+    maxAge: 30 * 24 * 60 * 60, // 30 dias
+    updateAge: 24 * 60 * 60, // Atualizar sessão a cada 24 horas
+  },
+  cookies: {
+    sessionToken: {
+      name: `${process.env.NODE_ENV === 'production' ? '__Secure-' : ''}next-auth.session-token`,
+      options: {
+        httpOnly: true,
+        sameSite: 'lax',
+        path: '/',
+        secure: process.env.NODE_ENV === 'production',
+        // Não definir domain explicitamente - deixa o NextAuth gerenciar
+      },
+    },
   },
   callbacks: {
     async jwt({ token, user }) {
@@ -104,6 +118,8 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     error: "/login",
   },
   secret: process.env.NEXTAUTH_SECRET,
+  trustHost: true, // Permite funcionar em diferentes domínios
+  debug: process.env.NODE_ENV === 'development', // Debug em desenvolvimento
 });
 
 

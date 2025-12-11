@@ -27,16 +27,21 @@ export default function LoginPage() {
 
       if (result?.error) {
         toast.error('Credenciais inválidas');
+        setIsLoading(false);
       } else if (result?.ok) {
         toast.success('Login realizado com sucesso!');
-        // Usar window.location para garantir o redirecionamento
-        window.location.href = '/admin';
+        // Aguardar mais tempo para garantir que a sessão foi criada e o cookie foi definido
+        setTimeout(() => {
+          // Forçar reload completo para garantir que a sessão seja lida
+          window.location.href = '/admin';
+        }, 500);
       } else {
         toast.error('Erro inesperado no login');
+        setIsLoading(false);
       }
     } catch (error) {
+      console.error('Erro no login:', error);
       toast.error('Erro ao fazer login');
-    } finally {
       setIsLoading(false);
     }
   };
