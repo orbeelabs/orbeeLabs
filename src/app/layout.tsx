@@ -96,9 +96,9 @@ export default function RootLayout({
         <Providers>
           <ConsoleFilter />
           <WebVitals />
+          {children}
           <SpeedInsights />
           <Analytics />
-          {children}
           <CookieBanner />
         </Providers>
       </body>
