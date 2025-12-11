@@ -3,7 +3,6 @@
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
-import { motion } from 'framer-motion';
 import { PageLayout } from '@/components/layout';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -44,7 +43,6 @@ const CATEGORIES = [
 export default function NewPostPage() {
   const { data: session, status } = useSession();
   const router = useRouter();
-  const isNew = true;
   
   const [isSaving, setIsSaving] = useState(false);
   const [formData, setFormData] = useState<PostFormData>({

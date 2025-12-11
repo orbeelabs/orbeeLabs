@@ -2,8 +2,7 @@
 
 import { useSession } from 'next-auth/react';
 import { useRouter, useParams } from 'next/navigation';
-import { useEffect, useState } from 'react';
-import { motion } from 'framer-motion';
+import { useEffect, useState, useCallback } from 'react';
 import { PageLayout } from '@/components/layout';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -97,13 +96,7 @@ export default function CaseEditPage() {
     }
   }, [status, router]);
 
-  useEffect(() => {
-    if (!isNew && session) {
-      fetchCase();
-    }
-  }, [id, session, isNew]);
-
-  const fetchCase = async () => {
+  const fetchCase = useCallback(async () => {
     try {
       const response = await fetch(`/api/admin/cases/${id}`);
       if (response.ok) {
@@ -145,7 +138,13 @@ export default function CaseEditPage() {
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [id, router]);
+
+  useEffect(() => {
+    if (!isNew && session) {
+      fetchCase();
+    }
+  }, [id, session, isNew, fetchCase]);
 
   const generateSlug = (title: string) => {
     return title

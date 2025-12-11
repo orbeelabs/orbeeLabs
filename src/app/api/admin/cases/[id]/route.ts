@@ -3,7 +3,7 @@ import prisma from "@/lib/prisma";
 import { 
   createErrorResponse, 
   createSuccessResponse,
-  withAdmin,
+  withAdminDynamic,
 } from "@/lib/api";
 import { Logger } from "@/lib/logger";
 import { z } from "zod";
@@ -52,7 +52,8 @@ const updateCaseSchema = z.object({
   publishedAt: z.string().datetime().optional(),
 });
 
-async function handleGetCase(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+async function handleGetCase(request: NextRequest, { params }: { params: Promise<{ id: string }> }, _session: unknown) {
   const { id } = await params;
   
   try {
@@ -75,7 +76,8 @@ async function handleGetCase(request: NextRequest, { params }: { params: Promise
   }
 }
 
-async function handleUpdateCase(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+async function handleUpdateCase(request: NextRequest, { params }: { params: Promise<{ id: string }> }, _session: unknown) {
   const { id } = await params;
   
   try {
@@ -94,7 +96,7 @@ async function handleUpdateCase(request: NextRequest, { params }: { params: Prom
     if (!validation.success) {
       return createErrorResponse(
         "Dados inválidos",
-        validation.error.errors,
+        validation.error.issues,
         400
       );
     }
@@ -141,7 +143,8 @@ async function handleUpdateCase(request: NextRequest, { params }: { params: Prom
   }
 }
 
-async function handleDeleteCase(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+async function handleDeleteCase(request: NextRequest, { params }: { params: Promise<{ id: string }> }, _session: unknown) {
   const { id } = await params;
   
   try {
@@ -173,7 +176,7 @@ async function handleDeleteCase(request: NextRequest, { params }: { params: Prom
   }
 }
 
-export const GET = withAdmin(handleGetCase);
-export const PUT = withAdmin(handleUpdateCase);
-export const DELETE = withAdmin(handleDeleteCase);
+export const GET = withAdminDynamic(handleGetCase);
+export const PUT = withAdminDynamic(handleUpdateCase);
+export const DELETE = withAdminDynamic(handleDeleteCase);
 

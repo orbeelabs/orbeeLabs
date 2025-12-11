@@ -2,8 +2,7 @@
 
 import { useSession } from 'next-auth/react';
 import { useRouter, useParams } from 'next/navigation';
-import { useEffect, useState } from 'react';
-import { motion } from 'framer-motion';
+import { useEffect, useState, useCallback } from 'react';
 import { PageLayout } from '@/components/layout';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -73,13 +72,7 @@ export default function PostEditPage() {
     }
   }, [status, router]);
 
-  useEffect(() => {
-    if (!isNew && session) {
-      fetchPost();
-    }
-  }, [id, session, isNew]);
-
-  const fetchPost = async () => {
+  const fetchPost = useCallback(async () => {
     try {
       const response = await fetch(`/api/admin/posts/${id}`);
       if (response.ok) {
@@ -111,7 +104,13 @@ export default function PostEditPage() {
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [id, router]);
+
+  useEffect(() => {
+    if (!isNew && session) {
+      fetchPost();
+    }
+  }, [id, session, isNew, fetchPost]);
 
   const generateSlug = (title: string) => {
     return title

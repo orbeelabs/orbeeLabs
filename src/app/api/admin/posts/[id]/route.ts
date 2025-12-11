@@ -3,8 +3,7 @@ import prisma from "@/lib/prisma";
 import { 
   createErrorResponse, 
   createSuccessResponse,
-  withAdmin,
-  validateId
+  withAdminDynamic,
 } from "@/lib/api";
 import { Logger } from "@/lib/logger";
 import { z } from "zod";
@@ -31,7 +30,8 @@ const updatePostSchema = z.object({
   }),
 });
 
-async function handleGetPost(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+async function handleGetPost(request: NextRequest, { params }: { params: Promise<{ id: string }> }, _session: unknown) {
   const { id } = await params;
   
   try {
@@ -54,7 +54,8 @@ async function handleGetPost(request: NextRequest, { params }: { params: Promise
   }
 }
 
-async function handleUpdatePost(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+async function handleUpdatePost(request: NextRequest, { params }: { params: Promise<{ id: string }> }, _session: unknown) {
   const { id } = await params;
   
   try {
@@ -73,7 +74,7 @@ async function handleUpdatePost(request: NextRequest, { params }: { params: Prom
     if (!validation.success) {
       return createErrorResponse(
         "Dados inválidos",
-        validation.error.errors,
+        validation.error.issues,
         400
       );
     }
@@ -120,7 +121,8 @@ async function handleUpdatePost(request: NextRequest, { params }: { params: Prom
   }
 }
 
-async function handleDeletePost(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+async function handleDeletePost(request: NextRequest, { params }: { params: Promise<{ id: string }> }, _session: unknown) {
   const { id } = await params;
   
   try {
@@ -152,7 +154,7 @@ async function handleDeletePost(request: NextRequest, { params }: { params: Prom
   }
 }
 
-export const GET = withAdmin(handleGetPost);
-export const PUT = withAdmin(handleUpdatePost);
-export const DELETE = withAdmin(handleDeletePost);
+export const GET = withAdminDynamic(handleGetPost);
+export const PUT = withAdminDynamic(handleUpdatePost);
+export const DELETE = withAdminDynamic(handleDeletePost);
 

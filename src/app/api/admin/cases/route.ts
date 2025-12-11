@@ -115,7 +115,7 @@ async function handleCreateCase(request: NextRequest) {
     if (!validation.success) {
       return createErrorResponse(
         "Dados inválidos",
-        validation.error.errors,
+        validation.error.issues,
         400
       );
     }

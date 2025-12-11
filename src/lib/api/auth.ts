@@ -65,3 +65,18 @@ export function withAdmin(handler: (request: NextRequest, session: unknown) => P
     return handler(request, session);
   };
 }
+
+// Middleware wrapper para APIs de admin com rotas dinâmicas
+export function withAdminDynamic<T extends Record<string, string | string[]>>(
+  handler: (request: NextRequest, context: { params: Promise<T> }, session: unknown) => Promise<NextResponse>
+) {
+  return async (request: NextRequest, context: { params: Promise<T> }) => {
+    const session = await requireAdmin();
+    
+    if (session instanceof NextResponse) {
+      return session; // Retorna erro de auth/admin
+    }
+    
+    return handler(request, context, session);
+  };
+}

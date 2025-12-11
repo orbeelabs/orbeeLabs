@@ -8,7 +8,6 @@ import {
   extractQueryParams,
   createSearchFilter,
   createOrderBy,
-  validateId
 } from "@/lib/api";
 import { Logger } from "@/lib/logger";
 import { z } from "zod";
@@ -99,7 +98,7 @@ async function handleCreatePost(request: NextRequest) {
     if (!validation.success) {
       return createErrorResponse(
         "Dados inválidos",
-        validation.error.errors,
+        validation.error.issues,
         400
       );
     }

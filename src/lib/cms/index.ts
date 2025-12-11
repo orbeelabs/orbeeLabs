@@ -162,7 +162,7 @@ export async function fetchPortfolioCase(slug: string): Promise<CaseStudy | null
 /**
  * Busca depoimentos
  */
-export async function fetchTestimonials(filters: CMSFilters = {}) {
+export async function fetchTestimonials(_filters: CMSFilters = {}) {
   // Depoimentos podem ser implementados no Prisma se necessário
   return [];
 }
@@ -170,7 +170,7 @@ export async function fetchTestimonials(filters: CMSFilters = {}) {
 /**
  * Revalida uma rota (para cache do Next.js)
  */
-export async function revalidateRoute(path: string): Promise<void> {
+export async function revalidateRoute(_path: string): Promise<void> {
   // Para Prisma, não há necessidade de revalidação via webhook
   // Os dados são sempre atualizados em tempo real
 }
