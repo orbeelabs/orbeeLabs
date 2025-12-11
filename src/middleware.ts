@@ -11,9 +11,15 @@ export async function middleware(request: NextRequest) {
   }
 
   // Usar getToken do next-auth/jwt no middleware (forma correta para NextAuth v5)
+  // Importante: especificar o nome do cookie baseado no ambiente
+  const cookieName = process.env.NODE_ENV === 'production' 
+    ? '__Secure-next-auth.session-token' 
+    : 'next-auth.session-token';
+  
   const token = await getToken({ 
     req: request,
     secret: process.env.NEXTAUTH_SECRET,
+    cookieName,
   });
   
   // Converter token para formato de sessão

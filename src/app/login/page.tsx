@@ -31,10 +31,11 @@ export default function LoginPage() {
       } else if (result?.ok) {
         toast.success('Login realizado com sucesso!');
         // Aguardar mais tempo para garantir que a sessão foi criada e o cookie foi definido
+        // Em produção, pode precisar de mais tempo
         setTimeout(() => {
           // Forçar reload completo para garantir que a sessão seja lida
           window.location.href = '/admin';
-        }, 500);
+        }, 1000);
       } else {
         toast.error('Erro inesperado no login');
         setIsLoading(false);
