@@ -1,12 +1,11 @@
 /**
- * API Route para revalidação de conteúdo (webhook do CMS)
+ * API Route para revalidação de cache do Next.js
  * 
- * Esta rota é chamada pelo Strapi quando conteúdo é atualizado.
- * Configure o webhook no Strapi para chamar: POST /api/revalidate?secret=...&path=...
+ * Esta rota pode ser usada para revalidar páginas específicas após atualizações.
  */
 
 import { NextRequest, NextResponse } from 'next/server';
-import { revalidateRoute } from '@/lib/cms';
+import { revalidatePath } from 'next/cache';
 import { Logger } from '@/lib/logger';
 
 export async function POST(request: NextRequest) {
@@ -40,7 +39,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Revalidar rota
-    await revalidateRoute(path);
+    revalidatePath(path);
 
     return NextResponse.json({
       revalidated: true,
@@ -59,4 +58,3 @@ export async function POST(request: NextRequest) {
     );
   }
 }
-

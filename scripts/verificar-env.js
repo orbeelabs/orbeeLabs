@@ -47,10 +47,6 @@ const variaveisNecessarias = {
   RDSTATION_PRIVATE_TOKEN: { categoria: 'CRM', obrigatoria: false },
   
   // CMS
-  CMS_PROVIDER: { categoria: 'CMS', obrigatoria: false },
-  STRAPI_API_URL: { categoria: 'CMS', obrigatoria: false },
-  STRAPI_API_TOKEN: { categoria: 'CMS', obrigatoria: false },
-  CMS_REVALIDATE: { categoria: 'CMS', obrigatoria: false },
   REVALIDATE_SECRET: { categoria: 'CMS', obrigatoria: false },
   
   // FastAPI

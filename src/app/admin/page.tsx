@@ -7,13 +7,15 @@ import { motion } from 'framer-motion';
 import { PageLayout } from '@/components/layout';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { LogOut, Users, Mail, Search, BarChart3 } from 'lucide-react';
+import { LogOut, Users, Mail, Search, BarChart3, FileText, Briefcase } from 'lucide-react';
 
 interface DashboardStats {
   contacts: number;
   subscribers: number;
   audits: number;
   roiCalculations: number;
+  posts: number;
+  cases: number;
 }
 
 export default function AdminDashboard() {
@@ -24,6 +26,8 @@ export default function AdminDashboard() {
     subscribers: 0,
     audits: 0,
     roiCalculations: 0,
+    posts: 0,
+    cases: 0,
   });
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -47,24 +51,28 @@ export default function AdminDashboard() {
       setError(null);
       
       // Chamar todas as APIs em paralelo para melhor performance
-      const [contactsRes, newsletterRes, auditsRes, roiRes] = await Promise.all([
+      const [contactsRes, newsletterRes, auditsRes, roiRes, postsRes, casesRes] = await Promise.all([
         fetch('/api/admin/contacts/count'),
         fetch('/api/admin/newsletter/count'),
         fetch('/api/admin/audits/count'),
         fetch('/api/admin/roi/count'),
+        fetch('/api/admin/posts'),
+        fetch('/api/admin/cases'),
       ]);
 
       // Verificar se todas as respostas foram bem-sucedidas
-      if (!contactsRes.ok || !newsletterRes.ok || !auditsRes.ok || !roiRes.ok) {
+      if (!contactsRes.ok || !newsletterRes.ok || !auditsRes.ok || !roiRes.ok || !postsRes.ok || !casesRes.ok) {
         throw new Error('Erro ao buscar estatísticas das APIs');
       }
 
       // Extrair os dados JSON de cada resposta
-      const [contactsData, newsletterData, auditsData, roiData] = await Promise.all([
+      const [contactsData, newsletterData, auditsData, roiData, postsData, casesData] = await Promise.all([
         contactsRes.json(),
         newsletterRes.json(),
         auditsRes.json(),
         roiRes.json(),
+        postsRes.json(),
+        casesRes.json(),
       ]);
 
       // Atualizar o estado com os dados reais
@@ -73,6 +81,8 @@ export default function AdminDashboard() {
         subscribers: newsletterData.count || 0,
         audits: auditsData.count || 0,
         roiCalculations: roiData.count || 0,
+        posts: postsData.pagination?.total || postsData.data?.length || 0,
+        cases: casesData.pagination?.total || casesData.data?.length || 0,
       });
     } catch (error) {
       console.error('Erro ao buscar estatísticas:', error);
@@ -83,6 +93,8 @@ export default function AdminDashboard() {
         subscribers: 0,
         audits: 0,
         roiCalculations: 0,
+        posts: 0,
+        cases: 0,
       });
     } finally {
       setIsLoading(false);
@@ -151,7 +163,7 @@ export default function AdminDashboard() {
           )}
 
           {/* Stats Cards */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -215,6 +227,38 @@ export default function AdminDashboard() {
                 </div>
               </Card>
             </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.4 }}
+            >
+              <Card className="glass p-6">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-gray-300 text-sm mb-2">Posts do Blog</p>
+                    <p className="text-3xl font-bold text-white leading-none">{stats.posts}</p>
+                  </div>
+                  <FileText className="w-8 h-8 text-primary" />
+                </div>
+              </Card>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.5 }}
+            >
+              <Card className="glass p-6">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-gray-300 text-sm mb-2">Cases de Sucesso</p>
+                    <p className="text-3xl font-bold text-white leading-none">{stats.cases}</p>
+                  </div>
+                  <Briefcase className="w-8 h-8 text-primary" />
+                </div>
+              </Card>
+            </motion.div>
           </div>
 
           {/* Quick Actions */}
@@ -225,7 +269,7 @@ export default function AdminDashboard() {
           >
             <Card className="glass p-6">
               <h2 className="text-xl font-bold text-white mb-6 leading-tight tracking-tight">Ações Rápidas</h2>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                 <Button
                   onClick={() => router.push('/admin/contacts')}
                   className="flex items-center space-x-2 h-12"
@@ -246,6 +290,20 @@ export default function AdminDashboard() {
                 >
                   <Search className="w-5 h-5" />
                   <span>Ver Auditorias</span>
+                </Button>
+                <Button
+                  onClick={() => router.push('/admin/posts')}
+                  className="flex items-center space-x-2 h-12"
+                >
+                  <FileText className="w-5 h-5" />
+                  <span>Gerenciar Posts</span>
+                </Button>
+                <Button
+                  onClick={() => router.push('/admin/cases')}
+                  className="flex items-center space-x-2 h-12"
+                >
+                  <Briefcase className="w-5 h-5" />
+                  <span>Gerenciar Cases</span>
                 </Button>
               </div>
             </Card>

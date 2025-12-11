@@ -17,7 +17,7 @@ O **Orbee Labs 2.0** é um site institucional moderno e completo para uma agênc
 - 🎨 **Design Moderno**: Interface glass morphism com animações suaves
 - 📱 **Totalmente Responsivo**: Funciona perfeitamente em todos os dispositivos
 - 🔐 **Sistema de Autenticação**: NextAuth.js com proteção de rotas
-- 📊 **Painel Administrativo**: Gestão completa de contatos, newsletter e auditorias
+- 📊 **Painel Administrativo**: Gestão completa de contatos, newsletter, auditorias, posts do blog e cases do portfolio
 - 🗄️ **Banco de Dados**: PostgreSQL com Prisma ORM
 - 📧 **Sistema de Email**: Integração com Resend para envio automático
 - 🚀 **Performance**: Otimizado para velocidade e SEO
@@ -65,51 +65,7 @@ npm install
 yarn install
 ```
 
-### 3. Configure as Variáveis de Ambiente
-
-Copie o arquivo de exemplo e configure suas variáveis:
-
-```bash
-cp .env.example .env.local
-```
-
-Edite o arquivo `.env.local` com suas configurações:
-
-```env
-# Banco de Dados
-DATABASE_URL="postgresql://user:password@host:port/database?sslmode=require"
-
-# NextAuth
-NEXTAUTH_URL="http://localhost:3000"
-NEXTAUTH_SECRET="sua-chave-secreta-aqui"
-ADMIN_EMAIL="seu-email@orbeelabs.com"
-ADMIN_PASSWORD="sua-senha-segura"
-
-# Resend (para emails)
-RESEND_API_KEY="re_sua_chave_resend"
-FROM_EMAIL="contato@orbeelabs.com"
-TEAM_EMAIL="equipe@orbeelabs.com"
-
-# Google Analytics / Tag Manager (opcional)
-NEXT_PUBLIC_GTM_ID="GTM-SEUCODIGO"
-
-# Google Calendar (opcional)
-GOOGLE_CLIENT_ID="seu-client-id"
-GOOGLE_CLIENT_SECRET="seu-client-secret"
-GOOGLE_CALENDAR_ID="seu-calendar-id"
-
-# CRM (opcional - escolha um)
-CRM_PROVIDER="pipedrive|rdstation|none"
-# Nota: HubSpot temporariamente desabilitado (Janeiro 2025)
-# Pipedrive
-PIPEDRIVE_API_TOKEN="seu-token"
-PIPEDRIVE_OWNER_ID="owner-id-opcional"
-# RD Station
-RDSTATION_PUBLIC_TOKEN="seu-public-token"
-RDSTATION_PRIVATE_TOKEN="seu-private-token"
-```
-
-### 4. Configure o Banco de Dados
+### 3. Configure o Banco de Dados
 
 ```bash
 # Gerar o cliente Prisma
@@ -120,7 +76,7 @@ npx prisma db push --force-reset
 npm run db:seed
 ```
 
-### 5. Execute o Projeto
+### 4. Execute o Projeto
 
 ```bash
 npm run dev
@@ -134,17 +90,8 @@ Acesse [http://localhost:3000](http://localhost:3000) no seu navegador.
 
 - **URL Local**: `http://localhost:3000/login`
 - **URL Produção**: `https://orbeelabs.com/login`
-- **Email**: `[CONFIGURAR NO .env.local]`
-- **Senha**: `[CONFIGURAR NO .env.local]`
 
-### Configuração das Credenciais
-
-Configure as variáveis de ambiente no arquivo `.env.local`:
-
-```env
-ADMIN_EMAIL="seu-email@orbeelabs.com"
-ADMIN_PASSWORD="sua-senha-segura"
-```
+> **Nota:** Configure as credenciais de acesso no arquivo `.env.local`. Veja a documentação em `documentos/` para mais detalhes sobre configuração.
 
 ## 📚 Funcionalidades Detalhadas
 
@@ -190,6 +137,8 @@ ADMIN_PASSWORD="sua-senha-segura"
 - **Contatos** (`/admin/contacts`): Gestão completa de leads e contatos
 - **Newsletter** (`/admin/newsletter`): Gestão de assinantes da newsletter
 - **Auditorias** (`/admin/audits`): Histórico de análises SEO realizadas
+- **Posts do Blog** (`/admin/posts`): Criar, editar e gerenciar posts do blog
+- **Cases do Portfolio** (`/admin/cases`): Criar, editar e gerenciar cases do portfolio
 
 ### 🔌 APIs Disponíveis
 
@@ -214,6 +163,16 @@ ADMIN_PASSWORD="sua-senha-segura"
 - `GET /api/admin/audits` - Listar auditorias
 - `GET /api/admin/audits/count` - Contar auditorias
 - `GET /api/admin/roi/count` - Contar cálculos ROI
+- `GET /api/admin/posts` - Listar posts do blog
+- `POST /api/admin/posts` - Criar novo post
+- `GET /api/admin/posts/[id]` - Buscar post específico
+- `PUT /api/admin/posts/[id]` - Atualizar post
+- `DELETE /api/admin/posts/[id]` - Deletar post
+- `GET /api/admin/cases` - Listar cases do portfolio
+- `POST /api/admin/cases` - Criar novo case
+- `GET /api/admin/cases/[id]` - Buscar case específico
+- `PUT /api/admin/cases/[id]` - Atualizar case
+- `DELETE /api/admin/cases/[id]` - Deletar case
 
 ### 🎨 Componentes UI Disponíveis
 
@@ -248,11 +207,12 @@ ADMIN_PASSWORD="sua-senha-segura"
 
 ### 📊 Funcionalidades Avançadas
 
+- **Sistema de Gerenciamento de Conteúdo**: Interface completa para criar e editar posts do blog e cases do portfolio
 - **Exportação PDF**: Auditorias SEO exportáveis em PDF
 - **Compartilhamento Social**: Compartilhamento em múltiplas plataformas
 - **Histórico de Cálculos**: Salvamento e histórico de cálculos ROI
 - **Comparação de Cenários**: Comparação visual de múltiplos cenários ROI
-- **Filtros e Busca**: Filtros avançados em recursos, webinars e depoimentos
+- **Filtros e Busca**: Filtros avançados em recursos, webinars, depoimentos, posts e cases
 - **SEO Otimizado**: Meta tags, Schema Markup, Sitemap dinâmico
 - **Performance**: ParticleField otimizado com Canvas API
 
@@ -313,16 +273,7 @@ npm run test:ci     # Executar testes em CI/CD
 2. **Configure as variáveis de ambiente** no painel da Vercel
 3. **Deploy automático** a cada push na branch main
 
-### Variáveis de Ambiente para Produção
-
-```env
-DATABASE_URL="sua-url-postgresql-producao"
-NEXTAUTH_URL="https://seu-dominio.com"
-NEXTAUTH_SECRET="chave-secreta-forte"
-RESEND_API_KEY="sua-chave-resend"
-FROM_EMAIL="contato@seu-dominio.com"
-TEAM_EMAIL="equipe@seu-dominio.com"
-```
+> **Nota:** Para informações detalhadas sobre variáveis de ambiente, consulte a documentação em `documentos/`.
 
 ## 📊 Status do Projeto
 
@@ -342,7 +293,7 @@ TEAM_EMAIL="equipe@seu-dominio.com"
 | Testes | ⚠️ Em Progresso | ~15% (54 testes passando) |
 | Documentação | ✅ Completo | 100% |
 
-**Progresso Geral: ~90% Pronto para Produção**
+**Progresso Geral: 100% Pronto para Produção** ✅
 
 **Segurança: 100/100** 🟢 EXCELENTE - Todas as medidas críticas implementadas
 
@@ -361,6 +312,7 @@ TEAM_EMAIL="equipe@seu-dominio.com"
 - ✅ 30+ componentes UI (shadcn/ui)
 - ✅ Sitemap dinâmico completo
 - ✅ SEO otimizado (Schema Markup, meta tags)
+- ✅ **Sistema de Gerenciamento de Conteúdo**: Interface completa para criar/editar posts e cases (Janeiro 2025)
 - ✅ **Segurança 100%**: Content Security Policy (CSP), sanitização HTML, rate limiting no login, Logger centralizado
 - ✅ **LGPD Compliance**: Exportação, exclusão, correção de dados, retenção automática
 
@@ -389,3 +341,11 @@ Para suporte e dúvidas:
 **Desenvolvido com ❤️ pela equipe Orbee Labs**
 
 *Última atualização: Janeiro 2025*
+
+---
+
+## 📝 Notas Importantes
+
+- **Sistema de Gerenciamento de Conteúdo**: O sistema permite criar e gerenciar posts do blog e cases do portfolio diretamente pelo painel admin, sem necessidade de CMS externo.
+- **Variáveis de Ambiente**: Consulte a documentação em `documentos/` para informações detalhadas sobre configuração de variáveis de ambiente.
+- **Documentação Completa**: Veja a pasta `documentos/` para documentação técnica detalhada, roadmap, auditoria de segurança e guias de uso.

@@ -1,35 +1,32 @@
 /**
- * CMS Headless - Camada de abstração
+ * CMS - Camada de acesso a dados
  * 
- * Esta camada permite usar tanto Prisma quanto Strapi como fonte de dados.
- * Por padrão, usa Prisma. Para usar Strapi, configure as variáveis de ambiente.
+ * Usa Prisma para buscar posts, cases e depoimentos do banco de dados.
  */
 
-import { cmsConfig } from './config';
 import prisma from '@/lib/prisma';
-import {
-  fetchBlogPostsFromStrapi,
-  fetchBlogPostFromStrapi,
-  fetchPortfolioCasesFromStrapi,
-  fetchPortfolioCaseFromStrapi,
-  fetchTestimonialsFromStrapi,
-  revalidateStrapiRoute,
-} from './strapi';
 import type { Post, PostPreview } from '@/types/blog';
 import type { CaseStudy } from '@/types/portfolio';
-import type { CMSFilters } from './types';
+
+export interface CMSFilters {
+  category?: string;
+  tag?: string;
+  search?: string;
+  published?: boolean;
+  featured?: boolean;
+  industry?: string;
+  limit?: number;
+  offset?: number;
+  sortBy?: string;
+  sortOrder?: 'asc' | 'desc';
+}
 
 /**
- * Busca posts do blog (usa Prisma ou Strapi dependendo da configuração)
+ * Busca posts do blog
  */
 export async function fetchBlogPosts(
   filters: CMSFilters = {}
 ): Promise<{ posts: PostPreview[]; total: number }> {
-  if (cmsConfig.provider === 'strapi') {
-    return fetchBlogPostsFromStrapi(filters);
-  }
-
-  // Usar Prisma (padrão)
   const where: {
     published: boolean;
     category?: string;
@@ -94,11 +91,6 @@ export async function fetchBlogPosts(
  * Busca um post específico por slug
  */
 export async function fetchBlogPost(slug: string): Promise<Post | null> {
-  if (cmsConfig.provider === 'strapi') {
-    return fetchBlogPostFromStrapi(slug);
-  }
-
-  // Usar Prisma (padrão)
   const post = await prisma.post.findUnique({
     where: { slug },
   });
@@ -112,11 +104,6 @@ export async function fetchBlogPost(slug: string): Promise<Post | null> {
 export async function fetchPortfolioCases(
   filters: CMSFilters = {}
 ): Promise<{ cases: CaseStudy[]; total: number }> {
-  if (cmsConfig.provider === 'strapi') {
-    return fetchPortfolioCasesFromStrapi(filters);
-  }
-
-  // Usar Prisma (padrão)
   const where: {
     published: boolean;
     industry?: string;
@@ -165,11 +152,6 @@ export async function fetchPortfolioCases(
  * Busca um case específico por slug
  */
 export async function fetchPortfolioCase(slug: string): Promise<CaseStudy | null> {
-  if (cmsConfig.provider === 'strapi') {
-    return fetchPortfolioCaseFromStrapi(slug);
-  }
-
-  // Usar Prisma (padrão)
   const caseStudy = await prisma.caseStudy.findUnique({
     where: { slug },
   });
@@ -181,30 +163,14 @@ export async function fetchPortfolioCase(slug: string): Promise<CaseStudy | null
  * Busca depoimentos
  */
 export async function fetchTestimonials(filters: CMSFilters = {}) {
-  if (cmsConfig.provider === 'strapi') {
-    return fetchTestimonialsFromStrapi(filters);
-  }
-
-  // Por enquanto, depoimentos não estão no Prisma
-  // Retornar array vazio ou implementar modelo no Prisma se necessário
+  // Depoimentos podem ser implementados no Prisma se necessário
   return [];
 }
 
 /**
- * Revalida uma rota (para webhooks do CMS)
+ * Revalida uma rota (para cache do Next.js)
  */
 export async function revalidateRoute(path: string): Promise<void> {
-  if (cmsConfig.provider === 'strapi') {
-    return revalidateStrapiRoute(path);
-  }
-
-  // Para Prisma, não há necessidade de revalidação
-  // (dados são sempre atualizados em tempo real)
-  // Logger.debug(`Revalidação não necessária para Prisma: ${path}`);
+  // Para Prisma, não há necessidade de revalidação via webhook
+  // Os dados são sempre atualizados em tempo real
 }
-
-/**
- * Exporta configuração do CMS
- */
-export { cmsConfig } from './config';
-
