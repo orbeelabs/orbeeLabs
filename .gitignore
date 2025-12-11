@@ -170,3 +170,14 @@ build/
 # Cada desenvolvedor pode ter suas próprias configurações
 # As configurações compartilhadas do time devem ir em .vscode/settings.json
 .vscode/
+# Imagens grandes não devem ser versionadas
+public/images/**/*.jpg
+public/images/**/*.png
+public/images/**/*.webp
+public/og-image.jpg
+public/assets/team/*.jpg
+
+# Documentação de imagens (não precisa ser versionada)
+public/images/README.md
+public/images/LISTA_COMPLETA_IMAGENS.md
+public/images/.gitkeep
