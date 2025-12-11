@@ -3,10 +3,14 @@
 import { useEffect } from 'react';
 
 /**
- * Componente que filtra warnings específicos do console relacionados a
- * auto-scroll behavior com elementos fixed/sticky.
+ * Componente que filtra warnings e erros específicos do console que são informativos
+ * e não afetam a funcionalidade da aplicação.
  * 
- * Esses warnings são informativos e não afetam a funcionalidade da aplicação.
+ * Filtra:
+ * - Warnings de auto-scroll behavior (elementos fixed/sticky)
+ * - Warnings de deprecação do Zustand (vem de dependências)
+ * - Erros de CSP do Vercel Live (ferramenta de desenvolvimento)
+ * - Erros de sessão do Vercel Live (ferramenta de desenvolvimento)
  */
 export default function ConsoleFilter() {
   useEffect(() => {
@@ -34,6 +38,17 @@ export default function ConsoleFilter() {
         return;
       }
 
+      // Filtrar warnings de deprecação do Zustand
+      if (
+        (message.includes('[DEPRECATED]') || fullMessage.includes('[DEPRECATED]')) &&
+        (fullMessage.includes('zustand') || message.includes('zustand') ||
+         fullMessage.includes('Default export is deprecated') ||
+         message.includes('Default export is deprecated'))
+      ) {
+        // Não exibir warnings de deprecação do Zustand (vem de dependências)
+        return;
+      }
+
       // Para todos os outros warnings, usar a função original
       originalWarn.apply(console, args);
     };
@@ -54,6 +69,19 @@ export default function ConsoleFilter() {
          message.includes('next-live/feedback'))
       ) {
         // Não exibir esse erro específico (é temporário durante navegação)
+        return;
+      }
+
+      // Filtrar erro "Could not fetch session" do Vercel Live
+      if (
+        (message.includes('Could not fetch session') || 
+         fullMessage.includes('Could not fetch session')) &&
+        (fullMessage.includes('feedback.html') || 
+         message.includes('feedback.html') ||
+         fullMessage.includes('vercel.live') ||
+         message.includes('vercel.live'))
+      ) {
+        // Não exibir erro de sessão do Vercel Live (ferramenta de dev)
         return;
       }
 
