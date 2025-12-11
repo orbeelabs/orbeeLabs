@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
@@ -8,7 +8,6 @@ import { useSession, signOut } from 'next-auth/react';
 
 export default function Navigation() {
   const [isOpen, setIsOpen] = useState(false);
-  const [scrolled, setScrolled] = useState(false);
   const pathname = usePathname();
   const { data: session } = useSession();
 
@@ -27,28 +26,20 @@ export default function Navigation() {
     if (href === '/') {
       return pathname === '/';
     }
-    return pathname.startsWith(href);
+    // Para rotas exatas, verifica se é exatamente igual ou começa com o href seguido de /
+    // Isso evita que /sobre seja marcado como ativo quando está em /sobre-algo
+    return pathname === href || pathname.startsWith(href + '/');
   };
 
-  useEffect(() => {
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 50);
-    };
-
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+  // Removido o useEffect de scroll - header sempre com glass effect
+  // useEffect removido pois não é mais necessário
 
   return (
     <motion.nav
       initial={{ y: -100 }}
       animate={{ y: 0 }}
       transition={{ duration: 0.6, ease: 'easeOut' }}
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        scrolled
-          ? 'glass backdrop-blur-xl border-b border-white/10'
-          : 'bg-transparent'
-      }`}
+      className="fixed top-0 left-0 right-0 z-50 glass backdrop-blur-xl border-b border-white/10 transition-all duration-300"
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-20">
@@ -86,19 +77,21 @@ export default function Navigation() {
                   href={item.href}
                   className={`relative px-4 py-2 rounded-lg font-medium transition-all duration-300 group ${
                     isActive(item.href)
-                      ? 'text-primary bg-primary/10'
-                      : 'text-white hover:text-primary hover:bg-white/5'
+                      ? 'text-primary'
+                      : 'text-white hover:text-primary'
                   }`}
                 >
                   <span className="relative z-10">{item.name}</span>
                   {isActive(item.href) && (
                     <motion.div
                       layoutId="activeTab"
-                      className="absolute inset-0 bg-primary/20 rounded-lg"
+                      className="absolute inset-0 bg-primary/20 rounded-lg z-0"
                       transition={{ type: 'spring', duration: 0.5 }}
                     />
                   )}
-                  <div className="absolute inset-0 bg-primary/10 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                  {!isActive(item.href) && (
+                    <div className="absolute inset-0 bg-white/5 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-0" />
+                  )}
                 </Link>
               </motion.div>
             ))}

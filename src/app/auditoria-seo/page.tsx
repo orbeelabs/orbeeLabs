@@ -5,6 +5,7 @@ import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { PageLayout } from '@/components/layout';
 import { SEOAnalysisResult } from '@/lib/seo-analyzer';
+import { ClientLogger } from '@/lib/logger-client';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -137,7 +138,7 @@ export default function AuditoriaSEO() {
       gerarResultado(dadosReais);
       setProgress(100);
     } catch (error) {
-      console.error('Erro na análise:', error);
+      ClientLogger.error('Erro na análise', undefined, error as Error);
       // Fallback para simulação se houver erro
       gerarResultado();
       
@@ -344,7 +345,7 @@ export default function AuditoriaSEO() {
     try {
       await exportAuditToPDF(resultado, dados);
     } catch (error) {
-      console.error('Erro ao exportar PDF:', error);
+      ClientLogger.error('Erro ao exportar PDF', undefined, error as Error);
       alert('Erro ao gerar PDF. Tente novamente.');
     }
   };
@@ -376,9 +377,12 @@ export default function AuditoriaSEO() {
   };
 
   return (
-    <PageLayout>
+    <PageLayout breadcrumbItems={[
+      { name: "Início", url: "https://orbeelabs.com" },
+      { name: "Auditoria SEO", url: "https://orbeelabs.com/auditoria-seo" },
+    ]}>
       {/* Header */}
-      <section className="relative py-20 px-4 sm:px-6 lg:px-8">
+      <section className="relative pt-24 md:pt-32 pb-20 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto text-center">
           <motion.div
             initial={{ opacity: 0, y: 50 }}
@@ -454,10 +458,12 @@ export default function AuditoriaSEO() {
                         <Label htmlFor="url">URL do Site</Label>
                         <Input
                           id="url"
-                          type="text"
+                          name="url"
+                          type="url"
                           placeholder="google.com ou https://google.com"
                           value={dados.url}
                           onChange={(e) => handleInputChange('url', e.target.value)}
+                          autoComplete="url"
                         />
                         <p className="text-xs text-muted-foreground">
                           Digite a URL com ou sem protocolo (ex: google.com ou https://google.com)
@@ -488,9 +494,11 @@ export default function AuditoriaSEO() {
                       <Label htmlFor="nomeEmpresa">Nome da Empresa</Label>
                       <Input
                         id="nomeEmpresa"
+                        name="nomeEmpresa"
                         placeholder="Sua Empresa LTDA"
                         value={dados.nomeEmpresa}
                         onChange={(e) => handleInputChange('nomeEmpresa', e.target.value)}
+                        autoComplete="organization"
                       />
                     </div>
 
@@ -498,10 +506,12 @@ export default function AuditoriaSEO() {
                       <Label htmlFor="email">E-mail</Label>
                       <Input
                         id="email"
+                        name="email"
                         type="email"
                         placeholder="contato@empresa.com"
                         value={dados.email}
                         onChange={(e) => handleInputChange('email', e.target.value)}
+                        autoComplete="email"
                       />
                     </div>
 
@@ -509,19 +519,23 @@ export default function AuditoriaSEO() {
                       <Label htmlFor="telefone">Telefone</Label>
                       <Input
                         id="telefone"
+                        name="telefone"
+                        type="tel"
                         placeholder="(31) 98255-6751"
                         value={dados.telefone}
                         onChange={(e) => handleInputChange('telefone', e.target.value)}
+                        autoComplete="tel"
                       />
                     </div>
 
                     <div className="space-y-2">
                       <Label htmlFor="setor">Setor de Atuação</Label>
                       <Select
+                        name="setor"
                         value={dados.setor}
                         onValueChange={(value) => handleInputChange('setor', value)}
                       >
-                        <SelectTrigger>
+                        <SelectTrigger id="setor">
                           <SelectValue placeholder="Selecione o setor" />
                         </SelectTrigger>
                         <SelectContent>
@@ -559,10 +573,11 @@ export default function AuditoriaSEO() {
                     <div className="space-y-2">
                       <Label htmlFor="faturamento">Faturamento Mensal</Label>
                       <Select
+                        name="faturamento"
                         value={dados.faturamento}
                         onValueChange={(value) => handleInputChange('faturamento', value)}
                       >
-                        <SelectTrigger>
+                        <SelectTrigger id="faturamento">
                           <SelectValue placeholder="Selecione o faturamento" />
                         </SelectTrigger>
                         <SelectContent>
@@ -578,10 +593,11 @@ export default function AuditoriaSEO() {
                     <div className="space-y-2">
                       <Label htmlFor="objetivo">Principal Objetivo</Label>
                       <Select
+                        name="objetivo"
                         value={dados.objetivo}
                         onValueChange={(value) => handleInputChange('objetivo', value)}
                       >
-                        <SelectTrigger>
+                        <SelectTrigger id="objetivo">
                           <SelectValue placeholder="Selecione o objetivo" />
                         </SelectTrigger>
                         <SelectContent>
@@ -598,9 +614,11 @@ export default function AuditoriaSEO() {
                       <Label htmlFor="concorrentes">Principais Concorrentes</Label>
                       <Input
                         id="concorrentes"
+                        name="concorrentes"
                         placeholder="site1.com, site2.com, site3.com"
                         value={dados.concorrentes}
                         onChange={(e) => handleInputChange('concorrentes', e.target.value)}
+                        autoComplete="off"
                       />
                     </div>
 
@@ -608,9 +626,11 @@ export default function AuditoriaSEO() {
                       <Label htmlFor="palavrasChave">Palavras-chave Principais</Label>
                       <Input
                         id="palavrasChave"
+                        name="palavrasChave"
                         placeholder="marketing digital, seo, agência"
                         value={dados.palavrasChave}
                         onChange={(e) => handleInputChange('palavrasChave', e.target.value)}
+                        autoComplete="off"
                       />
                     </div>
                   </div>

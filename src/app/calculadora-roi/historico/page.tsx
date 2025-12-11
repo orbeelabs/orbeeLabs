@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useSession } from 'next-auth/react';
+import { ClientLogger } from '@/lib/logger-client';
 import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
@@ -46,6 +47,12 @@ interface HistoricoCalculo {
 }
 
 export default function HistoricoROI() {
+  const breadcrumbItems = [
+    { name: "Início", url: "https://orbeelabs.com" },
+    { name: "Calculadora ROI", url: "https://orbeelabs.com/calculadora-roi" },
+    { name: "Histórico", url: "https://orbeelabs.com/calculadora-roi/historico" },
+  ];
+
   const { data: session, status } = useSession();
   const router = useRouter();
   const [calculos, setCalculos] = useState<HistoricoCalculo[]>([]);
@@ -81,7 +88,7 @@ export default function HistoricoROI() {
         setCalculos(result.data || []);
       }
     } catch (error) {
-      console.error('Erro ao buscar histórico:', error);
+      ClientLogger.error('Erro ao buscar histórico', undefined, error as Error);
     } finally {
       setLoading(false);
     }
@@ -131,7 +138,7 @@ export default function HistoricoROI() {
 
   if (status === 'loading') {
     return (
-      <PageLayout>
+      <PageLayout breadcrumbItems={breadcrumbItems}>
         <div className="flex items-center justify-center min-h-screen">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
         </div>
@@ -142,7 +149,7 @@ export default function HistoricoROI() {
   return (
     <PageLayout>
       {/* Header */}
-      <section className="relative py-20 px-4 sm:px-6 lg:px-8">
+      <section className="relative pt-24 md:pt-32 pb-20 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto text-center">
           <motion.div
             initial={{ opacity: 0, y: 50 }}

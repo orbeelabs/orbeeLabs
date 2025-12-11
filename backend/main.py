@@ -43,7 +43,15 @@ app.add_middleware(
 )
 
 # Secret para autenticação entre serviços
-API_SECRET = os.getenv("FASTAPI_SECRET", "change-me-in-production")
+API_SECRET = os.getenv("FASTAPI_SECRET")
+
+# Validar que o secret está configurado em produção
+if not API_SECRET:
+    if os.getenv("ENVIRONMENT") == "production":
+        raise ValueError("FASTAPI_SECRET deve ser configurado em produção!")
+    # Em desenvolvimento, usar um secret padrão (mas avisar)
+    API_SECRET = "change-me-in-production"
+    print("⚠️ AVISO: FASTAPI_SECRET não configurado. Usando secret padrão (NÃO SEGURO PARA PRODUÇÃO!)")
 
 
 # Models

@@ -1,5 +1,7 @@
 'use client';
 
+import { ClientLogger } from '@/lib/logger-client';
+
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
@@ -75,7 +77,7 @@ export default function AuditsPage() {
         setAudits(data.audits || []);
       }
     } catch (error) {
-      console.error('Erro ao buscar auditorias:', error);
+      ClientLogger.error('Erro ao buscar auditorias', undefined, error as Error);
       toast.error('Erro ao carregar auditorias');
     } finally {
       setIsLoading(false);
@@ -126,10 +128,10 @@ export default function AuditsPage() {
   const viewAuditDetails = (audit: Audit) => {
     try {
       const data = JSON.parse(audit.data);
-      console.log('Dados da auditoria:', data); // Debug
+      ClientLogger.debug('Dados da auditoria', { auditId: data.id });
       setSelectedAudit(data);
     } catch (error) {
-      console.error('Erro ao parsear dados da auditoria:', error);
+      ClientLogger.error('Erro ao parsear dados da auditoria', undefined, error as Error);
       toast.error('Erro ao carregar detalhes da auditoria');
     }
   };

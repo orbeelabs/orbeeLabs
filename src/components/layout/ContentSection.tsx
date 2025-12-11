@@ -37,8 +37,24 @@ export default function ContentSection({
   padding = 'md',
   maxWidth = 'xl'
 }: ContentSectionProps) {
+  // Se className contém pt- ou pb-, separar o padding vertical
+  const hasCustomTopPadding = className.includes('pt-');
+  const hasCustomBottomPadding = className.includes('pb-');
+  
+  let paddingClass = paddingClasses[padding];
+  if (hasCustomTopPadding && !hasCustomBottomPadding) {
+    // Se tem pt- customizado mas não pb-, usar apenas pb- do padding padrão
+    paddingClass = paddingClass.replace('py-', 'pb-');
+  } else if (hasCustomBottomPadding && !hasCustomTopPadding) {
+    // Se tem pb- customizado mas não pt-, usar apenas pt- do padding padrão
+    paddingClass = paddingClass.replace('py-', 'pt-');
+  } else if (hasCustomTopPadding && hasCustomBottomPadding) {
+    // Se tem ambos customizados, não aplicar padding padrão
+    paddingClass = '';
+  }
+  
   return (
-    <section className={`${paddingClasses[padding]} ${backgroundClasses[background]} ${className}`}>
+    <section className={`${backgroundClasses[background]} ${paddingClass} ${className}`}>
       <div className={`${maxWidthClasses[maxWidth]} mx-auto px-4 sm:px-6 lg:px-8`}>
         {children}
       </div>

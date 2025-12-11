@@ -10,7 +10,10 @@ export default function NotFound() {
   const pathname = usePathname();
 
   useEffect(() => {
-    console.error("404 Error: User attempted to access non-existent route:", pathname);
+    // Log apenas em desenvolvimento
+    if (process.env.NODE_ENV === 'development') {
+      console.error("404 Error: User attempted to access non-existent route:", pathname);
+    }
   }, [pathname]);
 
   return (

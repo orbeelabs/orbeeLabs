@@ -2,13 +2,14 @@
 
 import { useEffect } from 'react';
 import { onCLS, onINP, onFCP, onLCP, onTTFB } from 'web-vitals';
+import { ClientLogger } from '@/lib/logger-client';
 
 export default function WebVitals() {
   useEffect(() => {
     // Função para enviar métricas para o Google Analytics ou outro serviço
     function sendToAnalytics(metric: { name: string; value: number; id: string }) {
       // Aqui você pode enviar as métricas para o seu serviço de analytics
-      console.log('Web Vital:', metric);
+      ClientLogger.debug('Web Vital', { name: metric.name, value: metric.value, id: metric.id });
       
       // Exemplo de envio para Google Analytics via gtag
       // if (typeof window !== 'undefined' && window.gtag) {

@@ -52,11 +52,11 @@ const nextConfig: NextConfig = {
             key: 'Content-Security-Policy',
             value: [
               "default-src 'self'",
-              "script-src 'self' 'unsafe-eval' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com",
+              "script-src 'self' 'unsafe-eval' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com https://vercel.live",
               "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
               "font-src 'self' https://fonts.gstatic.com data:",
               "img-src 'self' data: https: blob:",
-              "connect-src 'self' https://www.google-analytics.com https://www.googletagmanager.com https://api.resend.com https://*.upstash.io",
+              "connect-src 'self' https://www.google-analytics.com https://www.googletagmanager.com https://api.resend.com https://*.upstash.io https://vercel.live",
               "frame-src 'self' https://www.google.com",
               "object-src 'none'",
               "base-uri 'self'",

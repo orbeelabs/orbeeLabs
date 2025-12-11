@@ -1,5 +1,7 @@
 'use client';
 
+import { ClientLogger } from '@/lib/logger-client';
+
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
@@ -109,7 +111,7 @@ export default function NewPostPage() {
         toast.error(errorData.error || 'Erro ao salvar post');
       }
     } catch (error) {
-      console.error('Erro ao salvar post:', error);
+      ClientLogger.error('Erro ao salvar post', undefined, error as Error);
       toast.error('Erro ao salvar post');
     } finally {
       setIsSaving(false);

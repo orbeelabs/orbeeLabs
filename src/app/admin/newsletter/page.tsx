@@ -1,5 +1,7 @@
 'use client';
 
+import { ClientLogger } from '@/lib/logger-client';
+
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
@@ -59,7 +61,7 @@ export default function NewsletterPage() {
         setSubscribers(data.subscribers || []);
       }
     } catch (error) {
-      console.error('Erro ao buscar assinantes:', error);
+      ClientLogger.error('Erro ao buscar assinantes', undefined, error as Error);
       toast.error('Erro ao carregar assinantes');
     } finally {
       setIsLoading(false);

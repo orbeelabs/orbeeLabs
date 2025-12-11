@@ -1,5 +1,7 @@
 'use client';
 
+import { ClientLogger } from '@/lib/logger-client';
+
 import { useSession, signOut } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
@@ -85,7 +87,7 @@ export default function AdminDashboard() {
         cases: casesData.pagination?.total || casesData.data?.length || 0,
       });
     } catch (error) {
-      console.error('Erro ao buscar estatísticas:', error);
+      ClientLogger.error('Erro ao buscar estatísticas', undefined, error as Error);
       setError('Não foi possível carregar as estatísticas. Tente recarregar a página.');
       // Em caso de erro, manter valores em 0 mas ainda renderizar o dashboard
       setStats({

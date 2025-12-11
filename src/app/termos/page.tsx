@@ -6,12 +6,17 @@ import { motion } from 'framer-motion';
 import { usePageTitle } from '@/hooks/core';
 
 export default function TermosPage() {
+  const breadcrumbItems = [
+    { name: "Início", url: "https://orbeelabs.com" },
+    { name: "Termos de Uso", url: "https://orbeelabs.com/termos" },
+  ];
+
   usePageTitle("Termos de Uso | Orbee Labs - Condições e Responsabilidades");
 
   return (
-    <PageLayout>
+    <PageLayout breadcrumbItems={breadcrumbItems}>
         {/* Hero Section */}
-        <section className="relative py-20 bg-gradient-to-br from-background via-card to-background">
+        <section className="relative pt-24 md:pt-32 pb-20 bg-gradient-to-br from-background via-card to-background">
           <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
             <motion.div
               initial={{ opacity: 0, y: 50 }}

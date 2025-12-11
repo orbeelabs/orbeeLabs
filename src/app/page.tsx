@@ -12,10 +12,14 @@ import { motion } from 'framer-motion';
 import Link from 'next/link';
 
 export default function Home() {
+  const breadcrumbItems = [
+    { name: "Início", url: "https://orbeelabs.com" },
+  ];
+
   return (
-    <PageLayout>
+    <PageLayout breadcrumbItems={breadcrumbItems}>
       {/* Hero Section */}
-      <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-br from-background via-card to-background">
+      <section className="relative pt-24 md:pt-32 pb-20 overflow-hidden bg-gradient-to-br from-background via-card to-background min-h-[calc(100vh-5rem)] flex items-center justify-center">
         <ParticleFieldCanvas />
         
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
@@ -25,7 +29,7 @@ export default function Home() {
             transition={{ duration: 0.8 }}
           >
             <motion.h1 
-              className="heading-xl text-white mb-6"
+              className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-extrabold text-white mb-6 leading-tight"
               initial={{ opacity: 0, scale: 0.8 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 1, delay: 0.2 }}
@@ -86,7 +90,7 @@ export default function Home() {
       </section>
 
       {/* Services Section */}
-      <ContentSection background="gradient">
+      <ContentSection background="gradient" className="pt-32 md:pt-40">
         <FadeInUp>
           <div className="text-center mb-16">
             <h2 className="heading-lg text-white mb-6">

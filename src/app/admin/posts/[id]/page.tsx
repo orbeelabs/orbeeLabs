@@ -1,5 +1,7 @@
 'use client';
 
+import { ClientLogger } from '@/lib/logger-client';
+
 import { useSession } from 'next-auth/react';
 import { useRouter, useParams } from 'next/navigation';
 import { useEffect, useState, useCallback } from 'react';
@@ -99,7 +101,7 @@ export default function PostEditPage() {
         router.push('/admin/posts');
       }
     } catch (error) {
-      console.error('Erro ao buscar post:', error);
+      ClientLogger.error('Erro ao buscar post', undefined, error as Error);
       toast.error('Erro ao carregar post');
     } finally {
       setIsLoading(false);
@@ -156,7 +158,7 @@ export default function PostEditPage() {
         toast.error(errorData.error || 'Erro ao salvar post');
       }
     } catch (error) {
-      console.error('Erro ao salvar post:', error);
+      ClientLogger.error('Erro ao salvar post', undefined, error as Error);
       toast.error('Erro ao salvar post');
     } finally {
       setIsSaving(false);

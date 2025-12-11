@@ -1,5 +1,7 @@
 'use client';
 
+import { ClientLogger } from '@/lib/logger-client';
+
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
@@ -67,7 +69,7 @@ export default function PostsPage() {
         setPosts(data.data || []);
       }
     } catch (error) {
-      console.error('Erro ao buscar posts:', error);
+      ClientLogger.error('Erro ao buscar posts', undefined, error as Error);
       toast.error('Erro ao carregar posts');
     } finally {
       setIsLoading(false);
@@ -101,7 +103,7 @@ export default function PostsPage() {
         toast.error(errorData.error || 'Erro ao excluir post');
       }
     } catch (error) {
-      console.error('Erro ao excluir post:', error);
+      ClientLogger.error('Erro ao excluir post', undefined, error as Error);
       toast.error('Erro ao excluir post');
     } finally {
       setIsDeleting(false);

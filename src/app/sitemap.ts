@@ -195,7 +195,10 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       priority: 0.7,
     }));
   } catch (error) {
-    console.error('Erro ao buscar posts do blog para sitemap:', error);
+    // Log apenas em desenvolvimento - sitemap é gerado server-side
+    if (process.env.NODE_ENV === 'development') {
+      console.error('Erro ao buscar posts do blog para sitemap:', error);
+    }
   }
 
   // Buscar cases do portfolio publicados
@@ -217,7 +220,10 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       priority: 0.7,
     }));
   } catch (error) {
-    console.error('Erro ao buscar cases do portfolio para sitemap:', error);
+    // Log apenas em desenvolvimento
+    if (process.env.NODE_ENV === 'development') {
+      console.error('Erro ao buscar cases do portfolio para sitemap:', error);
+    }
   }
 
   // Buscar categorias únicas do blog para páginas de categoria
@@ -252,7 +258,10 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         priority: 0.6,
       }));
   } catch (error) {
-    console.error('Erro ao buscar categorias do blog para sitemap:', error);
+    // Log apenas em desenvolvimento
+    if (process.env.NODE_ENV === 'development') {
+      console.error('Erro ao buscar categorias do blog para sitemap:', error);
+    }
   }
 
   // Buscar tags únicas do blog para páginas de tag
@@ -280,7 +289,10 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       priority: 0.5,
     }));
   } catch (error) {
-    console.error('Erro ao buscar tags do blog para sitemap:', error);
+    // Log apenas em desenvolvimento
+    if (process.env.NODE_ENV === 'development') {
+      console.error('Erro ao buscar tags do blog para sitemap:', error);
+    }
   }
 
   // Combinar todas as páginas

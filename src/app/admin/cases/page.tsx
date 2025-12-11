@@ -1,5 +1,7 @@
 'use client';
 
+import { ClientLogger } from '@/lib/logger-client';
+
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
@@ -68,7 +70,7 @@ export default function CasesPage() {
         setCases(data.data || []);
       }
     } catch (error) {
-      console.error('Erro ao buscar cases:', error);
+      ClientLogger.error('Erro ao buscar cases', undefined, error as Error);
       toast.error('Erro ao carregar cases');
     } finally {
       setIsLoading(false);
@@ -102,7 +104,7 @@ export default function CasesPage() {
         toast.error(errorData.error || 'Erro ao excluir case');
       }
     } catch (error) {
-      console.error('Erro ao excluir case:', error);
+      ClientLogger.error('Erro ao excluir case', undefined, error as Error);
       toast.error('Erro ao excluir case');
     } finally {
       setIsDeleting(false);

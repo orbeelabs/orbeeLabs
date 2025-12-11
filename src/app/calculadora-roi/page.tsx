@@ -18,6 +18,7 @@ import { AgendamentoModal } from '@/components/AgendamentoModal';
 import ShareButtons from '@/components/ShareButtons';
 import Link from 'next/link';
 import { useSession } from 'next-auth/react';
+import { ClientLogger } from '@/lib/logger-client';
 
 interface ROIData {
   investimentoInicial: number;
@@ -104,7 +105,7 @@ export default function CalculadoraROI() {
             setNomeCalculo('');
           }
         } catch (error) {
-          console.error('Erro ao salvar cálculo ROI:', error);
+          ClientLogger.error('Erro ao salvar cálculo ROI', undefined, error as Error);
         }
       }, 2000); // Debounce de 2 segundos
 
@@ -275,9 +276,12 @@ export default function CalculadoraROI() {
   })) : [];
 
   return (
-    <PageLayout>
+    <PageLayout breadcrumbItems={[
+      { name: "Início", url: "https://orbeelabs.com" },
+      { name: "Calculadora ROI", url: "https://orbeelabs.com/calculadora-roi" },
+    ]}>
       {/* Header */}
-      <section className="relative py-20 px-4 sm:px-6 lg:px-8">
+      <section className="relative pt-24 md:pt-32 pb-20 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto text-center">
           <motion.div
             initial={{ opacity: 0, y: 50 }}
@@ -356,10 +360,12 @@ export default function CalculadoraROI() {
                         <Label htmlFor="investimentoInicial">Investimento Inicial (R$)</Label>
                         <Input
                           id="investimentoInicial"
+                          name="investimentoInicial"
                           type="number"
                           value={dados.investimentoInicial}
                           onChange={(e) => handleInputChange('investimentoInicial', e.target.value)}
                           placeholder="5000"
+                          autoComplete="off"
                         />
                       </div>
                       
@@ -367,10 +373,12 @@ export default function CalculadoraROI() {
                         <Label htmlFor="investimentoMensal">Investimento Mensal (R$)</Label>
                         <Input
                           id="investimentoMensal"
+                          name="investimentoMensal"
                           type="number"
                           value={dados.investimentoMensal}
                           onChange={(e) => handleInputChange('investimentoMensal', e.target.value)}
                           placeholder="2000"
+                          autoComplete="off"
                         />
                       </div>
                     </div>
@@ -379,10 +387,11 @@ export default function CalculadoraROI() {
                       <div className="space-y-2">
                         <Label htmlFor="tempoInvestimento">Tempo de Investimento (meses)</Label>
                         <Select
+                          name="tempoInvestimento"
                           value={dados.tempoInvestimento.toString()}
                           onValueChange={(value) => handleInputChange('tempoInvestimento', parseInt(value))}
                         >
-                          <SelectTrigger>
+                          <SelectTrigger id="tempoInvestimento">
                             <SelectValue />
                           </SelectTrigger>
                           <SelectContent>
@@ -412,10 +421,12 @@ export default function CalculadoraROI() {
                         <Label htmlFor="crescimentoMensal">Crescimento Mensal (%)</Label>
                         <Input
                           id="crescimentoMensal"
+                          name="crescimentoMensal"
                           type="number"
                           value={dados.crescimentoMensal}
                           onChange={(e) => handleInputChange('crescimentoMensal', e.target.value)}
                           placeholder="10"
+                          autoComplete="off"
                         />
                       </div>
                       
@@ -423,10 +434,12 @@ export default function CalculadoraROI() {
                         <Label htmlFor="custoPorLead">Custo por Lead (R$)</Label>
                         <Input
                           id="custoPorLead"
+                          name="custoPorLead"
                           type="number"
                           value={dados.custoPorLead}
                           onChange={(e) => handleInputChange('custoPorLead', e.target.value)}
                           placeholder="50"
+                          autoComplete="off"
                         />
                       </div>
                     </div>
@@ -435,10 +448,12 @@ export default function CalculadoraROI() {
                       <Label htmlFor="conversao">Taxa de Conversão (%)</Label>
                       <Input
                         id="conversao"
+                        name="conversao"
                         type="number"
                         value={dados.conversao}
                         onChange={(e) => handleInputChange('conversao', e.target.value)}
                         placeholder="3.5"
+                        autoComplete="off"
                       />
                     </div>
 
@@ -447,10 +462,12 @@ export default function CalculadoraROI() {
                         <Label htmlFor="nomeCalculo">Nome do Cálculo (opcional)</Label>
                         <Input
                           id="nomeCalculo"
+                          name="nomeCalculo"
                           type="text"
                           value={nomeCalculo}
                           onChange={(e) => setNomeCalculo(e.target.value)}
                           placeholder="Ex: Cenário Base - Q1 2025"
+                          autoComplete="off"
                         />
                         <p className="text-xs text-muted-foreground">
                           Dê um nome ao cálculo para facilitar a identificação no histórico

@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { ClientLogger } from '@/lib/logger-client';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -46,7 +47,7 @@ export function AgendamentoModal({ open, onClose, tipoConsulta = 'Consultoria' }
         setAvailableSlots(data.slots);
       } else {
         // Se não retornar slots, usar horários padrão
-        console.warn('API não retornou slots, usando horários padrão');
+        ClientLogger.warn('API não retornou slots, usando horários padrão');
         // Gerar horários padrão localmente como fallback
         const defaultSlots = [];
         const selectedDate = new Date(date);
@@ -64,7 +65,7 @@ export function AgendamentoModal({ open, onClose, tipoConsulta = 'Consultoria' }
         setAvailableSlots(defaultSlots);
       }
     } catch (error) {
-      console.error('Erro ao buscar horários:', error);
+      ClientLogger.error('Erro ao buscar horários', undefined, error as Error);
       // Em caso de erro, usar horários padrão
       const defaultSlots = [];
       const selectedDate = new Date(date);
@@ -128,7 +129,7 @@ export function AgendamentoModal({ open, onClose, tipoConsulta = 'Consultoria' }
       setStep(3); // Mostrar sucesso
     } catch (error) {
       alert(error instanceof Error ? error.message : 'Erro ao agendar consultoria. Tente novamente.');
-      console.error('Erro:', error);
+      ClientLogger.error('Erro ao agendar consultoria', undefined, error as Error);
     } finally {
       setLoading(false);
     }
@@ -179,10 +180,12 @@ export function AgendamentoModal({ open, onClose, tipoConsulta = 'Consultoria' }
               <Label htmlFor="nome">Nome Completo *</Label>
               <Input
                 id="nome"
+                name="nome"
                 required
                 value={formData.nome}
                 onChange={(e) => setFormData({ ...formData, nome: e.target.value })}
                 placeholder="Seu nome"
+                autoComplete="name"
               />
             </div>
 
@@ -190,11 +193,13 @@ export function AgendamentoModal({ open, onClose, tipoConsulta = 'Consultoria' }
               <Label htmlFor="email">Email *</Label>
               <Input
                 id="email"
+                name="email"
                 type="email"
                 required
                 value={formData.email}
                 onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                 placeholder="seu@email.com"
+                autoComplete="email"
               />
             </div>
 
@@ -202,10 +207,12 @@ export function AgendamentoModal({ open, onClose, tipoConsulta = 'Consultoria' }
               <Label htmlFor="telefone">Telefone (opcional)</Label>
               <Input
                 id="telefone"
+                name="telefone"
                 type="tel"
                 value={formData.telefone}
                 onChange={(e) => setFormData({ ...formData, telefone: e.target.value })}
                 placeholder="(00) 00000-0000"
+                autoComplete="tel"
               />
             </div>
 
@@ -215,7 +222,7 @@ export function AgendamentoModal({ open, onClose, tipoConsulta = 'Consultoria' }
                 value={formData.assunto}
                 onValueChange={(value) => setFormData({ ...formData, assunto: value })}
               >
-                <SelectTrigger>
+                <SelectTrigger id="assunto">
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>

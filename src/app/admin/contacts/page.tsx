@@ -1,5 +1,7 @@
 'use client';
 
+import { ClientLogger } from '@/lib/logger-client';
+
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
@@ -66,7 +68,7 @@ export default function ContactsPage() {
         setContacts(data.contacts || []);
       }
     } catch (error) {
-      console.error('Erro ao buscar contatos:', error);
+      ClientLogger.error('Erro ao buscar contatos', undefined, error as Error);
       toast.error('Erro ao carregar contatos');
     } finally {
       setIsLoading(false);
@@ -145,7 +147,7 @@ export default function ContactsPage() {
         toast.error(errorData.error || 'Erro ao excluir contato');
       }
     } catch (error) {
-      console.error('Erro ao excluir contato:', error);
+      ClientLogger.error('Erro ao excluir contato', undefined, error as Error);
       toast.error('Erro ao excluir contato');
     } finally {
       setIsDeleting(false);

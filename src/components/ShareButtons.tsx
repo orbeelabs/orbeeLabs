@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { ClientLogger } from '@/lib/logger-client';
 import { Button } from '@/components/ui/button';
 import { 
   Facebook, 
@@ -102,7 +103,7 @@ export default function ShareButtons({
       trackShare('copy');
       setTimeout(() => setCopied(false), 2000);
     } catch (err) {
-      console.error('Erro ao copiar link:', err);
+      ClientLogger.error('Erro ao copiar link', undefined, err as Error);
     }
   };
 
@@ -118,7 +119,7 @@ export default function ShareButtons({
         trackShare('native');
       } catch (err) {
         // Usuário cancelou ou erro
-        console.log('Compartilhamento cancelado');
+        ClientLogger.debug('Compartilhamento cancelado');
       }
     } else {
       // Fallback para copiar link

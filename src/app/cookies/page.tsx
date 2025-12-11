@@ -6,12 +6,17 @@ import { usePageTitle } from '@/hooks/core';
 import { PageLayout } from '@/components/layout';
 
 export default function CookiesPage() {
+  const breadcrumbItems = [
+    { name: "Início", url: "https://orbeelabs.com" },
+    { name: "Política de Cookies", url: "https://orbeelabs.com/cookies" },
+  ];
+
   usePageTitle("Política de Cookies | Orbee Labs - Transparência e Privacidade");
 
   return (
-    <PageLayout>
+    <PageLayout breadcrumbItems={breadcrumbItems}>
         {/* Hero Section */}
-        <section className="relative py-20 bg-gradient-to-br from-background via-card to-background">
+        <section className="relative pt-24 md:pt-32 pb-20 bg-gradient-to-br from-background via-card to-background">
           <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
             <motion.div
               initial={{ opacity: 0, y: 50 }}

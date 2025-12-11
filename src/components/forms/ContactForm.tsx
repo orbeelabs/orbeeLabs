@@ -1,6 +1,7 @@
 'use client';
 
 import { useForm } from 'react-hook-form';
+import { ClientLogger } from '@/lib/logger-client';
 import { motion } from 'framer-motion';
 import { useState } from 'react';
 import { useToast } from '@/components/ui/use-toast';
@@ -94,7 +95,7 @@ export default function ContactForm() {
       // Resetar formulário
       reset();
     } catch (error) {
-      console.error('Erro ao enviar formulário:', error);
+      ClientLogger.error('Erro ao enviar formulário', undefined, error as Error);
       toast({
         title: "Erro",
         description: "Erro ao enviar mensagem. Tente novamente.",

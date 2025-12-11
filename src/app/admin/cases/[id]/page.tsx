@@ -3,6 +3,7 @@
 import { useSession } from 'next-auth/react';
 import { useRouter, useParams } from 'next/navigation';
 import { useEffect, useState, useCallback } from 'react';
+import { ClientLogger } from '@/lib/logger-client';
 import { PageLayout } from '@/components/layout';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -133,7 +134,7 @@ export default function CaseEditPage() {
         router.push('/admin/cases');
       }
     } catch (error) {
-      console.error('Erro ao buscar case:', error);
+      ClientLogger.error('Erro ao buscar case', undefined, error as Error);
       toast.error('Erro ao carregar case');
     } finally {
       setIsLoading(false);
@@ -197,7 +198,7 @@ export default function CaseEditPage() {
         toast.error(errorData.error || 'Erro ao salvar case');
       }
     } catch (error) {
-      console.error('Erro ao salvar case:', error);
+      ClientLogger.error('Erro ao salvar case', undefined, error as Error);
       toast.error('Erro ao salvar case');
     } finally {
       setIsSaving(false);

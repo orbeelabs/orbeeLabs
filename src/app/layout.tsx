@@ -7,6 +7,11 @@ import WebVitals from "@/components/WebVitals";
 import CookieBanner from "@/components/CookieBanner";
 import { Providers } from "@/components/providers";
 import { OrganizationStructuredData, WebsiteStructuredData } from "@/components/StructuredData";
+import { requireEnvVars } from "@/lib/env-validation";
+import ConsoleFilter from "@/components/ConsoleFilter";
+
+// Validar variáveis de ambiente no startup
+requireEnvVars();
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -87,6 +92,7 @@ export default function RootLayout({
       >
         <GoogleTagManagerNoscript />
         <Providers>
+          <ConsoleFilter />
           <WebVitals />
           {children}
           <CookieBanner />

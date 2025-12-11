@@ -94,7 +94,7 @@ export default function WebinarsPage() {
   return (
     <PageLayout breadcrumbItems={breadcrumbItems}>
       {/* Hero Section */}
-      <section className="relative py-20 bg-gradient-to-br from-background via-card to-background">
+      <section className="relative pt-24 md:pt-32 pb-20 bg-gradient-to-br from-background via-card to-background">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, y: 50 }}

@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { signIn } from 'next-auth/react';
+import { ClientLogger } from '@/lib/logger-client';
 import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -41,7 +42,7 @@ export default function LoginPage() {
         setIsLoading(false);
       }
     } catch (error) {
-      console.error('Erro no login:', error);
+      ClientLogger.error('Erro no login', undefined, error as Error);
       toast.error('Erro ao fazer login');
       setIsLoading(false);
     }
@@ -75,10 +76,12 @@ export default function LoginPage() {
                 </Label>
                 <Input
                   id="email"
+                  name="email"
                   type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   required
+                  autoComplete="email"
                   className="mt-2 bg-white/10 border-white/20 text-white placeholder-gray-400"
                   placeholder="seu@email.com"
                 />
@@ -90,10 +93,12 @@ export default function LoginPage() {
                 </Label>
                 <Input
                   id="password"
+                  name="password"
                   type="password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   required
+                  autoComplete="current-password"
                   className="mt-2 bg-white/10 border-white/20 text-white placeholder-gray-400"
                   placeholder="••••••••"
                 />

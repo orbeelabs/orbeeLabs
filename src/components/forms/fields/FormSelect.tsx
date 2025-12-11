@@ -1,7 +1,7 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { forwardRef } from 'react';
+import { forwardRef, useId } from 'react';
 import { FieldError } from 'react-hook-form';
 
 interface FormSelectProps {
@@ -11,17 +11,23 @@ interface FormSelectProps {
   className?: string;
   options: Array<{ value: string; label: string }>;
   placeholder?: string;
+  name?: string;
 }
 
 const FormSelect = forwardRef<HTMLSelectElement, FormSelectProps>(
-  ({ label, required = false, error, className = '', options, placeholder = 'Selecione uma opção', ...props }, ref) => {
+  ({ label, required = false, error, className = '', options, placeholder = 'Selecione uma opção', name, ...props }, ref) => {
+    const id = useId();
+    
     return (
       <div className={className}>
-        <label className="block text-gray-300 text-sm font-medium mb-2">
+        <label htmlFor={id} className="block text-gray-300 text-sm font-medium mb-2">
           {label} {required && '*'}
         </label>
         <select
           ref={ref}
+          id={id}
+          name={name}
+          autoComplete="off"
           className={`w-full px-4 py-3 bg-black/20 border border-gray-600 rounded-lg text-white focus:outline-none focus:border-primary transition-colors duration-300 ${
             error ? 'border-red-500' : 'border-gray-600'
           }`}

@@ -9,6 +9,12 @@ import { CheckCircle, XCircle, Loader2 } from 'lucide-react';
 import { Logger } from '@/lib/logger';
 
 function ConfirmarExclusaoContent() {
+  const breadcrumbItems = [
+    { name: "Início", url: "https://orbeelabs.com" },
+    { name: "LGPD", url: "https://orbeelabs.com/lgpd" },
+    { name: "Confirmar Exclusão", url: "https://orbeelabs.com/lgpd/confirmar-exclusao" },
+  ];
+
   const searchParams = useSearchParams();
   const router = useRouter();
   const [status, setStatus] = useState<'loading' | 'success' | 'error'>('loading');
@@ -45,7 +51,7 @@ function ConfirmarExclusaoContent() {
   }, [searchParams]);
 
   return (
-    <PageLayout>
+    <PageLayout breadcrumbItems={breadcrumbItems}>
       <section className="relative py-20 bg-gradient-to-br from-background via-card to-background min-h-screen flex items-center">
         <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
