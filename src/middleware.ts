@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { auth } from "@/auth";
+import { getToken } from "next-auth/jwt";
 import { Logger } from "@/lib/logger";
 import { authRateLimitMiddleware } from "./middleware-auth";
 
@@ -10,11 +10,21 @@ export async function middleware(request: NextRequest) {
     return authRateLimit;
   }
 
-  // Usar auth() do NextAuth v5
-  // No NextAuth v5, precisamos passar o request explicitamente
-  const session = await auth({
-    headers: request.headers,
+  // Usar getToken do next-auth/jwt no middleware (forma correta para NextAuth v5)
+  const token = await getToken({ 
+    req: request,
+    secret: process.env.NEXTAUTH_SECRET,
   });
+  
+  // Converter token para formato de sessão
+  const session = token ? {
+    user: {
+      id: token.id as string,
+      email: token.email as string,
+      name: token.name as string,
+      role: token.role as string,
+    }
+  } : null;
   
   const isLoggedIn = !!session?.user;
   const isAdmin = session?.user?.role === 'ADMIN';
