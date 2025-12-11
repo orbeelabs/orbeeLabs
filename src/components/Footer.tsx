@@ -8,7 +8,7 @@ export default function Footer() {
 
   const footerLinks = {
     servicos: [
-      { name: 'SEO Cabuloso', href: '/servicos/seo' },
+      { name: 'SEO Cabuloso', href: '/servicos/seo-bh' },
       { name: 'Desenvolvimento Web', href: '/servicos' },
       { name: 'Marketing Digital', href: '/servicos' },
       { name: 'E-commerce', href: '/servicos' },

@@ -260,9 +260,12 @@ export default function NewsletterPage() {
                 <div className="relative">
                   <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
                   <Input
+                    id="search-newsletter"
+                    name="search-newsletter"
                     placeholder="Buscar por email ou nome..."
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
+                    autoComplete="off"
                     className="pl-10"
                   />
                 </div>

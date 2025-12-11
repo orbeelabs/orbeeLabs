@@ -408,8 +408,10 @@ export default function CalculadoraROI() {
                         <Label htmlFor="receitaMensal">Receita Mensal Atual (R$)</Label>
                         <Input
                           id="receitaMensal"
+                          name="receitaMensal"
                           type="number"
                           value={dados.receitaMensal}
+                          autoComplete="off"
                           onChange={(e) => handleInputChange('receitaMensal', e.target.value)}
                           placeholder="15000"
                         />
