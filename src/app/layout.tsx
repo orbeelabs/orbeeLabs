@@ -10,6 +10,7 @@ import { OrganizationStructuredData, WebsiteStructuredData } from "@/components/
 import { requireEnvVars } from "@/lib/env-validation";
 import ConsoleFilter from "@/components/ConsoleFilter";
 import { SpeedInsights } from "@vercel/speed-insights/next";
+import { Analytics } from "@vercel/analytics/next";
 
 // Validar variáveis de ambiente no startup
 requireEnvVars();
@@ -96,6 +97,7 @@ export default function RootLayout({
           <ConsoleFilter />
           <WebVitals />
           <SpeedInsights />
+          <Analytics />
           {children}
           <CookieBanner />
         </Providers>
