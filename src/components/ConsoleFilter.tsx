@@ -11,6 +11,7 @@ import { useEffect } from 'react';
  * - Warnings de deprecação do Zustand (vem de dependências)
  * - Erros de CSP do Vercel Live (ferramenta de desenvolvimento)
  * - Erros de sessão do Vercel Live (ferramenta de desenvolvimento)
+ * - Erros de message channel (geralmente causados por extensões do navegador)
  */
 export default function ConsoleFilter() {
   useEffect(() => {
@@ -82,6 +83,19 @@ export default function ConsoleFilter() {
          message.includes('vercel.live'))
       ) {
         // Não exibir erro de sessão do Vercel Live (ferramenta de dev)
+        return;
+      }
+
+      // Filtrar erro de message channel (geralmente causado por extensões do navegador)
+      if (
+        (message.includes('message channel closed') || 
+         fullMessage.includes('message channel closed')) &&
+        (fullMessage.includes('asynchronous response') || 
+         message.includes('asynchronous response') ||
+         fullMessage.includes('listener') ||
+         message.includes('listener'))
+      ) {
+        // Não exibir erro de message channel (causado por extensões do navegador)
         return;
       }
 
