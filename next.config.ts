@@ -7,9 +7,6 @@ const nextConfig: NextConfig = {
   typescript: {
     ignoreBuildErrors: false,
   },
-  eslint: {
-    ignoreDuringBuilds: false,
-  },
   
   // Configuração para resolver problemas com jsdom e isomorphic-dompurify
   // O jsdom foi adicionado como dependência explícita para garantir que todos os arquivos estejam disponíveis
