@@ -2,7 +2,6 @@
 
 import { motion } from 'framer-motion';
 import Link from 'next/link';
-import Image from 'next/image';
 import { PageLayout } from '@/components/layout';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -55,13 +54,12 @@ export default function BlogPostContent({ post, relatedPosts, breadcrumbItems }:
             <div className="flex flex-wrap items-center gap-6 text-gray-300 mb-6">
               <div className="flex items-center gap-2">
                 {post.authorImage && (
-                  <Image
+                  <img
                     src={post.authorImage}
                     alt={post.author}
                     width={32}
                     height={32}
                     className="rounded-full"
-                    unoptimized
                   />
                 )}
                 <User className="w-4 h-4" />
@@ -93,13 +91,11 @@ export default function BlogPostContent({ post, relatedPosts, breadcrumbItems }:
             {/* Featured Image */}
             {post.ogImage && (
               <div className="relative w-full aspect-video rounded-2xl overflow-hidden mb-8">
-                <Image
+                <img
                   src={post.ogImage}
                   alt={post.title}
-                  fill
-                  className="object-cover"
-                  priority
-                  unoptimized
+                  className="absolute inset-0 w-full h-full object-cover"
+                  loading="eager"
                 />
               </div>
             )}

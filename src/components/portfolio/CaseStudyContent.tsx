@@ -2,7 +2,6 @@
 
 import { motion } from 'framer-motion';
 import Link from 'next/link';
-import Image from 'next/image';
 import { PageLayout } from '@/components/layout';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -42,14 +41,11 @@ export default function CaseStudyContent({ caseStudy, relatedCases, breadcrumbIt
 
             {/* Hero Image */}
             <div className="relative w-full aspect-video rounded-2xl overflow-hidden mb-8">
-              <Image
+              <img
                 src={caseStudy.heroImage || '/images/portfolio/default-hero.jpg'}
                 alt={caseStudy.title}
-                fill
-                className="object-cover"
-                priority
-                sizes="100vw"
-                unoptimized
+                className="absolute inset-0 w-full h-full object-cover"
+                loading="eager"
               />
             </div>
 
@@ -193,28 +189,26 @@ export default function CaseStudyContent({ caseStudy, relatedCases, breadcrumbIt
                       {caseStudy.gscBefore && (
                         <div>
                           <p className="text-sm text-gray-400 mb-2">Antes:</p>
-                          <Image
+                          <img
                             src={caseStudy.gscBefore}
                             alt="GSC Before"
                             width={600}
                             height={400}
                             className="rounded-lg"
                             loading="lazy"
-                            unoptimized
                           />
                         </div>
                       )}
                       {caseStudy.gscAfter && (
                         <div>
                           <p className="text-sm text-gray-400 mb-2">Depois:</p>
-                          <Image
+                          <img
                             src={caseStudy.gscAfter}
                             alt="GSC After"
                             width={600}
                             height={400}
                             className="rounded-lg"
                             loading="lazy"
-                            unoptimized
                           />
                         </div>
                       )}
@@ -230,28 +224,26 @@ export default function CaseStudyContent({ caseStudy, relatedCases, breadcrumbIt
                       {caseStudy.ga4Before && (
                         <div>
                           <p className="text-sm text-gray-400 mb-2">Antes:</p>
-                          <Image
+                          <img
                             src={caseStudy.ga4Before}
                             alt="GA4 Before"
                             width={600}
                             height={400}
                             className="rounded-lg"
                             loading="lazy"
-                            unoptimized
                           />
                         </div>
                       )}
                       {caseStudy.ga4After && (
                         <div>
                           <p className="text-sm text-gray-400 mb-2">Depois:</p>
-                          <Image
+                          <img
                             src={caseStudy.ga4After}
                             alt="GA4 After"
                             width={600}
                             height={400}
                             className="rounded-lg"
                             loading="lazy"
-                            unoptimized
                           />
                         </div>
                       )}
@@ -345,13 +337,13 @@ export default function CaseStudyContent({ caseStudy, relatedCases, breadcrumbIt
                   animate={{ opacity: 1, scale: 1 }}
                   transition={{ duration: 0.4, delay: index * 0.1 }}
                 >
-                  <Image
+                  <img
                     src={image}
                     alt={`Gallery ${index + 1}`}
                     width={400}
                     height={300}
                     className="rounded-lg object-cover w-full h-full"
-                    unoptimized
+                    loading="lazy"
                   />
                 </motion.div>
               ))}
@@ -396,12 +388,11 @@ export default function CaseStudyContent({ caseStudy, relatedCases, breadcrumbIt
                     <Card className="glass glass-hover rounded-2xl overflow-hidden h-full flex flex-col group cursor-pointer">
                       {/* Image */}
                       <div className="aspect-video bg-gradient-to-br from-primary/20 to-yellow-500/20 flex items-center justify-center relative h-48">
-                        <Image
+                        <img
                           src={relatedCase.heroImage || '/images/portfolio/default-hero.jpg'}
                           alt={relatedCase.title}
-                          fill
-                          className="object-cover group-hover:scale-105 transition-transform duration-300"
-                          unoptimized
+                          className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                          loading="lazy"
                         />
                       </div>
 

@@ -2,7 +2,6 @@
 
 import { motion } from 'framer-motion';
 import Link from 'next/link';
-import Image from 'next/image';
 import { PageLayout } from '@/components/layout';
 import { Card, CardContent } from '@/components/ui/card';
 import { Calendar, User, ArrowRight, Tag, ArrowLeft } from 'lucide-react';
@@ -81,14 +80,11 @@ export default function BlogCategoryPage({ categoryName, posts, breadcrumbItems 
                       {/* Image */}
                       <div className="aspect-video bg-gradient-to-br from-primary/20 to-yellow-500/20 flex items-center justify-center relative h-48">
                         {post.ogImage ? (
-                          <Image
+                          <img
                             src={post.ogImage}
                             alt={post.title}
-                            fill
-                            className="object-cover group-hover:scale-105 transition-transform duration-300"
+                            className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                             loading="lazy"
-                            sizes="(max-width: 768px) 100vw, 50vw"
-                            unoptimized
                           />
                         ) : (
                           <div className="absolute inset-0 flex items-center justify-center">
