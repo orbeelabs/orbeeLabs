@@ -49,6 +49,7 @@ export default function CaseStudyContent({ caseStudy, relatedCases, breadcrumbIt
                 className="object-cover"
                 priority
                 sizes="100vw"
+                unoptimized
               />
             </div>
 
@@ -199,6 +200,7 @@ export default function CaseStudyContent({ caseStudy, relatedCases, breadcrumbIt
                             height={400}
                             className="rounded-lg"
                             loading="lazy"
+                            unoptimized
                           />
                         </div>
                       )}
@@ -212,6 +214,7 @@ export default function CaseStudyContent({ caseStudy, relatedCases, breadcrumbIt
                             height={400}
                             className="rounded-lg"
                             loading="lazy"
+                            unoptimized
                           />
                         </div>
                       )}
@@ -234,6 +237,7 @@ export default function CaseStudyContent({ caseStudy, relatedCases, breadcrumbIt
                             height={400}
                             className="rounded-lg"
                             loading="lazy"
+                            unoptimized
                           />
                         </div>
                       )}
@@ -247,6 +251,7 @@ export default function CaseStudyContent({ caseStudy, relatedCases, breadcrumbIt
                             height={400}
                             className="rounded-lg"
                             loading="lazy"
+                            unoptimized
                           />
                         </div>
                       )}
@@ -346,6 +351,7 @@ export default function CaseStudyContent({ caseStudy, relatedCases, breadcrumbIt
                     width={400}
                     height={300}
                     className="rounded-lg object-cover w-full h-full"
+                    unoptimized
                   />
                 </motion.div>
               ))}
@@ -395,6 +401,7 @@ export default function CaseStudyContent({ caseStudy, relatedCases, breadcrumbIt
                           alt={relatedCase.title}
                           fill
                           className="object-cover group-hover:scale-105 transition-transform duration-300"
+                          unoptimized
                         />
                       </div>
 

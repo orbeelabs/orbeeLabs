@@ -173,6 +173,11 @@ build/
 # Imagens grandes não devem ser versionadas
 public/images/**/*.jpg
 public/images/**/*.png
+# Permitir imagens WebP necessárias (logo e equipe)
+!public/images/logo/*.webp
+!public/images/team/*.webp
+!public/images/blog/*.webp
+!public/images/authors/*.webp
 public/images/**/*.webp
 public/og-image.jpg
 public/assets/team/*.jpg

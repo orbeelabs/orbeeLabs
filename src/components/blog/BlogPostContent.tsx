@@ -61,6 +61,7 @@ export default function BlogPostContent({ post, relatedPosts, breadcrumbItems }:
                     width={32}
                     height={32}
                     className="rounded-full"
+                    unoptimized
                   />
                 )}
                 <User className="w-4 h-4" />
@@ -98,6 +99,7 @@ export default function BlogPostContent({ post, relatedPosts, breadcrumbItems }:
                   fill
                   className="object-cover"
                   priority
+                  unoptimized
                 />
               </div>
             )}

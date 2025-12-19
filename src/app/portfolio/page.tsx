@@ -185,6 +185,7 @@ function CaseCard({ study, featured = false, delay = 0 }: CaseCardProps) {
               className="object-cover group-hover:scale-105 transition-transform duration-300"
               loading={featured ? "eager" : "lazy"}
               sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+              unoptimized
             />
             {study.featured && (
               <div className="absolute top-4 left-4 bg-primary text-primary-foreground px-3 py-1 rounded-full text-sm font-semibold">
