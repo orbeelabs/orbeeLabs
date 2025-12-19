@@ -22,9 +22,6 @@ const nextConfig: NextConfig = {
   // Compressão
   compress: true,
   
-  // Otimizações de produção
-  swcMinify: true,
-  
   // Configuração para resolver problemas com jsdom e isomorphic-dompurify
   // O jsdom foi adicionado como dependência explícita para garantir que todos os arquivos estejam disponíveis
   

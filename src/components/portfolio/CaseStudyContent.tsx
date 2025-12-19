@@ -50,6 +50,7 @@ export default function CaseStudyContent({ caseStudy, relatedCases, breadcrumbIt
                 priority
                 sizes="100vw"
               />
+            </div>
 
             {/* Industry Badge */}
             <div className="mb-4">
