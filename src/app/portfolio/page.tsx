@@ -178,7 +178,7 @@ function CaseCard({ study, featured = false, delay = 0 }: CaseCardProps) {
           {/* Hero Image */}
           <div className={`aspect-video bg-gradient-to-br from-primary/20 to-yellow-500/20 flex items-center justify-center relative ${featured ? 'h-64' : 'h-48'}`}>
             <img
-              src={study.heroImage || '/images/portfolio/default-hero.jpg'}
+              src={study.heroImage ? encodeURI(study.heroImage) : '/images/portfolio/default-hero.jpg'}
               alt={study.title}
               className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
               loading={featured ? "eager" : "lazy"}

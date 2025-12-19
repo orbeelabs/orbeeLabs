@@ -42,7 +42,7 @@ export default function CaseStudyContent({ caseStudy, relatedCases, breadcrumbIt
             {/* Hero Image */}
             <div className="relative w-full aspect-video rounded-2xl overflow-hidden mb-8">
               <img
-                src={caseStudy.heroImage || '/images/portfolio/default-hero.jpg'}
+                src={caseStudy.heroImage ? encodeURI(caseStudy.heroImage) : '/images/portfolio/default-hero.jpg'}
                 alt={caseStudy.title}
                 className="absolute inset-0 w-full h-full object-cover"
                 loading="eager"
@@ -190,7 +190,7 @@ export default function CaseStudyContent({ caseStudy, relatedCases, breadcrumbIt
                         <div>
                           <p className="text-sm text-gray-400 mb-2">Antes:</p>
                           <img
-                            src={caseStudy.gscBefore}
+                            src={encodeURI(caseStudy.gscBefore)}
                             alt="GSC Before"
                             width={600}
                             height={400}
@@ -203,7 +203,7 @@ export default function CaseStudyContent({ caseStudy, relatedCases, breadcrumbIt
                         <div>
                           <p className="text-sm text-gray-400 mb-2">Depois:</p>
                           <img
-                            src={caseStudy.gscAfter}
+                            src={encodeURI(caseStudy.gscAfter)}
                             alt="GSC After"
                             width={600}
                             height={400}
@@ -225,7 +225,7 @@ export default function CaseStudyContent({ caseStudy, relatedCases, breadcrumbIt
                         <div>
                           <p className="text-sm text-gray-400 mb-2">Antes:</p>
                           <img
-                            src={caseStudy.ga4Before}
+                            src={encodeURI(caseStudy.ga4Before)}
                             alt="GA4 Before"
                             width={600}
                             height={400}
@@ -238,7 +238,7 @@ export default function CaseStudyContent({ caseStudy, relatedCases, breadcrumbIt
                         <div>
                           <p className="text-sm text-gray-400 mb-2">Depois:</p>
                           <img
-                            src={caseStudy.ga4After}
+                            src={encodeURI(caseStudy.ga4After)}
                             alt="GA4 After"
                             width={600}
                             height={400}
@@ -338,7 +338,7 @@ export default function CaseStudyContent({ caseStudy, relatedCases, breadcrumbIt
                   transition={{ duration: 0.4, delay: index * 0.1 }}
                 >
                   <img
-                    src={image}
+                    src={encodeURI(image)}
                     alt={`Gallery ${index + 1}`}
                     width={400}
                     height={300}
@@ -389,7 +389,7 @@ export default function CaseStudyContent({ caseStudy, relatedCases, breadcrumbIt
                       {/* Image */}
                       <div className="aspect-video bg-gradient-to-br from-primary/20 to-yellow-500/20 flex items-center justify-center relative h-48">
                         <img
-                          src={relatedCase.heroImage || '/images/portfolio/default-hero.jpg'}
+                          src={relatedCase.heroImage ? encodeURI(relatedCase.heroImage) : '/images/portfolio/default-hero.jpg'}
                           alt={relatedCase.title}
                           className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                           loading="lazy"
