@@ -9,6 +9,20 @@ import { format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 import type { PostPreview } from '@/types/blog';
 
+// Helper para codificar URL de imagem
+function encodeImageUrl(url: string | null | undefined): string {
+  if (!url) return '';
+  // Garantir que comece com /
+  const normalizedUrl = url.startsWith('/') ? url : `/${url}`;
+  // Dividir o caminho e codificar apenas o nome do arquivo
+  const parts = normalizedUrl.split('/');
+  const filename = parts[parts.length - 1];
+  if (filename) {
+    parts[parts.length - 1] = encodeURIComponent(filename);
+  }
+  return parts.join('/');
+}
+
 interface BlogCategoryPageProps {
   categoryName: string;
   posts: PostPreview[];
