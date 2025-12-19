@@ -15,31 +15,31 @@ export default function SobrePage() {
 
   const team = [
     {
-      name: 'Diana Camila',
-      role: 'CEO & Desenvolvedora Fullstack',
+      name: 'Diana Caldeira',
+      role: 'HEAD OF TECHNOLOGY & INNOVATION',
       description:
-        'Especialista em desenvolvimento Fullstack com React, Next.js, Python e metodologias ágeis. Criadora da metodologia "SEO Cabuloso" que integra tecnologia e marketing.',
+        'Como a mente idealizadora e arquiteta por trás do método proprietário SEO-VX, Diana Caldeira personifica o DNA da Orbee Labs: a fusão entre estratégia de negócio e excelência tecnológica. Com mais de 18 anos de experiência, Diana une sua expertise em vendas e negócios com um profundo domínio em desenvolvimento Full-Stack e Inteligência Artificial. Já desenvolveu mais de 10 aplicativos e 15 sites, e formou centenas de profissionais em mais de 28 cursos que ministrou. Sua visão é o que transforma os desafios dos nossos clientes em resultados extraordinários.',
       image: '/images/team/Diana.webp',
       linkedin: 'Em breve',
-      specialties: ['React/Next.js', 'Python', 'SEO Técnico', 'TDD'],
+      specialties: ['Full-Stack', 'Inteligência Artificial', 'SEO-VX', 'Desenvolvimento', 'Negócios'],
     },
     {
       name: 'Izabela Fissicaro',
-      role: 'Co-fundadora & Head of Design',
+      role: 'HEAD OF CREATIVE & BRAND STRATEGY',
       description:
-        'Especialista em design estratégico, UX/UI e identidade visual. Responsável por criar experiências digitais que conectam marcas aos seus públicos de forma autêntica.',
+        'A alma criativa da Orbee Labs, responsável por transformar marcas em experiências visuais memoráveis. Com formação em Design e Fotografia, Izabela traz um olhar sofisticado e detalhista, refinado em sua experiência no mercado de alto padrão. Ela lidera a criação de identidades visuais, estratégias de social media e toda a direção de arte da empresa. Sua missão é garantir que a essência de cada cliente seja traduzida em um design que não apenas impressiona, mas também conecta e perdura.',
       image: '/images/team/Iza.webp',
       linkedin: 'Em breve',
-      specialties: ['UX/UI Design', 'Branding', 'Design Systems', 'CRO'],
+      specialties: ['Design', 'Fotografia', 'Branding', 'Social Media', 'Direção de Arte'],
     },
     {
       name: 'Gabi Cipriano',
-      role: 'Desenvolvedora Full-Stack & Engenheira de Software',
+      role: 'HEAD OF TECHNICAL STRATEGY & BUSINESS',
       description:
-        'Desenvolvedora full-stack com passagens por Harvard (HarvardX - CS50 - C), Engenheira de Software e certificada em Business Management pela IBM Berlin. Especializada em AI e Web3, com expertise sólida em blockchain e implementação de soluções tecnológicas corporativas. Combina excelência técnica com visão estratégica de negócios para entregar inovação escalável.',
+        'A ponte estratégica entre nossa tecnologia de ponta e o sucesso dos nossos clientes. Ela combina excelência técnica, validada por instituições como Harvard e IBM Berlin, com uma rara visão de negócios focada em inovação. É especialista em IA e Web3, com expertise sólida em blockchain e implementação de soluções tecnológicas corporativas. Lidera nossa frente comercial e de relacionamento, traduzindo as necessidades dos clientes em soluções inovadoras e garantindo parcerias de sucesso e confiança.',
       image: '/images/team/Gabi.webp',
       linkedin: 'Em breve',
-      specialties: ['Full-Stack', 'AI', 'Web3', 'Blockchain', 'Business Management'],
+      specialties: ['IA', 'Web3', 'Blockchain', 'Estratégia Técnica', 'Business'],
     }
   ];
 
@@ -106,7 +106,7 @@ export default function SobrePage() {
               <p className="text-body max-w-4xl mx-auto">
                 Somos uma agência de marketing digital e desenvolvimento web especializada em transformar 
                 negócios através de estratégias data-driven e tecnologia de ponta. Nossa metodologia 
-                proprietária &quot;SEO Cabuloso&quot; combina análise técnica avançada com estratégias de conteúdo 
+                proprietária &quot;SEO-VX&quot; combina análise técnica avançada com estratégias de conteúdo 
                 para garantir resultados mensuráveis e crescimento sustentável.
               </p>
             </motion.div>

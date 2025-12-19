@@ -17,7 +17,7 @@ export default function ServicesPage() {
   usePageTitle("Serviços de Marketing Digital | SEO Técnico e Desenvolvimento Web - Orbee Labs");
 
   const seoMethodology = {
-    title: 'SEO Cabuloso',
+    title: 'SEO-VX',
     subtitle: 'Nossa Metodologia Proprietária',
     description: 'Desenvolvemos uma metodologia única que combina SEO técnico avançado com estratégias de conteúdo data-driven para resultados excepcionais.',
     phases: [
@@ -64,7 +64,7 @@ export default function ServicesPage() {
     {
       icon: '🔍',
       title: 'SEO Técnico & Estratégico',
-      subtitle: 'Metodologia "SEO Cabuloso"',
+      subtitle: 'Metodologia "SEO-VX"',
       description: 'Nossa abordagem proprietária combina análise técnica avançada com estratégias de conteúdo data-driven para dominar os resultados orgânicos.',
       features: [
         'Auditoria técnica completa',

@@ -25,6 +25,56 @@ function encodeImageUrl(url: string | null | undefined): string {
   return parts.join('/');
 }
 
+// Helper para obter imagem do autor baseado no nome
+function getAuthorImage(authorName: string | null | undefined, authorImage: string | null | undefined): string | null {
+  // Se já tem authorImage definido, verificar se é válido
+  if (authorImage) {
+    // Se for um caminho antigo (.jpg ou minúsculo), substituir pelo correto
+    const authorImageLower = authorImage.toLowerCase();
+    if (authorImageLower.includes('diana') && (authorImageLower.includes('.jpg') || authorImageLower.includes('diana.jpg'))) {
+      return '/images/authors/Diana.webp';
+    }
+    if (authorImageLower.includes('gabi') || authorImageLower.includes('gabriela')) {
+      if (authorImageLower.includes('.jpg') || authorImageLower.includes('gabi.jpg') || authorImageLower.includes('gabriela.jpg')) {
+        return '/images/authors/Gabi.webp';
+      }
+    }
+    if (authorImageLower.includes('iza') || authorImageLower.includes('isabela')) {
+      if (authorImageLower.includes('.jpg') || authorImageLower.includes('iza.jpg') || authorImageLower.includes('isabela.jpg')) {
+        return '/images/authors/Iza.webp';
+      }
+    }
+    // Se não for um caminho antigo, usar o caminho fornecido
+    return encodeImageUrl(authorImage);
+  }
+  
+  // Mapear nome do autor para imagem local
+  if (!authorName) return null;
+  
+  const authorNameLower = authorName.toLowerCase().trim();
+  
+  // Mapeamento de nomes para imagens
+  const authorImageMap: Record<string, string> = {
+    'diana': '/images/authors/Diana.webp',
+    'diana caldeira': '/images/authors/Diana.webp',
+    'gabi': '/images/authors/Gabi.webp',
+    'gabriela': '/images/authors/Gabi.webp',
+    'gabriela caldeira': '/images/authors/Gabi.webp',
+    'iza': '/images/authors/Iza.webp',
+    'isabela': '/images/authors/Iza.webp',
+    'isabela caldeira': '/images/authors/Iza.webp',
+  };
+  
+  // Buscar por nome exato ou parcial
+  for (const [key, imagePath] of Object.entries(authorImageMap)) {
+    if (authorNameLower.includes(key) || key.includes(authorNameLower)) {
+      return imagePath;
+    }
+  }
+  
+  return null;
+}
+
 interface BlogPostContentProps {
   post: Post;
   relatedPosts: RelatedPost[];
@@ -67,15 +117,22 @@ export default function BlogPostContent({ post, relatedPosts, breadcrumbItems }:
             {/* Meta */}
             <div className="flex flex-wrap items-center gap-6 text-gray-300 mb-6">
               <div className="flex items-center gap-2">
-                {post.authorImage && (
-                  <img
-                    src={encodeImageUrl(post.authorImage)}
-                    alt={post.author}
-                    width={32}
-                    height={32}
-                    className="rounded-full"
-                  />
-                )}
+                {(() => {
+                  const authorImg = getAuthorImage(post.author, post.authorImage || null);
+                  return authorImg ? (
+                    <img
+                      src={authorImg}
+                      alt={post.author}
+                      width={40}
+                      height={40}
+                      className="rounded-full object-cover border-2 border-primary/30"
+                      loading="lazy"
+                      onError={(e) => {
+                        e.currentTarget.style.display = 'none';
+                      }}
+                    />
+                  ) : null;
+                })()}
                 <User className="w-4 h-4" />
                 <span>{post.author}</span>
               </div>

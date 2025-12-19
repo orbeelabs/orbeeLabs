@@ -30,9 +30,9 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Orbee Labs - Marketing Digital e Desenvolvimento Web | SEO Cabuloso",
-  description: "Agência de marketing digital especializada em SEO técnico, desenvolvimento web fullstack e estratégias de alta performance. Metodologia 'SEO Cabuloso' para dominar os resultados de busca. ROI mensurável garantido.",
-  keywords: "marketing digital, SEO técnico, desenvolvimento web, React, Next.js, agência digital, SEO Cabuloso, marketing de alta performance, desenvolvimento fullstack, otimização de sites, estratégias digitais, ROI digital",
+  title: "Orbee Labs - Marketing Digital e Desenvolvimento Web | SEO-VX",
+  description: "Agência de marketing digital especializada em SEO técnico, desenvolvimento web fullstack e estratégias de alta performance. Metodologia 'SEO-VX' para dominar os resultados de busca. ROI mensurável garantido.",
+  keywords: "marketing digital, SEO técnico, desenvolvimento web, React, Next.js, agência digital, SEO-VX, marketing de alta performance, desenvolvimento fullstack, otimização de sites, estratégias digitais, ROI digital",
   authors: [{ name: "Orbee Labs", url: "https://orbeelabs.com" }],
   creator: "Orbee Labs",
   publisher: "Orbee Labs",
@@ -56,8 +56,8 @@ export const metadata: Metadata = {
     canonical: "https://orbeelabs.com",
   },
   openGraph: {
-    title: "Orbee Labs - Marketing Digital e Desenvolvimento Web | SEO Cabuloso",
-    description: "Agência de marketing digital especializada em SEO técnico, desenvolvimento web fullstack e estratégias de alta performance. Metodologia 'SEO Cabuloso' para dominar os resultados de busca.",
+    title: "Orbee Labs - Marketing Digital e Desenvolvimento Web | SEO-VX",
+    description: "Agência de marketing digital especializada em SEO técnico, desenvolvimento web fullstack e estratégias de alta performance. Metodologia 'SEO-VX' para dominar os resultados de busca.",
     type: "website",
     locale: "pt_BR",
     url: "https://orbeelabs.com",
@@ -74,7 +74,7 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: "Orbee Labs - Marketing Digital e Desenvolvimento Web",
-    description: "Agência de marketing digital especializada em SEO técnico e desenvolvimento web fullstack. Metodologia 'SEO Cabuloso' para resultados reais.",
+    description: "Agência de marketing digital especializada em SEO técnico e desenvolvimento web fullstack. Metodologia 'SEO-VX' para resultados reais.",
     images: ["https://orbeelabs.com/og-image.jpg"],
     creator: "@orbeelabs",
   },

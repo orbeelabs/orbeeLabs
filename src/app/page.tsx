@@ -50,7 +50,7 @@ export default function Home() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.3 }}
             >
-              Metodologia &quot;SEO Cabuloso&quot; e Desenvolvimento Web Fullstack para Resultados Mensuráveis
+              Metodologia &quot;SEO-VX&quot; e Desenvolvimento Web Fullstack para Resultados Mensuráveis
             </motion.h2>
             
             <motion.p
@@ -60,7 +60,7 @@ export default function Home() {
               transition={{ duration: 0.8, delay: 0.4 }}
             >
               Transformamos sua presença online em uma máquina de crescimento sustentável, do desenvolvimento técnico à conversão otimizada. 
-              Nossa metodologia proprietária &quot;SEO Cabuloso&quot; combina análise técnica avançada, estratégias de conteúdo data-driven e desenvolvimento web fullstack para garantir que seu negócio não apenas apareça, mas domine os resultados de busca orgânica com ROI mensurável.
+              Nossa metodologia proprietária &quot;SEO-VX&quot; combina análise técnica avançada, estratégias de conteúdo data-driven e desenvolvimento web fullstack para garantir que seu negócio não apenas apareça, mas domine os resultados de busca orgânica com ROI mensurável.
             </motion.p>
             
             <motion.div
@@ -115,7 +115,7 @@ export default function Home() {
               {
                 icon: '🔍',
                 title: 'SEO Técnico Avançado',
-                subtitle: 'Metodologia "SEO Cabuloso"',
+                subtitle: 'Metodologia "SEO-VX"',
                 description: 'Nossa metodologia proprietária que combina auditoria técnica completa, estratégia de conteúdo data-driven e link building ético para dominar os resultados orgânicos do Google',
                 metrics: ['+400%', 'tráfego orgânico'],
               },
@@ -182,7 +182,7 @@ export default function Home() {
             {
               name: 'Dr. Bruna Vilela',
               company: 'Clínica Médica Especializada',
-              text: 'A Orbee Labs transformou nossa presença digital completamente. Com o "SEO Cabuloso", nossa clínica agora domina os resultados de busca e nossos agendamentos aumentaram 400%.',
+              text: 'A Orbee Labs transformou nossa presença digital completamente. Com o "SEO-VX", nossa clínica agora domina os resultados de busca e nossos agendamentos aumentaram 400%.',
             },
             {
               name: 'Carlos Mendes',

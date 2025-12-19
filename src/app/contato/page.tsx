@@ -27,7 +27,7 @@ export default function ContatoPage() {
               Transforme seu Negócio <span className="text-gradient">Hoje</span>
             </h1>
             <p className="text-body max-w-3xl mx-auto">
-              Agende uma consultoria gratuita de 30 minutos e descubra como nossa metodologia SEO Cabuloso
+              Agende uma consultoria gratuita de 30 minutos e descubra como nossa metodologia SEO-VX
               pode acelerar o crescimento digital do seu negócio.
             </p>
           </motion.div>

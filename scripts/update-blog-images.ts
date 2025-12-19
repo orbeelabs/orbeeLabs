@@ -10,7 +10,7 @@ const prisma = new PrismaClient();
 // Mapeamento de imagens para posts (baseado no título ou slug)
 const imageMapping: Record<string, string> = {
   // Mapeamento por título (case-insensitive)
-  'seo cabuloso': '/images/blog/Seo Cabuloso.webp',
+  'seo-vx': '/images/blog/Seo Cabuloso.webp',
   'pesquisa de palavras-chave': '/images/blog/Pesquisa de Palavras-chave.webp',
   'link building': '/images/blog/Link Building.webp',
   'conteúdo que converte': '/images/blog/Conteúdo que converte.webp',
@@ -62,7 +62,7 @@ async function updateBlogImages() {
       // Se não encontrou, tentar busca mais flexível
       if (!imagePath) {
         // Buscar palavras-chave no título
-        if (normalizedTitle.includes('seo') && normalizedTitle.includes('cabuloso')) {
+        if (normalizedTitle.includes('seo') && (normalizedTitle.includes('cabuloso') || normalizedTitle.includes('vx'))) {
           imagePath = '/images/blog/Seo Cabuloso.webp';
         } else if (normalizedTitle.includes('palavras-chave') || normalizedTitle.includes('pesquisa')) {
           imagePath = '/images/blog/Pesquisa de Palavras-chave.webp';

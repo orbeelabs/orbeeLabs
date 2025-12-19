@@ -18,7 +18,7 @@ export default function SEOPage() {
     { name: "SEO Belo Horizonte", url: "https://orbeelabs.com/servicos/seo-bh" },
   ];
 
-  usePageTitle("SEO Cabuloso em BH: Apareça no Google e Multiplique Seus Agendamentos | Orbee Labs");
+  usePageTitle("SEO-VX em BH: Apareça no Google e Multiplique Seus Agendamentos | Orbee Labs");
 
   const [openFAQ, setOpenFAQ] = useState<number | null>(null);
 
@@ -238,15 +238,15 @@ export default function SEOPage() {
     },
     {
       question: 'Vocês trabalham com sites WordPress/Shopify/etc?',
-      answer: 'Sim! Trabalhamos com qualquer plataforma: WordPress, Shopify, Wix, sistemas customizados, Next.js, React, etc. A metodologia SEO Cabuloso é independente da plataforma. O que importa é: estrutura técnica correta, conteúdo otimizado, performance e experiência do usuário. Adaptamos nossa estratégia para cada plataforma, garantindo que seu site tenha o melhor SEO possível, independente da tecnologia usada.'
+      answer: 'Sim! Trabalhamos com qualquer plataforma: WordPress, Shopify, Wix, sistemas customizados, Next.js, React, etc. A metodologia SEO-VX é independente da plataforma. O que importa é: estrutura técnica correta, conteúdo otimizado, performance e experiência do usuário. Adaptamos nossa estratégia para cada plataforma, garantindo que seu site tenha o melhor SEO possível, independente da tecnologia usada.'
     },
     {
-      question: 'Como funciona o processo SEO Cabuloso?',
-      answer: 'O processo SEO Cabuloso é dividido em 4 fases: 1) AUDITORIA TÉCNICA: Analisamos seu site, concorrentes e mercado para identificar oportunidades. 2) OTIMIZAÇÃO TÉCNICA: Corrigimos problemas de performance, mobile, segurança e estrutura. 3) ESTRATÉGIA DE CONTEÚDO: Criamos conteúdo otimizado que responde às perguntas do seu público. 4) MONITORAMENTO E AJUSTES: Acompanhamos resultados, ranqueamentos e otimizamos continuamente. Tudo com foco em resultados mensuráveis e ROI comprovado.'
+      question: 'Como funciona o processo SEO-VX?',
+      answer: 'O processo SEO-VX é dividido em 4 fases: 1) AUDITORIA TÉCNICA: Analisamos seu site, concorrentes e mercado para identificar oportunidades. 2) OTIMIZAÇÃO TÉCNICA: Corrigimos problemas de performance, mobile, segurança e estrutura. 3) ESTRATÉGIA DE CONTEÚDO: Criamos conteúdo otimizado que responde às perguntas do seu público. 4) MONITORAMENTO E AJUSTES: Acompanhamos resultados, ranqueamentos e otimizamos continuamente. Tudo com foco em resultados mensuráveis e ROI comprovado.'
     },
     {
-      question: 'Qual a diferença entre SEO tradicional e SEO Cabuloso?',
-      answer: 'SEO Tradicional: Foca apenas em palavras-chave, muitas vezes usa técnicas antigas que não funcionam mais. SEO Cabuloso: Combina análise técnica avançada + estratégia de conteúdo data-driven + desenvolvimento web fullstack. Não é só "colocar palavras-chave". É entender o que Google realmente quer: sites rápidos, seguros, com conteúdo relevante e experiência excepcional. Resultado: Rankings sustentáveis e crescimento real de tráfego, não apenas otimizações superficiais.'
+      question: 'Qual a diferença entre SEO tradicional e SEO-VX?',
+      answer: 'SEO Tradicional: Foca apenas em palavras-chave, muitas vezes usa técnicas antigas que não funcionam mais. SEO-VX: Combina análise técnica avançada + estratégia de conteúdo data-driven + desenvolvimento web fullstack. Não é só "colocar palavras-chave". É entender o que Google realmente quer: sites rápidos, seguros, com conteúdo relevante e experiência excepcional. Resultado: Rankings sustentáveis e crescimento real de tráfego, não apenas otimizações superficiais.'
     },
     {
       question: 'Como medem o ROI do SEO?',
@@ -276,7 +276,7 @@ export default function SEOPage() {
               className="text-center mb-16"
             >
               <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6 leading-tight">
-                SEO Cabuloso: Apareça no Google e{' '}
+                SEO-VX: Apareça no Google e{' '}
                 <span className="text-gradient">Multiplique Seus Agendamentos</span>
               </h1>
               <p className="text-xl md:text-2xl text-gray-300 max-w-4xl mx-auto leading-relaxed mb-8">

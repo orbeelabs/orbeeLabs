@@ -8,6 +8,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Menu } from 'lucide-react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 // import { useToast } from '@/components/ui/use-toast';
 // import { Badge } from '@/components/ui/badge';
@@ -82,6 +83,7 @@ export default function CalculadoraROI() {
     }
   ]);
   const [cenarioAtivo, setCenarioAtivo] = useState('cenario-1');
+  const [abaAtiva, setAbaAtiva] = useState('calculadora');
 
   // Salvar cálculo quando mudar
   useEffect(() => {
@@ -367,8 +369,9 @@ export default function CalculadoraROI() {
       {/* Calculadora */}
       <section className="py-16 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto">
-          <Tabs defaultValue="calculadora" className="w-full">
-            <TabsList className="grid w-full grid-cols-6 mb-8">
+          <Tabs value={abaAtiva} onValueChange={setAbaAtiva} className="w-full">
+            {/* Desktop: Tabs normais */}
+            <TabsList className="hidden md:grid w-full grid-cols-6 mb-8">
               <TabsTrigger value="calculadora">Calculadora</TabsTrigger>
               <TabsTrigger value="comparacao">
                 <GitCompare className="w-4 h-4 mr-2" />
@@ -388,6 +391,73 @@ export default function CalculadoraROI() {
               </TabsTrigger>
               <TabsTrigger value="resultados">Resultados</TabsTrigger>
             </TabsList>
+
+            {/* Mobile: Select Dropdown */}
+            <div className="md:hidden mb-6">
+              <Select value={abaAtiva} onValueChange={setAbaAtiva}>
+                <SelectTrigger className="w-full bg-background/50 backdrop-blur-sm border-primary/20 h-12">
+                  <div className="flex items-center gap-2 w-full">
+                    <Menu className="w-5 h-5 text-primary" />
+                    <SelectValue>
+                      <div className="flex items-center gap-2">
+                        {abaAtiva === 'calculadora' && <Calculator className="w-4 h-4" />}
+                        {abaAtiva === 'comparacao' && <GitCompare className="w-4 h-4" />}
+                        {abaAtiva === 'como-usar' && <BookOpen className="w-4 h-4" />}
+                        {abaAtiva === 'como-medir' && <Ruler className="w-4 h-4" />}
+                        {abaAtiva === 'interpretacao' && <Lightbulb className="w-4 h-4" />}
+                        {abaAtiva === 'resultados' && <BarChart3 className="w-4 h-4" />}
+                        <span className="font-medium">
+                          {abaAtiva === 'calculadora' && 'Calculadora'}
+                          {abaAtiva === 'comparacao' && 'Comparação'}
+                          {abaAtiva === 'como-usar' && 'Como Usar'}
+                          {abaAtiva === 'como-medir' && 'Como Medir'}
+                          {abaAtiva === 'interpretacao' && 'Interpretação'}
+                          {abaAtiva === 'resultados' && 'Resultados'}
+                        </span>
+                      </div>
+                    </SelectValue>
+                  </div>
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="calculadora">
+                    <div className="flex items-center gap-2">
+                      <Calculator className="w-4 h-4" />
+                      <span>Calculadora</span>
+                    </div>
+                  </SelectItem>
+                  <SelectItem value="comparacao">
+                    <div className="flex items-center gap-2">
+                      <GitCompare className="w-4 h-4" />
+                      <span>Comparação</span>
+                    </div>
+                  </SelectItem>
+                  <SelectItem value="como-usar">
+                    <div className="flex items-center gap-2">
+                      <BookOpen className="w-4 h-4" />
+                      <span>Como Usar</span>
+                    </div>
+                  </SelectItem>
+                  <SelectItem value="como-medir">
+                    <div className="flex items-center gap-2">
+                      <Ruler className="w-4 h-4" />
+                      <span>Como Medir</span>
+                    </div>
+                  </SelectItem>
+                  <SelectItem value="interpretacao">
+                    <div className="flex items-center gap-2">
+                      <Lightbulb className="w-4 h-4" />
+                      <span>Interpretação</span>
+                    </div>
+                  </SelectItem>
+                  <SelectItem value="resultados">
+                    <div className="flex items-center gap-2">
+                      <BarChart3 className="w-4 h-4" />
+                      <span>Resultados</span>
+                    </div>
+                  </SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
 
             <TabsContent value="calculadora">
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">

@@ -109,7 +109,7 @@ Acesse [http://localhost:3000](http://localhost:3000) no seu navegador.
 
 #### Páginas de Serviços (9 páginas)
 - **Serviços** (`/servicos`): Página principal de serviços
-- **SEO Belo Horizonte** (`/servicos/seo-bh`): Serviço de SEO com metodologia "SEO Cabuloso"
+- **SEO Belo Horizonte** (`/servicos/seo-bh`): Serviço de SEO com metodologia "SEO-VX"
 - **Desenvolvimento Web BH** (`/servicos/desenvolvimento-web-bh`): Desenvolvimento web fullstack
 - **Tráfego Pago BH** (`/servicos/trafego-pago-bh`): Gestão de campanhas pagas
 - **Marketing Digital** (`/servicos/marketing`): Marketing digital estratégico

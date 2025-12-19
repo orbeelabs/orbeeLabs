@@ -67,7 +67,7 @@ export function OrganizationStructuredData() {
           itemOffered: {
             '@type': 'Service',
             name: 'SEO Técnico',
-            description: 'Otimização técnica para motores de busca com metodologia proprietária &quot;SEO Cabuloso&quot;',
+            description: 'Otimização técnica para motores de busca com metodologia proprietária &quot;SEO-VX&quot;',
           },
         },
         {
