@@ -3,7 +3,6 @@
 import { usePageTitle } from '@/hooks/core';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
-import Image from 'next/image';
 import { PageLayout } from '@/components/layout';
 
 export default function SobrePage() {
@@ -145,14 +144,13 @@ export default function SobrePage() {
                 >
                   <div className="flex flex-col md:flex-row items-center md:items-start space-y-6 md:space-y-0 md:space-x-8">
                     <div className="relative w-32 h-32 rounded-full overflow-hidden flex-shrink-0 ring-4 ring-primary/20">
-                      <Image
+                      <img
                         src={member.image}
                         alt={member.name}
-                        fill
-                        className="object-cover"
-                        sizes="128px"
+                        className="w-full h-full object-cover"
+                        width={128}
+                        height={128}
                         loading="lazy"
-                        unoptimized
                       />
                     </div>
                     <div className="flex-1 text-center md:text-left">

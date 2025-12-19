@@ -2,7 +2,6 @@
 
 import { motion } from 'framer-motion';
 import Link from 'next/link';
-import Image from 'next/image';
 
 export default function Footer() {
   const currentYear = new Date().getFullYear();
@@ -59,14 +58,13 @@ export default function Footer() {
           >
             <div className="flex items-center space-x-3 mb-6">
               <div className="relative w-12 h-12">
-                <Image
+                <img
                   src="/images/logo/logo_branca.webp"
                   alt="Orbee Labs Logo"
-                  fill
-                  className="object-contain"
-                  sizes="48px"
+                  className="w-full h-full object-contain"
+                  width={48}
+                  height={48}
                   loading="lazy"
-                  unoptimized
                 />
               </div>
               <div>

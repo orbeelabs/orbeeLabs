@@ -3,7 +3,6 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Link from 'next/link';
-import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import { useSession, signOut } from 'next-auth/react';
 
@@ -52,14 +51,12 @@ export default function Navigation() {
           >
             <Link href="/" className="flex items-center space-x-3 group">
               <div className="relative w-12 h-12">
-                <Image
+                <img
                   src="/images/logo/logo_branca.webp"
                   alt="Orbee Labs Logo"
-                  fill
-                  className="object-contain group-hover:scale-105 transition-transform duration-300"
-                  sizes="48px"
-                  priority
-                  unoptimized
+                  className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-300"
+                  width={48}
+                  height={48}
                 />
               </div>
               <div className="hidden sm:block">
