@@ -56,22 +56,16 @@ export default function Footer() {
             viewport={{ once: true }}
             className="lg:col-span-1"
           >
-            <div className="flex items-center space-x-3 mb-6">
-              <div className="relative w-12 h-12">
+            <div className="flex items-center mb-6">
+              <div className="relative w-48 h-48">
                 <img
                   src="/images/logo/logo_branca.webp"
                   alt="Orbee Labs Logo"
                   className="w-full h-full object-contain"
-                  width={48}
-                  height={48}
+                  width={192}
+                  height={192}
                   loading="lazy"
                 />
-              </div>
-              <div>
-                <h3 className="text-2xl font-bold text-white">Orbee Labs</h3>
-                <p className="text-primary text-sm font-semibold">
-                  Agência Digital
-                </p>
               </div>
             </div>
             <p className="text-gray-300 mb-6 leading-relaxed">

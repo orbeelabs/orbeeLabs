@@ -118,35 +118,82 @@ export default function CalculadoraROI() {
   const calcularROIFromData = useCallback((dadosCalc: ROIData): CalculoROI => {
     const { investimentoInicial, investimentoMensal, tempoInvestimento, receitaMensal, crescimentoMensal } = dadosCalc;
     
-    const receitaProjetada = [];
-    const investimentoProjetado = [];
-    const lucroProjetado = [];
+    // Validações básicas para evitar erros
+    const investInicial = Math.max(0, investimentoInicial || 0);
+    const investMensal = Math.max(0, investimentoMensal || 0);
+    const receitaMens = Math.max(0, receitaMensal || 0);
+    const crescimento = crescimentoMensal || 0;
+    const tempo = Math.max(1, Math.min(tempoInvestimento || 12, 120)); // Limitar entre 1 e 120 meses
     
-    let receitaAtual = receitaMensal;
-    let investimentoTotal = investimentoInicial;
+    const receitaProjetada: number[] = [];
+    const investimentoProjetado: number[] = [];
+    const lucroProjetado: number[] = [];
+    
+    let receitaAtual = receitaMens;
+    let investimentoTotal = investInicial;
     let receitaTotal = 0;
     
-    for (let mes = 1; mes <= tempoInvestimento; mes++) {
+    for (let mes = 1; mes <= tempo; mes++) {
       receitaProjetada.push(receitaAtual);
-      investimentoProjetado.push(investimentoMensal);
-      lucroProjetado.push(receitaAtual - investimentoMensal);
+      investimentoProjetado.push(investMensal);
+      lucroProjetado.push(receitaAtual - investMensal);
       
       receitaTotal += receitaAtual;
-      investimentoTotal += investimentoMensal;
+      investimentoTotal += investMensal;
       
-      receitaAtual *= (1 + crescimentoMensal / 100);
+      // Aplicar crescimento mensal
+      receitaAtual *= (1 + crescimento / 100);
     }
     
     const lucro = receitaTotal - investimentoTotal;
-    const roi = (lucro / investimentoTotal) * 100;
-    const payback = investimentoInicial / (receitaMensal - investimentoMensal);
+    const roi = investimentoTotal > 0 ? (lucro / investimentoTotal) * 100 : 0;
+    
+    // Calcular payback considerando crescimento mensal e investimento recorrente
+    let payback: number = tempo + 1; // Default: não há payback no período
+    let acumulado = -investInicial;
+    let receitaAtualPayback = receitaMens;
+    
+    for (let mes = 1; mes <= tempo; mes++) {
+      const fluxoCaixaMes = receitaAtualPayback - investMensal;
+      acumulado += fluxoCaixaMes;
+      
+      // Se encontrou o payback (acumulado se torna positivo ou zero)
+      if (acumulado >= 0 && payback === tempo + 1) {
+        if (mes === 1 && fluxoCaixaMes > investInicial && fluxoCaixaMes > 0) {
+          // Payback no primeiro mês - calcular fração
+          payback = investInicial / fluxoCaixaMes;
+        } else {
+          // Payback em um mês completo ou fração
+          if (acumulado === 0) {
+            payback = mes;
+          } else if (fluxoCaixaMes > 0) {
+            // Calcular fração do mês
+            const acumuladoAnterior = acumulado - fluxoCaixaMes;
+            const necessario = -acumuladoAnterior;
+            payback = (mes - 1) + (necessario / fluxoCaixaMes);
+          } else {
+            // Se fluxo de caixa é negativo, não há payback neste mês
+            payback = mes;
+          }
+        }
+        break;
+      }
+      
+      // Aplicar crescimento para próximo mês
+      receitaAtualPayback *= (1 + crescimento / 100);
+    }
+    
+    // Garantir que payback não seja NaN ou Infinity
+    if (!isFinite(payback) || payback < 0) {
+      payback = tempo + 1;
+    }
     
     return {
-      receitaTotal,
-      investimentoTotal,
-      lucro,
-      roi,
-      payback,
+      receitaTotal: isFinite(receitaTotal) ? receitaTotal : 0,
+      investimentoTotal: isFinite(investimentoTotal) ? investimentoTotal : 0,
+      lucro: isFinite(lucro) ? lucro : 0,
+      roi: isFinite(roi) ? roi : 0,
+      payback: isFinite(payback) ? payback : tempo + 1,
       receitaProjetada,
       investimentoProjetado,
       lucroProjetado
@@ -524,7 +571,9 @@ export default function CalculadoraROI() {
                           
                           <div className="text-center p-4 bg-orange-500/10 rounded-lg">
                             <div className="text-2xl font-bold text-orange-500">
-                              {calculo.payback.toFixed(1)} meses
+                              {calculo.payback > dados.tempoInvestimento 
+                                ? 'Sem retorno' 
+                                : `${calculo.payback.toFixed(1)} meses`}
                             </div>
                             <div className="text-sm text-muted-foreground">Payback</div>
                           </div>
@@ -670,7 +719,9 @@ export default function CalculadoraROI() {
                                       R$ {cenario.calculo!.investimentoTotal.toLocaleString()}
                                     </td>
                                     <td className="text-right p-3">
-                                      {cenario.calculo!.payback.toFixed(1)}
+                                      {cenario.calculo!.payback > cenario.dados.tempoInvestimento
+                                        ? 'Sem retorno'
+                                        : cenario.calculo!.payback.toFixed(1)}
                                     </td>
                                   </tr>
                                 ))}
@@ -840,7 +891,9 @@ export default function CalculadoraROI() {
                                   c.calculo!.lucro.toLocaleString(),
                                   c.calculo!.receitaTotal.toLocaleString(),
                                   c.calculo!.investimentoTotal.toLocaleString(),
-                                  c.calculo!.payback.toFixed(1)
+                                  c.calculo!.payback > c.dados.tempoInvestimento
+                                    ? 'Sem retorno'
+                                    : c.calculo!.payback.toFixed(1)
                                 ]);
                               
                               const csv = [
@@ -1369,7 +1422,9 @@ export default function CalculadoraROI() {
                         <div className="text-center p-6 bg-gradient-to-br from-orange-500/20 to-orange-500/5 rounded-lg">
                           <Target className="w-8 h-8 text-orange-500 mx-auto mb-2" />
                           <div className="text-3xl font-bold text-orange-500">
-                            {calculo.payback.toFixed(1)}
+                            {calculo.payback > dados.tempoInvestimento
+                              ? 'N/A'
+                              : calculo.payback.toFixed(1)}
                           </div>
                           <div className="text-sm text-muted-foreground">Meses Payback</div>
                         </div>

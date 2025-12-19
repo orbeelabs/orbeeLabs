@@ -47,22 +47,17 @@ export default function Navigation() {
           <motion.div
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
-            className="flex items-center space-x-3"
+            className="flex items-center"
           >
-            <Link href="/" className="flex items-center space-x-3 group">
-              <div className="relative w-12 h-12">
+            <Link href="/" className="flex items-center group">
+              <div className="relative w-48 h-48">
                 <img
                   src="/images/logo/logo_branca.webp"
                   alt="Orbee Labs Logo"
                   className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-300"
-                  width={48}
-                  height={48}
+                  width={192}
+                  height={192}
                 />
-              </div>
-              <div className="hidden sm:block">
-                <h1 className="text-2xl font-bold text-white group-hover:text-primary transition-colors duration-300">
-                  Orbee <span className="text-gradient">Labs</span>
-                </h1>
               </div>
             </Link>
           </motion.div>
