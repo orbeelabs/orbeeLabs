@@ -11,6 +11,20 @@ import { ptBR } from 'date-fns/locale';
 import ShareButtons from '@/components/ShareButtons';
 import type { Post, RelatedPost } from '@/types/blog';
 
+// Helper para codificar URL de imagem
+function encodeImageUrl(url: string | null | undefined): string {
+  if (!url) return '';
+  // Garantir que comece com /
+  const normalizedUrl = url.startsWith('/') ? url : `/${url}`;
+  // Dividir o caminho e codificar apenas o nome do arquivo
+  const parts = normalizedUrl.split('/');
+  const filename = parts[parts.length - 1];
+  if (filename) {
+    parts[parts.length - 1] = encodeURIComponent(filename);
+  }
+  return parts.join('/');
+}
+
 interface BlogPostContentProps {
   post: Post;
   relatedPosts: RelatedPost[];
@@ -55,9 +69,7 @@ export default function BlogPostContent({ post, relatedPosts, breadcrumbItems }:
               <div className="flex items-center gap-2">
                 {post.authorImage && (
                   <img
-                    src={post.authorImage.split('/').map((part, i, arr) => 
-                      i === arr.length - 1 ? encodeURIComponent(part) : part
-                    ).join('/')}
+                    src={encodeImageUrl(post.authorImage)}
                     alt={post.author}
                     width={32}
                     height={32}
@@ -94,14 +106,16 @@ export default function BlogPostContent({ post, relatedPosts, breadcrumbItems }:
             {post.ogImage && (
               <div className="relative w-full aspect-video rounded-2xl overflow-hidden mb-8">
                 <img
-                  src={(post.ogImage.startsWith('/') ? post.ogImage : `/${post.ogImage}`).split('/').map((part, i, arr) => 
-                    i === arr.length - 1 && part ? encodeURIComponent(part) : part
-                  ).join('/')}
+                  src={encodeImageUrl(post.ogImage)}
                   alt={post.title}
                   className="absolute inset-0 w-full h-full object-cover"
                   loading="eager"
                   onError={(e) => {
-                    console.error('Erro ao carregar imagem do post:', post.ogImage);
+                    console.error('Erro ao carregar imagem do post:', {
+                      original: post.ogImage,
+                      encoded: encodeImageUrl(post.ogImage),
+                      title: post.title
+                    });
                     e.currentTarget.style.display = 'none';
                   }}
                 />
@@ -190,14 +204,16 @@ export default function BlogPostContent({ post, relatedPosts, breadcrumbItems }:
                       <div className="aspect-video bg-gradient-to-br from-primary/20 to-yellow-500/20 flex items-center justify-center relative h-48">
                         {relatedPost.ogImage ? (
                           <img
-                            src={(relatedPost.ogImage.startsWith('/') ? relatedPost.ogImage : `/${relatedPost.ogImage}`).split('/').map((part, i, arr) => 
-                              i === arr.length - 1 && part ? encodeURIComponent(part) : part
-                            ).join('/')}
+                            src={encodeImageUrl(relatedPost.ogImage)}
                             alt={relatedPost.title}
                             className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                             loading="lazy"
                             onError={(e) => {
-                              console.error('Erro ao carregar imagem relacionada:', relatedPost.ogImage);
+                              console.error('Erro ao carregar imagem relacionada:', {
+                                original: relatedPost.ogImage,
+                                encoded: encodeImageUrl(relatedPost.ogImage),
+                                title: relatedPost.title
+                              });
                               e.currentTarget.style.display = 'none';
                             }}
                           />

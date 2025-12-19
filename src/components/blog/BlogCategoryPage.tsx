@@ -81,14 +81,16 @@ export default function BlogCategoryPage({ categoryName, posts, breadcrumbItems 
                       <div className="aspect-video bg-gradient-to-br from-primary/20 to-yellow-500/20 flex items-center justify-center relative h-48">
                         {post.ogImage ? (
                           <img
-                            src={(post.ogImage.startsWith('/') ? post.ogImage : `/${post.ogImage}`).split('/').map((part, i, arr) => 
-                              i === arr.length - 1 && part ? encodeURIComponent(part) : part
-                            ).join('/')}
+                            src={encodeImageUrl(post.ogImage)}
                             alt={post.title}
                             className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                             loading="lazy"
                             onError={(e) => {
-                              console.error('Erro ao carregar imagem:', post.ogImage);
+                              console.error('Erro ao carregar imagem:', {
+                                original: post.ogImage,
+                                encoded: encodeImageUrl(post.ogImage),
+                                title: post.title
+                              });
                               e.currentTarget.style.display = 'none';
                             }}
                           />

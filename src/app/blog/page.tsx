@@ -12,6 +12,20 @@ import { ptBR } from 'date-fns/locale';
 import { usePaginatedData } from '@/hooks/usePaginatedData';
 import type { PostPreview } from '@/types/blog';
 
+// Helper para codificar URL de imagem
+function encodeImageUrl(url: string | null | undefined): string {
+  if (!url) return '';
+  // Garantir que comece com /
+  const normalizedUrl = url.startsWith('/') ? url : `/${url}`;
+  // Dividir o caminho e codificar apenas o nome do arquivo
+  const parts = normalizedUrl.split('/');
+  const filename = parts[parts.length - 1];
+  if (filename) {
+    parts[parts.length - 1] = encodeURIComponent(filename);
+  }
+  return parts.join('/');
+}
+
 export default function BlogPage() {
   const breadcrumbItems = [
     { name: "Início", url: "https://orbeelabs.com" },
@@ -175,14 +189,16 @@ function PostCard({ post, featured = false, delay = 0 }: PostCardProps) {
           <div className={`aspect-video bg-gradient-to-br from-primary/20 to-yellow-500/20 flex items-center justify-center relative ${featured ? 'h-64' : 'h-48'}`}>
             {post.ogImage ? (
               <img
-                src={post.ogImage ? (post.ogImage.startsWith('/') ? post.ogImage : `/${post.ogImage}`).split('/').map((part, i, arr) => 
-                  i === arr.length - 1 && part ? encodeURIComponent(part) : part
-                ).join('/') : ''}
+                src={encodeImageUrl(post.ogImage)}
                 alt={post.title}
                 className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                 loading={featured ? "eager" : "lazy"}
                 onError={(e) => {
-                  console.error('Erro ao carregar imagem:', post.ogImage);
+                  console.error('Erro ao carregar imagem do blog:', {
+                    original: post.ogImage,
+                    encoded: encodeImageUrl(post.ogImage),
+                    title: post.title
+                  });
                   e.currentTarget.style.display = 'none';
                 }}
               />
