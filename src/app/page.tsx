@@ -6,10 +6,16 @@ import FadeInUp from '@/components/animations/FadeInUp';
 import AnimatedCard from '@/components/animations/AnimatedCard';
 import StaggerContainer from '@/components/animations/StaggerContainer';
 import StaggerItem from '@/components/animations/StaggerItem';
-import ParticleFieldCanvas from '@/components/animations/ParticleFieldCanvas';
+import dynamic from 'next/dynamic';
 import ScrollIndicator from '@/components/animations/ScrollIndicator';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
+
+// Lazy load do componente pesado ParticleFieldCanvas
+const ParticleFieldCanvas = dynamic(() => import('@/components/animations/ParticleFieldCanvas'), {
+  ssr: false,
+  loading: () => null,
+});
 
 export default function Home() {
   const breadcrumbItems = [

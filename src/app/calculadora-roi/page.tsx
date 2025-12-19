@@ -13,6 +13,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 // import { Badge } from '@/components/ui/badge';
 import { Calculator, TrendingUp, DollarSign, Target, BarChart3, Download, BookOpen, Ruler, Lightbulb, Info, ExternalLink, History, Plus, X, Copy, GitCompare } from 'lucide-react';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
+// Recharts importado normalmente (usado apenas quando necessário)
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, BarChart, Bar } from 'recharts';
 import { AgendamentoModal } from '@/components/AgendamentoModal';
 import ShareButtons from '@/components/ShareButtons';

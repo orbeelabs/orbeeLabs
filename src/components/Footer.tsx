@@ -65,6 +65,7 @@ export default function Footer() {
                   fill
                   className="object-contain"
                   sizes="48px"
+                  loading="lazy"
                 />
               </div>
               <div>

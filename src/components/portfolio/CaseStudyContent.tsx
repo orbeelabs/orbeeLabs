@@ -48,8 +48,8 @@ export default function CaseStudyContent({ caseStudy, relatedCases, breadcrumbIt
                 fill
                 className="object-cover"
                 priority
+                sizes="100vw"
               />
-            </div>
 
             {/* Industry Badge */}
             <div className="mb-4">
@@ -197,6 +197,7 @@ export default function CaseStudyContent({ caseStudy, relatedCases, breadcrumbIt
                             width={600}
                             height={400}
                             className="rounded-lg"
+                            loading="lazy"
                           />
                         </div>
                       )}
@@ -209,6 +210,7 @@ export default function CaseStudyContent({ caseStudy, relatedCases, breadcrumbIt
                             width={600}
                             height={400}
                             className="rounded-lg"
+                            loading="lazy"
                           />
                         </div>
                       )}
@@ -230,6 +232,7 @@ export default function CaseStudyContent({ caseStudy, relatedCases, breadcrumbIt
                             width={600}
                             height={400}
                             className="rounded-lg"
+                            loading="lazy"
                           />
                         </div>
                       )}
@@ -242,6 +245,7 @@ export default function CaseStudyContent({ caseStudy, relatedCases, breadcrumbIt
                             width={600}
                             height={400}
                             className="rounded-lg"
+                            loading="lazy"
                           />
                         </div>
                       )}

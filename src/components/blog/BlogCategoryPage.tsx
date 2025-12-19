@@ -86,6 +86,8 @@ export default function BlogCategoryPage({ categoryName, posts, breadcrumbItems 
                             alt={post.title}
                             fill
                             className="object-cover group-hover:scale-105 transition-transform duration-300"
+                            loading="lazy"
+                            sizes="(max-width: 768px) 100vw, 50vw"
                           />
                         ) : (
                           <div className="absolute inset-0 flex items-center justify-center">
