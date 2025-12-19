@@ -36,7 +36,7 @@ export async function middleware(request: NextRequest) {
   const isAdmin = session?.user?.role === 'ADMIN';
   const isAdminRoute = request.nextUrl.pathname.startsWith('/admin');
 
-  // Debug apenas em desenvolvimento - não expor email em produção
+  // Debug apenas em desenvolvimento - nunca expor dados sensíveis
   if (process.env.NODE_ENV === 'development') {
     Logger.debug('Middleware Debug', {
       endpoint: request.nextUrl.pathname,
@@ -44,8 +44,7 @@ export async function middleware(request: NextRequest) {
       isLoggedIn,
       isAdmin,
       isAdminRoute,
-      userRole: session?.user?.role || undefined,
-      userId: session?.user?.id || undefined,
+      // Não logar userRole ou userId em produção
     });
   }
 

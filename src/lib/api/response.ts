@@ -41,11 +41,16 @@ export function createErrorResponse(
   details?: unknown,
   status: number = 500
 ): NextResponse<ApiResponse> {
+  // Em produção, nunca expor detalhes sensíveis
+  const safeDetails = process.env.NODE_ENV === 'production' 
+    ? undefined 
+    : details;
+  
   return NextResponse.json(
     {
       success: false,
       error,
-      details,
+      details: safeDetails,
     },
     { status }
   );

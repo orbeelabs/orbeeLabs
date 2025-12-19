@@ -54,9 +54,8 @@ export async function GET(request: NextRequest) {
     return createErrorResponse(
       errorMessage || "Erro interno do servidor",
       // Não expor stack trace em produção
-      process.env.NODE_ENV === 'development' && error instanceof Error 
-        ? { stack: error.stack } 
-        : undefined,
+      // Nunca expor stack traces em produção
+      undefined,
       500
     );
   }

@@ -25,6 +25,16 @@ export interface CaseStudy {
   ga4After: string | null;
   cwvBefore: string | null;
   cwvAfter: string | null;
+  siteUrl: string | null;
+  sitePreviewMobile: string | null;
+  sitePreviewDesktop: string | null;
+  sitePreviewGenerated: boolean | null;
+  performanceMetrics: {
+    lcp?: number;
+    inp?: number;
+    cls?: number;
+    score?: number;
+  } | string | null;
   featured: boolean;
   published: boolean;
   publishedAt: Date;

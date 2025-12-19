@@ -130,11 +130,22 @@ model CaseStudy {
   ga4After     String? // Print do Google Analytics depois (opcional)
   cwvBefore    String? // Print dos Core Web Vitals antes (opcional)
   cwvAfter     String? // Print dos Core Web Vitals depois (opcional)
-  featured     Boolean  @default(false)
-  published    Boolean  @default(true)
-  publishedAt  DateTime @default(now())
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
+
+  // NOVOS CAMPOS PARA SITE PREVIEW
+  siteUrl              String? // URL do site do cliente (ex: https://cliente.com)
+  sitePreviewMobile    String? // URL do screenshot mobile (375x812) - pode ser data URL ou URL de arquivo
+  sitePreviewDesktop   String? // URL do screenshot desktop (1920x1080) - pode ser data URL ou URL de arquivo
+  sitePreviewGenerated Boolean   @default(false) // Flag se preview foi gerado
+  sitePreviewDate      DateTime? // Data da última geração do preview
+
+  // Métricas de Performance (JSON)
+  performanceMetrics Json? // { lcp: 0.7, inp: 180, cls: 0.03, score: 98 }
+
+  featured    Boolean  @default(false)
+  published   Boolean  @default(true)
+  publishedAt DateTime @default(now())
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 
   @@index([industry])
   @@index([published])

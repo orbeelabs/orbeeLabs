@@ -65,6 +65,8 @@ export async function POST(request: NextRequest) {
     deleteTokens.set(token, { email, expiresAt });
 
     // Enviar email de confirmação
+    // Não incluir token na URL se possível (usar POST com body em vez de GET)
+    // Por enquanto, manter GET mas garantir que token seja único e temporário
     const deleteUrl = `${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'}/lgpd/confirmar-exclusao?token=${token}`;
 
     try {

@@ -101,7 +101,11 @@ async function handleContact(request: NextRequest) {
 
   } catch (error) {
     logApiError(error as Error, '/api/contato', 'POST', { message: 'Erro no envio de contato' });
-    return createErrorResponse("Erro interno do servidor");
+    // Em produção, mensagem genérica. Em dev, mais detalhes
+    const errorMessage = process.env.NODE_ENV === 'production'
+      ? 'Erro interno do servidor. Tente novamente ou entre em contato com o suporte.'
+      : 'Erro interno do servidor';
+    return createErrorResponse(errorMessage);
   }
 }
 

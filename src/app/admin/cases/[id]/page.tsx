@@ -13,7 +13,8 @@ import { Label } from '@/components/ui/label';
 import { 
   ArrowLeft, 
   Save,
-  Loader2
+  Loader2,
+  Camera
 } from 'lucide-react';
 import { toast } from 'sonner';
 
@@ -39,6 +40,11 @@ interface CaseFormData {
   ga4After: string;
   cwvBefore: string;
   cwvAfter: string;
+  siteUrl: string;
+  sitePreviewMobile: string;
+  sitePreviewDesktop: string;
+  sitePreviewGenerated: boolean;
+  performanceMetrics: string;
   featured: boolean;
   published: boolean;
   publishedAt: string;
@@ -64,6 +70,7 @@ export default function CaseEditPage() {
   
   const [isLoading, setIsLoading] = useState(!isNew);
   const [isSaving, setIsSaving] = useState(false);
+  const [isGeneratingPreview, setIsGeneratingPreview] = useState(false);
   const [formData, setFormData] = useState<CaseFormData>({
     slug: '',
     title: '',
@@ -86,6 +93,11 @@ export default function CaseEditPage() {
     ga4After: '',
     cwvBefore: '',
     cwvAfter: '',
+    siteUrl: '',
+    sitePreviewMobile: '',
+    sitePreviewDesktop: '',
+    sitePreviewGenerated: false,
+    performanceMetrics: '',
     featured: false,
     published: true,
     publishedAt: '',
@@ -125,6 +137,15 @@ export default function CaseEditPage() {
           ga4After: caseStudy.ga4After || '',
           cwvBefore: caseStudy.cwvBefore || '',
           cwvAfter: caseStudy.cwvAfter || '',
+          siteUrl: caseStudy.siteUrl || '',
+          sitePreviewMobile: caseStudy.sitePreviewMobile || '',
+          sitePreviewDesktop: caseStudy.sitePreviewDesktop || '',
+          sitePreviewGenerated: caseStudy.sitePreviewGenerated || false,
+          performanceMetrics: caseStudy.performanceMetrics 
+            ? (typeof caseStudy.performanceMetrics === 'string' 
+                ? caseStudy.performanceMetrics 
+                : JSON.stringify(caseStudy.performanceMetrics))
+            : '',
           featured: caseStudy.featured || false,
           published: caseStudy.published !== undefined ? caseStudy.published : true,
           publishedAt: caseStudy.publishedAt ? new Date(caseStudy.publishedAt).toISOString().slice(0, 16) : '',
@@ -156,6 +177,52 @@ export default function CaseEditPage() {
       .replace(/(^-|-$)/g, '');
   };
 
+  const handleGeneratePreview = async () => {
+    if (!formData.siteUrl) {
+      toast.error('Por favor, insira a URL do site primeiro');
+      return;
+    }
+
+    setIsGeneratingPreview(true);
+
+    try {
+      // Gerar preview desktop apenas
+      const desktopResponse = await fetch('/api/screenshot', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          url: formData.siteUrl,
+          device: 'desktop',
+        }),
+      });
+
+      if (!desktopResponse.ok) {
+        const errorData = await desktopResponse.json().catch(() => ({ error: 'Erro desconhecido' }));
+        throw new Error(errorData.error || `Erro ao gerar preview: ${desktopResponse.status}`);
+      }
+
+      const desktopData = await desktopResponse.json();
+      
+      if (!desktopData.success || !desktopData.screenshot) {
+        throw new Error(desktopData.error || 'Preview não foi gerado corretamente');
+      }
+
+      // Atualizar formData com o preview desktop
+      setFormData({
+        ...formData,
+        sitePreviewDesktop: desktopData.screenshot,
+        sitePreviewGenerated: true,
+      });
+
+      toast.success('Preview gerado com sucesso!');
+    } catch (error) {
+      ClientLogger.error('Erro ao gerar preview', undefined, error as Error);
+      toast.error('Erro ao gerar preview. Tente novamente.');
+    } finally {
+      setIsGeneratingPreview(false);
+    }
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSaving(true);
@@ -166,7 +233,27 @@ export default function CaseEditPage() {
         services: formData.services.split(',').map(s => s.trim()).filter(s => s.length > 0),
         technologies: formData.technologies.split(',').map(t => t.trim()).filter(t => t.length > 0),
         gallery: formData.gallery.split(',').map(g => g.trim()).filter(g => g.length > 0),
-        publishedAt: formData.publishedAt || (formData.published ? new Date().toISOString() : new Date().toISOString()),
+        // Converter publishedAt para formato ISO datetime completo
+        // O input retorna formato "YYYY-MM-DDTHH:mm", precisamos converter para "YYYY-MM-DDTHH:mm:ss.sssZ"
+        publishedAt: formData.publishedAt && formData.publishedAt.trim() !== ''
+          ? (() => {
+              try {
+                // Se já está no formato ISO completo, usar direto
+                if (formData.publishedAt.includes('Z') || formData.publishedAt.includes('+')) {
+                  return formData.publishedAt;
+                }
+                // Se está no formato "YYYY-MM-DDTHH:mm", adicionar segundos e timezone
+                const date = new Date(formData.publishedAt);
+                if (isNaN(date.getTime())) {
+                  // Se não conseguir parsear, usar data atual
+                  return new Date().toISOString();
+                }
+                return date.toISOString();
+              } catch {
+                return new Date().toISOString();
+              }
+            })()
+          : (formData.published ? new Date().toISOString() : undefined),
         clientName: formData.clientName || null,
         timeline: formData.timeline || null,
         learnings: formData.learnings || null,
@@ -175,12 +262,47 @@ export default function CaseEditPage() {
         gscAfter: formData.gscAfter || null,
         ga4Before: formData.ga4Before || null,
         ga4After: formData.ga4After || null,
-        cwvBefore: formData.cwvBefore || null,
-        cwvAfter: formData.cwvAfter || null,
+        cwvBefore: formData.cwvBefore && formData.cwvBefore.trim() !== '' ? formData.cwvBefore : null,
+        cwvAfter: formData.cwvAfter && formData.cwvAfter.trim() !== '' ? formData.cwvAfter : null,
+        siteUrl: formData.siteUrl && formData.siteUrl.trim() !== '' 
+          ? (formData.siteUrl.startsWith('http://') || formData.siteUrl.startsWith('https://') 
+              ? formData.siteUrl.trim() 
+              : `https://${formData.siteUrl.trim()}`)
+          : null,
+        // Limitar tamanho dos screenshots (data URLs podem ser muito grandes)
+        // Se for muito grande (> 5MB), truncar ou não enviar
+        sitePreviewMobile: formData.sitePreviewMobile && formData.sitePreviewMobile.trim() !== '' 
+          ? (formData.sitePreviewMobile.length > 5 * 1024 * 1024 
+              ? null 
+              : formData.sitePreviewMobile)
+          : null,
+        sitePreviewDesktop: formData.sitePreviewDesktop && formData.sitePreviewDesktop.trim() !== '' 
+          ? (formData.sitePreviewDesktop.length > 5 * 1024 * 1024 
+              ? null 
+              : formData.sitePreviewDesktop)
+          : null,
+        sitePreviewGenerated: formData.sitePreviewGenerated,
+        performanceMetrics: formData.performanceMetrics && formData.performanceMetrics.trim() !== ''
+          ? (formData.performanceMetrics.startsWith('{') 
+              ? JSON.parse(formData.performanceMetrics)
+              : formData.performanceMetrics)
+          : null,
       };
 
       const url = isNew ? '/api/admin/cases' : `/api/admin/cases/${id}`;
       const method = isNew ? 'POST' : 'PUT';
+
+      // Log do payload apenas em desenvolvimento (sem dados sensíveis)
+      if (process.env.NODE_ENV === 'development') {
+        // Não logar dados completos, apenas metadados
+        ClientLogger.debug('Enviando payload para API', {
+          url,
+          method,
+          payloadKeys: Object.keys(payload).join(', '),
+          hasMobilePreview: !!payload.sitePreviewMobile,
+          hasDesktopPreview: !!payload.sitePreviewDesktop,
+        });
+      }
 
       const response = await fetch(url, {
         method,
@@ -194,8 +316,42 @@ export default function CaseEditPage() {
         toast.success(isNew ? 'Case criado com sucesso!' : 'Case atualizado com sucesso!');
         router.push('/admin/cases');
       } else {
-        const errorData = await response.json();
-        toast.error(errorData.error || 'Erro ao salvar case');
+        let errorData: any = {};
+        const responseText = await response.text();
+        
+        try {
+          errorData = JSON.parse(responseText);
+        } catch (e) {
+          // Se não conseguir parsear JSON, usar texto da resposta
+          errorData = { error: responseText || `Erro ${response.status}: ${response.statusText}` };
+        }
+        
+        // Log de erro sanitizado (sem dados sensíveis)
+        ClientLogger.error('Erro ao salvar case', {
+          status: response.status,
+          hasError: !!errorData.error,
+          hasDetails: !!errorData.details,
+        });
+        
+        // Mostrar erros de validação de forma mais clara
+        if (errorData.details && Array.isArray(errorData.details)) {
+          // Erros de validação do Zod
+          const errorMessages = errorData.details.map((err: { path?: (string | number)[]; message?: string }) => 
+            `${err.path?.join('.') || 'Campo'}: ${err.message || 'inválido'}`
+          ).join(', ');
+          toast.error(`Erro de validação: ${errorMessages}`);
+        } else if (errorData.error) {
+          toast.error(errorData.error);
+        } else if (errorData.success === false) {
+          // Resposta de erro padrão da API
+          toast.error(errorData.error || 'Erro ao salvar case');
+        } else if (typeof errorData === 'object' && Object.keys(errorData).length === 0) {
+          toast.error(`Erro ao salvar case: Status ${response.status}. Verifique os dados e tente novamente.`);
+        } else {
+          // Fallback: mostrar o objeto completo para debug
+          const errorMsg = errorData.error || errorData.message || JSON.stringify(errorData);
+          toast.error(`Erro ao salvar case: ${errorMsg}`);
+        }
       }
     } catch (error) {
       ClientLogger.error('Erro ao salvar case', undefined, error as Error);
@@ -467,6 +623,66 @@ export default function CaseEditPage() {
                       className="bg-white/10 border-white/20 text-white"
                     />
                   </div>
+                </div>
+              </div>
+
+              {/* Site Preview */}
+              <div className="border-t border-white/10 pt-6">
+                <h3 className="text-xl font-semibold text-white mb-4">Site do Cliente e Preview</h3>
+                <div className="space-y-4">
+                  <div>
+                    <Label htmlFor="siteUrl" className="text-white mb-2 block">
+                      URL do Site do Cliente
+                    </Label>
+                    <div className="flex gap-2">
+                      <Input
+                        id="siteUrl"
+                        value={formData.siteUrl}
+                        onChange={(e) => setFormData({ ...formData, siteUrl: e.target.value })}
+                        placeholder="https://cliente.com"
+                        type="url"
+                        className="bg-white/10 border-white/20 text-white flex-1"
+                      />
+                      <Button
+                        type="button"
+                        onClick={handleGeneratePreview}
+                        disabled={isGeneratingPreview || !formData.siteUrl}
+                        className="bg-primary text-primary-foreground"
+                      >
+                        {isGeneratingPreview ? (
+                          <>
+                            <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                            Gerando...
+                          </>
+                        ) : (
+                          <>
+                            <Camera className="w-4 h-4 mr-2" />
+                            Gerar Preview
+                          </>
+                        )}
+                      </Button>
+                    </div>
+                    <p className="text-gray-400 text-xs mt-1">
+                      URL completa do site do cliente
+                    </p>
+                  </div>
+
+                  {/* Previews Gerados */}
+                  {formData.sitePreviewDesktop && (
+                    <div className="mt-4">
+                      <Label className="text-white mb-2 block flex items-center gap-2">
+                        💻 Preview Desktop (1920x1080)
+                      </Label>
+                      <div className="relative w-full desktop-frame">
+                        <img
+                          src={formData.sitePreviewDesktop}
+                          alt="Preview Desktop"
+                          className="w-full h-auto"
+                          style={{ display: 'block' }}
+                        />
+                      </div>
+                    </div>
+                  )}
                 </div>
               </div>
 

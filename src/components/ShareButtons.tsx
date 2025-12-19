@@ -98,10 +98,25 @@ export default function ShareButtons({
   // Copiar link
   const copyLink = async () => {
     try {
-      await navigator.clipboard.writeText(shareUrl);
-      setCopied(true);
-      trackShare('copy');
-      setTimeout(() => setCopied(false), 2000);
+      if (typeof window !== 'undefined' && navigator.clipboard) {
+        await navigator.clipboard.writeText(shareUrl);
+        setCopied(true);
+        trackShare('copy');
+        setTimeout(() => setCopied(false), 2000);
+      } else {
+        // Fallback para navegadores antigos
+        const textArea = document.createElement('textarea');
+        textArea.value = shareUrl;
+        textArea.style.position = 'fixed';
+        textArea.style.opacity = '0';
+        document.body.appendChild(textArea);
+        textArea.select();
+        document.execCommand('copy');
+        document.body.removeChild(textArea);
+        setCopied(true);
+        trackShare('copy');
+        setTimeout(() => setCopied(false), 2000);
+      }
     } catch (err) {
       ClientLogger.error('Erro ao copiar link', undefined, err as Error);
     }
@@ -109,7 +124,7 @@ export default function ShareButtons({
 
   // Compartilhamento nativo (se disponível)
   const shareNative = async () => {
-    if ('share' in navigator && navigator.share) {
+    if (typeof window !== 'undefined' && 'share' in navigator && navigator.share) {
       try {
         await navigator.share({
           title,
@@ -210,7 +225,7 @@ export default function ShareButtons({
       {/* Compartilhamento nativo ou copiar link */}
       {showAll && (
         <Button
-          onClick={'share' in navigator ? shareNative : copyLink}
+          onClick={typeof window !== 'undefined' && 'share' in navigator ? shareNative : copyLink}
           variant={variant}
           size={buttonSizeProp as 'default' | 'icon' | 'sm' | 'lg'}
           className={`${buttonSize[size]} ${showLabels ? 'gap-2' : ''}`}
@@ -222,7 +237,7 @@ export default function ShareButtons({
             </>
           ) : (
             <>
-              {'share' in navigator ? (
+              {typeof window !== 'undefined' && 'share' in navigator ? (
                 <>
                   <Share2 className={iconSize[size]} />
                   {showLabels && <span>Compartilhar</span>}

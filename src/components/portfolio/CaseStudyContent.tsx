@@ -9,6 +9,7 @@ import { ArrowLeft, Calendar, TrendingUp, Clock, Target, Code2, Lightbulb } from
 import { format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 import ShareButtons from '@/components/ShareButtons';
+import SitePreview from '@/components/portfolio/SitePreview';
 import type { CaseStudy, RelatedCase } from '@/types/portfolio';
 
 interface CaseStudyContentProps {
@@ -141,6 +142,38 @@ export default function CaseStudyContent({ caseStudy, relatedCases, breadcrumbIt
           </div>
         </div>
       </section>
+
+      {/* Site Preview Section */}
+      {caseStudy.siteUrl && (
+        <section className="py-16 bg-gradient-to-br from-background to-card">
+          <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.4 }}
+            >
+              <h2 className="text-3xl font-bold text-white mb-8 text-center">
+                Preview do Site
+              </h2>
+              
+              <SitePreview
+                siteUrl={caseStudy.siteUrl}
+                previewMobile={caseStudy.sitePreviewMobile || undefined}
+                previewDesktop={caseStudy.sitePreviewDesktop || undefined}
+                performanceMetrics={
+                  caseStudy.performanceMetrics 
+                    ? (typeof caseStudy.performanceMetrics === 'string' 
+                        ? JSON.parse(caseStudy.performanceMetrics)
+                        : caseStudy.performanceMetrics)
+                    : undefined
+                }
+                clientName={caseStudy.clientName || undefined}
+                className="mb-8"
+              />
+            </motion.div>
+          </div>
+        </section>
+      )}
 
       {/* Results */}
       <section className="py-16 bg-gradient-to-br from-card to-background">

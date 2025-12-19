@@ -24,7 +24,12 @@ class ClientLoggerClass {
     if (!context) return undefined;
 
     const sanitized: LogContext = {};
-    const sensitiveKeys = ['password', 'token', 'secret', 'apiKey', 'email', 'phone', 'cpf', 'cnpj'];
+    const sensitiveKeys = [
+      'password', 'senha', 'token', 'secret', 'apiKey', 'apikey', 'api_key',
+      'email', 'phone', 'telefone', 'cpf', 'cnpj', 'credit', 'card', 'cartao',
+      'auth', 'authorization', 'bearer', 'session', 'cookie', 'jwt',
+      'private', 'key', 'credential', 'access', 'refresh'
+    ];
 
     for (const [key, value] of Object.entries(context)) {
       const keyLower = key.toLowerCase();

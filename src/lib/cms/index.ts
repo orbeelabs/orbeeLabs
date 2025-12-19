@@ -162,7 +162,19 @@ export async function fetchPortfolioCases(
       prisma.caseStudy.count({ where }),
     ]);
 
-    return { cases, total };
+    // Converter performanceMetrics do formato Prisma para o formato esperado
+    const casesWithConvertedMetrics = cases.map(caseStudy => ({
+      ...caseStudy,
+      performanceMetrics: caseStudy.performanceMetrics 
+        ? (typeof caseStudy.performanceMetrics === 'string' 
+            ? caseStudy.performanceMetrics 
+            : typeof caseStudy.performanceMetrics === 'object' && caseStudy.performanceMetrics !== null
+            ? caseStudy.performanceMetrics as { lcp?: number; inp?: number; cls?: number; score?: number }
+            : null)
+        : null,
+    }));
+
+    return { cases: casesWithConvertedMetrics, total };
   } catch (error) {
     // Log do erro para debug
     console.error('Erro ao buscar cases do portfolio:', error);
@@ -182,7 +194,21 @@ export async function fetchPortfolioCase(slug: string): Promise<CaseStudy | null
       where: { slug },
     });
 
-    return caseStudy;
+    if (!caseStudy) {
+      return null;
+    }
+
+    // Converter performanceMetrics do formato Prisma para o formato esperado
+    return {
+      ...caseStudy,
+      performanceMetrics: caseStudy.performanceMetrics 
+        ? (typeof caseStudy.performanceMetrics === 'string' 
+            ? caseStudy.performanceMetrics 
+            : typeof caseStudy.performanceMetrics === 'object' && caseStudy.performanceMetrics !== null
+            ? caseStudy.performanceMetrics as { lcp?: number; inp?: number; cls?: number; score?: number }
+            : null)
+        : null,
+    };
   } catch (error) {
     // Log do erro para debug
     console.error('Erro ao buscar case do portfolio:', error);

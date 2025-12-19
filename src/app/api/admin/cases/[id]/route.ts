@@ -47,6 +47,26 @@ const updateCaseSchema = z.object({
   cwvAfter: z.string().optional().nullable().refine((val) => !val || z.string().url().safeParse(val).success, {
     message: "Deve ser uma URL válida ou vazio"
   }),
+  siteUrl: z.string().optional().nullable().refine((val) => {
+    if (!val || val.trim() === '') return true;
+    // Tentar adicionar https:// se não tiver protocolo
+    const urlToTest = val.startsWith('http://') || val.startsWith('https://') ? val : `https://${val}`;
+    return z.string().url().safeParse(urlToTest).success;
+  }, {
+    message: "Deve ser uma URL válida ou vazio"
+  }),
+  sitePreviewMobile: z.string().optional().nullable(),
+  sitePreviewDesktop: z.string().optional().nullable(),
+  sitePreviewGenerated: z.boolean().optional(),
+  performanceMetrics: z.union([
+    z.object({
+      lcp: z.number().optional(),
+      inp: z.number().optional(),
+      cls: z.number().optional(),
+      score: z.number().optional(),
+    }),
+    z.string(),
+  ]).optional().nullable(),
   featured: z.boolean().optional(),
   published: z.boolean().optional(),
   publishedAt: z.string().datetime().optional(),
@@ -91,12 +111,38 @@ async function handleUpdateCase(request: NextRequest, { params }: { params: Prom
     }
     
     const body = await request.json();
+    
+    // Log para debug (apenas em desenvolvimento, sem dados sensíveis)
+    if (process.env.NODE_ENV === 'development') {
+      Logger.debug('Dados recebidos para atualização', {
+        caseId: id,
+        bodyKeys: Object.keys(body).join(', '),
+        hasSiteUrl: !!body.siteUrl,
+        hasPerformanceMetrics: !!body.performanceMetrics,
+      });
+    }
+    
     const validation = updateCaseSchema.safeParse(body);
     
     if (!validation.success) {
+      const errorDetails = validation.error.issues.map(issue => ({
+        path: issue.path,
+        message: issue.message,
+        code: issue.code,
+      }));
+      
+      Logger.error("Erro de validação ao atualizar case", {
+        endpoint: '/api/admin/cases/[id]',
+        method: 'PUT',
+        caseId: id,
+        errorsCount: validation.error.issues.length,
+        receivedDataKeys: Object.keys(body).join(', '),
+        firstError: errorDetails[0]?.message || 'Erro desconhecido',
+      });
+      
       return createErrorResponse(
         "Dados inválidos",
-        validation.error.issues,
+        errorDetails,
         400
       );
     }
@@ -118,15 +164,33 @@ async function handleUpdateCase(request: NextRequest, { params }: { params: Prom
       }
     }
     
+    // Preparar dados para atualização
+    const updateData = {
+      ...data,
+      publishedAt: data.publishedAt !== undefined 
+        ? new Date(data.publishedAt)
+        : undefined,
+    };
+
+    // Converter performanceMetrics para formato correto do Prisma
+    if (data.performanceMetrics !== undefined) {
+      if (data.performanceMetrics === null) {
+        (updateData as { performanceMetrics?: null }).performanceMetrics = null;
+      } else if (typeof data.performanceMetrics === 'string') {
+        try {
+          (updateData as { performanceMetrics?: unknown }).performanceMetrics = JSON.parse(data.performanceMetrics);
+        } catch {
+          // Se não for JSON válido, manter como objeto vazio
+          (updateData as { performanceMetrics?: unknown }).performanceMetrics = {};
+        }
+      }
+      // Se já é um objeto, não precisa fazer nada (já está no spread)
+    }
+
     // Atualizar o case
     const updatedCase = await prisma.caseStudy.update({
       where: { id },
-      data: {
-        ...data,
-        publishedAt: data.publishedAt !== undefined 
-          ? new Date(data.publishedAt)
-          : undefined,
-      },
+      data: updateData as Parameters<typeof prisma.caseStudy.update>[0]['data'],
     });
     
     return createSuccessResponse(
@@ -134,12 +198,26 @@ async function handleUpdateCase(request: NextRequest, { params }: { params: Prom
       "Case atualizado com sucesso"
     );
   } catch (error) {
+    const errorMessage = error instanceof Error ? error.message : 'Erro desconhecido';
+    
     Logger.error("Erro ao atualizar case", {
       endpoint: '/api/admin/cases/[id]',
       method: 'PUT',
       caseId: id,
+      // Não logar mensagem de erro completa em produção (pode conter dados sensíveis)
+      errorType: error instanceof Error ? error.constructor.name : 'Unknown',
     }, error as Error);
-    return createErrorResponse("Erro interno do servidor");
+    
+    // Em produção, retornar mensagem genérica. Em dev, mais detalhes
+    const userMessage = process.env.NODE_ENV === 'production'
+      ? 'Erro ao atualizar case. Tente novamente ou entre em contato com o suporte.'
+      : `Erro ao atualizar case: ${errorMessage}`;
+    
+    return createErrorResponse(
+      userMessage,
+      undefined, // Nunca expor stack traces ou detalhes em produção
+      500
+    );
   }
 }
 

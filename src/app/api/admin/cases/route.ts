@@ -51,6 +51,21 @@ const caseSchema = z.object({
   cwvAfter: z.string().optional().nullable().refine((val) => !val || z.string().url().safeParse(val).success, {
     message: "Deve ser uma URL válida ou vazio"
   }),
+  siteUrl: z.string().optional().nullable().refine((val) => !val || z.string().url().safeParse(val).success, {
+    message: "Deve ser uma URL válida ou vazio"
+  }),
+  sitePreviewMobile: z.string().optional().nullable(),
+  sitePreviewDesktop: z.string().optional().nullable(),
+  sitePreviewGenerated: z.boolean().default(false),
+  performanceMetrics: z.union([
+    z.object({
+      lcp: z.number().optional(),
+      inp: z.number().optional(),
+      cls: z.number().optional(),
+      score: z.number().optional(),
+    }),
+    z.string(),
+  ]).optional().nullable(),
   featured: z.boolean().default(false),
   published: z.boolean().default(true),
   publishedAt: z.string().datetime().optional(),
@@ -135,12 +150,28 @@ async function handleCreateCase(request: NextRequest) {
       );
     }
     
+    // Preparar dados para criação
+    const createData = {
+      ...data,
+      publishedAt: data.publishedAt ? new Date(data.publishedAt) : new Date(),
+    };
+
+    // Converter performanceMetrics para formato correto do Prisma
+    if (data.performanceMetrics !== undefined && data.performanceMetrics !== null) {
+      if (typeof data.performanceMetrics === 'string') {
+        try {
+          (createData as { performanceMetrics?: unknown }).performanceMetrics = JSON.parse(data.performanceMetrics);
+        } catch {
+          // Se não for JSON válido, manter como objeto vazio
+          (createData as { performanceMetrics?: unknown }).performanceMetrics = {};
+        }
+      }
+      // Se já é um objeto, não precisa fazer nada (já está no spread)
+    }
+
     // Criar o case
     const caseStudy = await prisma.caseStudy.create({
-      data: {
-        ...data,
-        publishedAt: data.publishedAt ? new Date(data.publishedAt) : new Date(),
-      },
+      data: createData as Parameters<typeof prisma.caseStudy.create>[0]['data'],
     });
     
     return createSuccessResponse(
@@ -152,8 +183,14 @@ async function handleCreateCase(request: NextRequest) {
     Logger.error("Erro ao criar case", {
       endpoint: '/api/admin/cases',
       method: 'POST',
+      errorType: error instanceof Error ? error.constructor.name : 'Unknown',
     }, error as Error);
-    return createErrorResponse("Erro interno do servidor");
+    
+    // Em produção, mensagem genérica. Em dev, mais detalhes
+    const errorMessage = process.env.NODE_ENV === 'production'
+      ? 'Erro interno do servidor. Tente novamente ou entre em contato com o suporte.'
+      : 'Erro interno do servidor';
+    return createErrorResponse(errorMessage);
   }
 }
 
