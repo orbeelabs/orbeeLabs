@@ -81,7 +81,7 @@ export default function BlogCategoryPage({ categoryName, posts, breadcrumbItems 
                       <div className="aspect-video bg-gradient-to-br from-primary/20 to-yellow-500/20 flex items-center justify-center relative h-48">
                         {post.ogImage ? (
                           <img
-                            src={post.ogImage}
+                            src={encodeURI(post.ogImage)}
                             alt={post.title}
                             className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                             loading="lazy"

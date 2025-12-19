@@ -55,7 +55,7 @@ export default function BlogPostContent({ post, relatedPosts, breadcrumbItems }:
               <div className="flex items-center gap-2">
                 {post.authorImage && (
                   <img
-                    src={post.authorImage}
+                    src={encodeURI(post.authorImage)}
                     alt={post.author}
                     width={32}
                     height={32}
@@ -92,7 +92,7 @@ export default function BlogPostContent({ post, relatedPosts, breadcrumbItems }:
             {post.ogImage && (
               <div className="relative w-full aspect-video rounded-2xl overflow-hidden mb-8">
                 <img
-                  src={post.ogImage}
+                  src={encodeURI(post.ogImage)}
                   alt={post.title}
                   className="absolute inset-0 w-full h-full object-cover"
                   loading="eager"
@@ -182,7 +182,7 @@ export default function BlogPostContent({ post, relatedPosts, breadcrumbItems }:
                       <div className="aspect-video bg-gradient-to-br from-primary/20 to-yellow-500/20 flex items-center justify-center relative h-48">
                         {relatedPost.ogImage ? (
                           <img
-                            src={relatedPost.ogImage}
+                            src={encodeURI(relatedPost.ogImage)}
                             alt={relatedPost.title}
                             className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                             loading="lazy"

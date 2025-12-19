@@ -175,7 +175,7 @@ function PostCard({ post, featured = false, delay = 0 }: PostCardProps) {
           <div className={`aspect-video bg-gradient-to-br from-primary/20 to-yellow-500/20 flex items-center justify-center relative ${featured ? 'h-64' : 'h-48'}`}>
             {post.ogImage ? (
               <img
-                src={post.ogImage}
+                src={encodeURI(post.ogImage)}
                 alt={post.title}
                 className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                 loading={featured ? "eager" : "lazy"}

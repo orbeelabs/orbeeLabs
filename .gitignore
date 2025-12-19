@@ -172,6 +172,8 @@ build/
 .vscode/
 # Imagens grandes não devem ser versionadas
 public/images/**/*.jpg
+# Permitir default-hero.jpg do portfólio
+!public/images/portfolio/default-hero.jpg
 public/images/**/*.png
 # Permitir imagens WebP necessárias (logo e equipe)
 !public/images/logo/*.webp
