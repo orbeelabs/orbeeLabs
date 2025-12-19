@@ -17,6 +17,8 @@ const nextConfig: NextConfig = {
     dangerouslyAllowSVG: true,
     contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
     remotePatterns: [],
+    // Permitir que arquivos WebP locais sejam servidos sem re-otimização
+    unoptimized: false,
   },
   
   // Compressão

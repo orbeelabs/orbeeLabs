@@ -152,6 +152,7 @@ export default function SobrePage() {
                         className="object-cover"
                         sizes="128px"
                         loading="lazy"
+                        unoptimized
                       />
                     </div>
                     <div className="flex-1 text-center md:text-left">

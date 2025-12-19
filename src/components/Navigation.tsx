@@ -59,6 +59,7 @@ export default function Navigation() {
                   className="object-contain group-hover:scale-105 transition-transform duration-300"
                   sizes="48px"
                   priority
+                  unoptimized
                 />
               </div>
               <div className="hidden sm:block">
