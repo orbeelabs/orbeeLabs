@@ -94,12 +94,16 @@ export default function BlogPostContent({ post, relatedPosts, breadcrumbItems }:
             {post.ogImage && (
               <div className="relative w-full aspect-video rounded-2xl overflow-hidden mb-8">
                 <img
-                  src={post.ogImage.split('/').map((part, i, arr) => 
-                    i === arr.length - 1 ? encodeURIComponent(part) : part
+                  src={(post.ogImage.startsWith('/') ? post.ogImage : `/${post.ogImage}`).split('/').map((part, i, arr) => 
+                    i === arr.length - 1 && part ? encodeURIComponent(part) : part
                   ).join('/')}
                   alt={post.title}
                   className="absolute inset-0 w-full h-full object-cover"
                   loading="eager"
+                  onError={(e) => {
+                    console.error('Erro ao carregar imagem do post:', post.ogImage);
+                    e.currentTarget.style.display = 'none';
+                  }}
                 />
               </div>
             )}
@@ -186,12 +190,16 @@ export default function BlogPostContent({ post, relatedPosts, breadcrumbItems }:
                       <div className="aspect-video bg-gradient-to-br from-primary/20 to-yellow-500/20 flex items-center justify-center relative h-48">
                         {relatedPost.ogImage ? (
                           <img
-                            src={relatedPost.ogImage.split('/').map((part, i, arr) => 
-                              i === arr.length - 1 ? encodeURIComponent(part) : part
+                            src={(relatedPost.ogImage.startsWith('/') ? relatedPost.ogImage : `/${relatedPost.ogImage}`).split('/').map((part, i, arr) => 
+                              i === arr.length - 1 && part ? encodeURIComponent(part) : part
                             ).join('/')}
                             alt={relatedPost.title}
                             className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                             loading="lazy"
+                            onError={(e) => {
+                              console.error('Erro ao carregar imagem relacionada:', relatedPost.ogImage);
+                              e.currentTarget.style.display = 'none';
+                            }}
                           />
                         ) : (
                           <div className="absolute inset-0 flex items-center justify-center">

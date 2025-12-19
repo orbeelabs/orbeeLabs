@@ -175,12 +175,16 @@ function PostCard({ post, featured = false, delay = 0 }: PostCardProps) {
           <div className={`aspect-video bg-gradient-to-br from-primary/20 to-yellow-500/20 flex items-center justify-center relative ${featured ? 'h-64' : 'h-48'}`}>
             {post.ogImage ? (
               <img
-                src={post.ogImage.split('/').map((part, i, arr) => 
-                  i === arr.length - 1 ? encodeURIComponent(part) : part
-                ).join('/')}
+                src={post.ogImage ? (post.ogImage.startsWith('/') ? post.ogImage : `/${post.ogImage}`).split('/').map((part, i, arr) => 
+                  i === arr.length - 1 && part ? encodeURIComponent(part) : part
+                ).join('/') : ''}
                 alt={post.title}
                 className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                 loading={featured ? "eager" : "lazy"}
+                onError={(e) => {
+                  console.error('Erro ao carregar imagem:', post.ogImage);
+                  e.currentTarget.style.display = 'none';
+                }}
               />
             ) : (
               <div className="absolute inset-0 flex items-center justify-center">
