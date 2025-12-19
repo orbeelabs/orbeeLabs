@@ -20,7 +20,7 @@ export default function SobrePage() {
       role: 'CEO & Desenvolvedora Fullstack',
       description:
         'Especialista em desenvolvimento Fullstack com React, Next.js, Python e metodologias ágeis. Criadora da metodologia "SEO Cabuloso" que integra tecnologia e marketing.',
-      image: '/images/team/Diana.jpeg',
+      image: '/images/team/Diana.webp',
       linkedin: 'Em breve',
       specialties: ['React/Next.js', 'Python', 'SEO Técnico', 'TDD'],
     },
@@ -29,7 +29,7 @@ export default function SobrePage() {
       role: 'Co-fundadora & Head of Design',
       description:
         'Especialista em design estratégico, UX/UI e identidade visual. Responsável por criar experiências digitais que conectam marcas aos seus públicos de forma autêntica.',
-      image: '/images/team/Iza.jpeg',
+      image: '/images/team/Iza.webp',
       linkedin: 'Em breve',
       specialties: ['UX/UI Design', 'Branding', 'Design Systems', 'CRO'],
     },
@@ -38,7 +38,7 @@ export default function SobrePage() {
       role: 'Desenvolvedora Full-Stack & Engenheira de Software',
       description:
         'Desenvolvedora full-stack com passagens por Harvard (HarvardX - CS50 - C), Engenheira de Software e certificada em Business Management pela IBM Berlin. Especializada em AI e Web3, com expertise sólida em blockchain e implementação de soluções tecnológicas corporativas. Combina excelência técnica com visão estratégica de negócios para entregar inovação escalável.',
-      image: '/images/team/Gabi.JPG',
+      image: '/images/team/Gabi.webp',
       linkedin: 'Em breve',
       specialties: ['Full-Stack', 'AI', 'Web3', 'Blockchain', 'Business Management'],
     }

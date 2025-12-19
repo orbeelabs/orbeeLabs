@@ -10,18 +10,18 @@ const prisma = new PrismaClient();
 // Mapeamento de imagens para posts (baseado no título ou slug)
 const imageMapping: Record<string, string> = {
   // Mapeamento por título (case-insensitive)
-  'seo cabuloso': '/images/blog/Seo Cabuloso.jpg',
-  'pesquisa de palavras-chave': '/images/blog/Pesquisa de Palavras-chave.jpg',
-  'link building': '/images/blog/Link Building.jpg',
-  'conteúdo que converte': '/images/blog/Conteúdo que converte.jpg',
-  'auditoria de site': '/images/blog/Auditoria de Site.jpg',
+  'seo cabuloso': '/images/blog/Seo Cabuloso.webp',
+  'pesquisa de palavras-chave': '/images/blog/Pesquisa de Palavras-chave.webp',
+  'link building': '/images/blog/Link Building.webp',
+  'conteúdo que converte': '/images/blog/Conteúdo que converte.webp',
+  'auditoria de site': '/images/blog/Auditoria de Site.webp',
   
   // Mapeamento por slug (caso os títulos sejam diferentes)
-  'seo-cabuloso': '/images/blog/Seo Cabuloso.jpg',
-  'pesquisa-palavras-chave': '/images/blog/Pesquisa de Palavras-chave.jpg',
-  'link-building': '/images/blog/Link Building.jpg',
-  'conteudo-que-converte': '/images/blog/Conteúdo que converte.jpg',
-  'auditoria-site': '/images/blog/Auditoria de Site.jpg',
+  'seo-cabuloso': '/images/blog/Seo Cabuloso.webp',
+  'pesquisa-palavras-chave': '/images/blog/Pesquisa de Palavras-chave.webp',
+  'link-building': '/images/blog/Link Building.webp',
+  'conteudo-que-converte': '/images/blog/Conteúdo que converte.webp',
+  'auditoria-site': '/images/blog/Auditoria de Site.webp',
 };
 
 async function updateBlogImages() {
@@ -63,15 +63,15 @@ async function updateBlogImages() {
       if (!imagePath) {
         // Buscar palavras-chave no título
         if (normalizedTitle.includes('seo') && normalizedTitle.includes('cabuloso')) {
-          imagePath = '/images/blog/Seo Cabuloso.jpg';
+          imagePath = '/images/blog/Seo Cabuloso.webp';
         } else if (normalizedTitle.includes('palavras-chave') || normalizedTitle.includes('pesquisa')) {
-          imagePath = '/images/blog/Pesquisa de Palavras-chave.jpg';
+          imagePath = '/images/blog/Pesquisa de Palavras-chave.webp';
         } else if (normalizedTitle.includes('link') && normalizedTitle.includes('building')) {
-          imagePath = '/images/blog/Link Building.jpg';
+          imagePath = '/images/blog/Link Building.webp';
         } else if (normalizedTitle.includes('conteúdo') || normalizedTitle.includes('conteudo')) {
-          imagePath = '/images/blog/Conteúdo que converte.jpg';
+          imagePath = '/images/blog/Conteúdo que converte.webp';
         } else if (normalizedTitle.includes('auditoria')) {
-          imagePath = '/images/blog/Auditoria de Site.jpg';
+          imagePath = '/images/blog/Auditoria de Site.webp';
         }
       }
 

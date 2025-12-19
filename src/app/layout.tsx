@@ -37,9 +37,9 @@ export const metadata: Metadata = {
   creator: "Orbee Labs",
   publisher: "Orbee Labs",
   icons: {
-    icon: '/images/logo/logo_final.png',
-    shortcut: '/images/logo/logo_final.png',
-    apple: '/images/logo/logo_final.png',
+    icon: '/images/logo/logo_branca.webp',
+    shortcut: '/images/logo/logo_branca.webp',
+    apple: '/images/logo/logo_branca.webp',
   },
   robots: {
     index: true,
@@ -94,9 +94,9 @@ export default function RootLayout({
   return (
     <html lang="pt-BR" suppressHydrationWarning>
       <head>
-        <link rel="icon" href="/images/logo/logo_final.png" type="image/png" />
-        <link rel="shortcut icon" href="/images/logo/logo_final.png" type="image/png" />
-        <link rel="apple-touch-icon" href="/images/logo/logo_final.png" />
+        <link rel="icon" href="/images/logo/logo_branca.webp" type="image/webp" />
+        <link rel="shortcut icon" href="/images/logo/logo_branca.webp" type="image/webp" />
+        <link rel="apple-touch-icon" href="/images/logo/logo_branca.webp" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link rel="dns-prefetch" href="https://www.googletagmanager.com" />

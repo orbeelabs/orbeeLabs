@@ -53,7 +53,7 @@ export default function Navigation() {
             <Link href="/" className="flex items-center space-x-3 group">
               <div className="relative w-12 h-12">
                 <Image
-                  src="/images/logo/logo_final.png"
+                  src="/images/logo/logo_branca.webp"
                   alt="Orbee Labs Logo"
                   fill
                   className="object-contain group-hover:scale-105 transition-transform duration-300"
