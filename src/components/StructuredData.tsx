@@ -33,7 +33,7 @@ export function OrganizationStructuredData() {
     name: 'Orbee Labs',
     description: 'Agência de marketing digital e desenvolvimento web especializada em SEO técnico e estratégias de alta performance.',
     url: 'https://orbeelabs.com',
-    logo: 'https://orbeelabs.com/logo.png',
+    logo: 'https://orbeelabs.com/images/logo/logo_final.png',
     image: 'https://orbeelabs.com/og-image.jpg',
     telephone: '+55-31-98255-6751',
     email: 'contato@orbeelabs.com',
@@ -112,7 +112,7 @@ export function WebsiteStructuredData() {
       name: 'Orbee Labs',
       logo: {
         '@type': 'ImageObject',
-        url: 'https://orbeelabs.com/logo.png',
+        url: 'https://orbeelabs.com/images/logo/logo_final.png',
       },
     },
   };

@@ -59,43 +59,59 @@ export async function fetchBlogPosts(
   const sortOrder = filters.sortOrder || 'desc';
   const sortBy = filters.sortBy || 'publishedAt';
 
-  const [posts, total] = await Promise.all([
-    prisma.post.findMany({
-      where,
-      take: limit,
-      skip: offset,
-      orderBy: {
-        [sortBy]: sortOrder,
-      },
-      select: {
-        id: true,
-        slug: true,
-        title: true,
-        excerpt: true,
-        author: true,
-        authorImage: true,
-        category: true,
-        tags: true,
-        featured: true,
-        publishedAt: true,
-        ogImage: true,
-      },
-    }),
-    prisma.post.count({ where }),
-  ]);
+  try {
+    const [posts, total] = await Promise.all([
+      prisma.post.findMany({
+        where,
+        take: limit,
+        skip: offset,
+        orderBy: {
+          [sortBy]: sortOrder,
+        },
+        select: {
+          id: true,
+          slug: true,
+          title: true,
+          excerpt: true,
+          author: true,
+          authorImage: true,
+          category: true,
+          tags: true,
+          featured: true,
+          publishedAt: true,
+          ogImage: true,
+        },
+      }),
+      prisma.post.count({ where }),
+    ]);
 
-  return { posts, total };
+    return { posts, total };
+  } catch (error) {
+    // Log do erro para debug
+    console.error('Erro ao buscar posts do blog:', error);
+    
+    // Retornar array vazio em caso de erro de conexão
+    return { posts: [], total: 0 };
+  }
 }
 
 /**
  * Busca um post específico por slug
  */
 export async function fetchBlogPost(slug: string): Promise<Post | null> {
-  const post = await prisma.post.findUnique({
-    where: { slug },
-  });
+  try {
+    const post = await prisma.post.findUnique({
+      where: { slug },
+    });
 
-  return post;
+    return post;
+  } catch (error) {
+    // Log do erro para debug
+    console.error('Erro ao buscar post do blog:', error);
+    
+    // Retornar null em caso de erro de conexão
+    return null;
+  }
 }
 
 /**
@@ -133,30 +149,47 @@ export async function fetchPortfolioCases(
   const sortOrder = filters.sortOrder || 'desc';
   const sortBy = filters.sortBy || 'publishedAt';
 
-  const [cases, total] = await Promise.all([
-    prisma.caseStudy.findMany({
-      where,
-      take: limit,
-      skip: offset,
-      orderBy: {
-        [sortBy]: sortOrder,
-      },
-    }),
-    prisma.caseStudy.count({ where }),
-  ]);
+  try {
+    const [cases, total] = await Promise.all([
+      prisma.caseStudy.findMany({
+        where,
+        take: limit,
+        skip: offset,
+        orderBy: {
+          [sortBy]: sortOrder,
+        },
+      }),
+      prisma.caseStudy.count({ where }),
+    ]);
 
-  return { cases, total };
+    return { cases, total };
+  } catch (error) {
+    // Log do erro para debug
+    console.error('Erro ao buscar cases do portfolio:', error);
+    
+    // Retornar array vazio em caso de erro de conexão
+    // Isso permite que a página continue funcionando mesmo sem banco
+    return { cases: [], total: 0 };
+  }
 }
 
 /**
  * Busca um case específico por slug
  */
 export async function fetchPortfolioCase(slug: string): Promise<CaseStudy | null> {
-  const caseStudy = await prisma.caseStudy.findUnique({
-    where: { slug },
-  });
+  try {
+    const caseStudy = await prisma.caseStudy.findUnique({
+      where: { slug },
+    });
 
-  return caseStudy;
+    return caseStudy;
+  } catch (error) {
+    // Log do erro para debug
+    console.error('Erro ao buscar case do portfolio:', error);
+    
+    // Retornar null em caso de erro de conexão
+    return null;
+  }
 }
 
 /**

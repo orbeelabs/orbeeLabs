@@ -3,6 +3,7 @@
 import { usePageTitle } from '@/hooks/core';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
+import Image from 'next/image';
 import { PageLayout } from '@/components/layout';
 
 export default function SobrePage() {
@@ -19,7 +20,7 @@ export default function SobrePage() {
       role: 'CEO & Desenvolvedora Fullstack',
       description:
         'Especialista em desenvolvimento Fullstack com React, Next.js, Python e metodologias ágeis. Criadora da metodologia "SEO Cabuloso" que integra tecnologia e marketing.',
-      image: '/assets/team/diana.jpg',
+      image: '/images/team/Diana.jpeg',
       linkedin: 'Em breve',
       specialties: ['React/Next.js', 'Python', 'SEO Técnico', 'TDD'],
     },
@@ -28,7 +29,7 @@ export default function SobrePage() {
       role: 'Co-fundadora & Head of Design',
       description:
         'Especialista em design estratégico, UX/UI e identidade visual. Responsável por criar experiências digitais que conectam marcas aos seus públicos de forma autêntica.',
-      image: '/assets/team/izabela.jpg',
+      image: '/images/team/Iza.jpeg',
       linkedin: 'Em breve',
       specialties: ['UX/UI Design', 'Branding', 'Design Systems', 'CRO'],
     },
@@ -37,7 +38,7 @@ export default function SobrePage() {
       role: 'Desenvolvedora Full-Stack & Engenheira de Software',
       description:
         'Desenvolvedora full-stack com passagens por Harvard (HarvardX - CS50 - C), Engenheira de Software e certificada em Business Management pela IBM Berlin. Especializada em AI e Web3, com expertise sólida em blockchain e implementação de soluções tecnológicas corporativas. Combina excelência técnica com visão estratégica de negócios para entregar inovação escalável.',
-      image: '/assets/team/gabi.jpg',
+      image: '/images/team/Gabi.JPG',
       linkedin: 'Em breve',
       specialties: ['Full-Stack', 'AI', 'Web3', 'Blockchain', 'Business Management'],
     }
@@ -143,8 +144,14 @@ export default function SobrePage() {
                   className="glass glass-hover rounded-2xl p-8"
                 >
                   <div className="flex flex-col md:flex-row items-center md:items-start space-y-6 md:space-y-0 md:space-x-8">
-                    <div className="w-32 h-32 bg-gradient-to-r from-primary to-yellow-500 rounded-full flex items-center justify-center text-primary-foreground font-bold text-4xl flex-shrink-0">
-                      {member.name.charAt(0)}
+                    <div className="relative w-32 h-32 rounded-full overflow-hidden flex-shrink-0 ring-4 ring-primary/20">
+                      <Image
+                        src={member.image}
+                        alt={member.name}
+                        fill
+                        className="object-cover"
+                        sizes="128px"
+                      />
                     </div>
                     <div className="flex-1 text-center md:text-left">
                       <h3 className="text-2xl font-bold text-white mb-2">{member.name}</h3>

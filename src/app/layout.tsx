@@ -32,6 +32,11 @@ export const metadata: Metadata = {
   authors: [{ name: "Orbee Labs", url: "https://orbeelabs.com" }],
   creator: "Orbee Labs",
   publisher: "Orbee Labs",
+  icons: {
+    icon: '/images/logo/logo_final.png',
+    shortcut: '/images/logo/logo_final.png',
+    apple: '/images/logo/logo_final.png',
+  },
   robots: {
     index: true,
     follow: true,
@@ -85,6 +90,9 @@ export default function RootLayout({
   return (
     <html lang="pt-BR" suppressHydrationWarning>
       <head>
+        <link rel="icon" href="/images/logo/logo_final.png" type="image/png" />
+        <link rel="shortcut icon" href="/images/logo/logo_final.png" type="image/png" />
+        <link rel="apple-touch-icon" href="/images/logo/logo_final.png" />
         <GoogleTagManagerHead />
         <OrganizationStructuredData />
         <WebsiteStructuredData />

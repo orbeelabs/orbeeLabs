@@ -178,18 +178,12 @@ function CaseCard({ study, featured = false, delay = 0 }: CaseCardProps) {
         <div className="glass glass-hover rounded-2xl overflow-hidden group cursor-pointer h-full flex flex-col">
           {/* Hero Image */}
           <div className={`aspect-video bg-gradient-to-br from-primary/20 to-yellow-500/20 flex items-center justify-center relative ${featured ? 'h-64' : 'h-48'}`}>
-            {study.heroImage ? (
-              <Image
-                src={study.heroImage}
-                alt={study.title}
-                fill
-                className="object-cover group-hover:scale-105 transition-transform duration-300"
-              />
-            ) : (
-              <div className="absolute inset-0 flex items-center justify-center">
-                <span className="text-primary/50 text-6xl font-bold">{study.title.charAt(0)}</span>
-              </div>
-            )}
+            <Image
+              src={study.heroImage || '/images/portfolio/default-hero.jpg'}
+              alt={study.title}
+              fill
+              className="object-cover group-hover:scale-105 transition-transform duration-300"
+            />
             {study.featured && (
               <div className="absolute top-4 left-4 bg-primary text-primary-foreground px-3 py-1 rounded-full text-sm font-semibold">
                 Destaque

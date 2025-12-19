@@ -41,17 +41,15 @@ export default function CaseStudyContent({ caseStudy, relatedCases, breadcrumbIt
             </Link>
 
             {/* Hero Image */}
-            {caseStudy.heroImage && (
-              <div className="relative w-full aspect-video rounded-2xl overflow-hidden mb-8">
-                <Image
-                  src={caseStudy.heroImage}
-                  alt={caseStudy.title}
-                  fill
-                  className="object-cover"
-                  priority
-                />
-              </div>
-            )}
+            <div className="relative w-full aspect-video rounded-2xl overflow-hidden mb-8">
+              <Image
+                src={caseStudy.heroImage || '/images/portfolio/default-hero.jpg'}
+                alt={caseStudy.title}
+                fill
+                className="object-cover"
+                priority
+              />
+            </div>
 
             {/* Industry Badge */}
             <div className="mb-4">
@@ -86,7 +84,7 @@ export default function CaseStudyContent({ caseStudy, relatedCases, breadcrumbIt
                 url={shareUrl}
                 title={caseStudy.title}
                 description={caseStudy.description}
-                image={caseStudy.heroImage || undefined}
+                image={caseStudy.heroImage || '/images/portfolio/default-hero.jpg'}
                 size="sm"
                 showLabels={false}
               />
@@ -387,20 +385,12 @@ export default function CaseStudyContent({ caseStudy, relatedCases, breadcrumbIt
                     <Card className="glass glass-hover rounded-2xl overflow-hidden h-full flex flex-col group cursor-pointer">
                       {/* Image */}
                       <div className="aspect-video bg-gradient-to-br from-primary/20 to-yellow-500/20 flex items-center justify-center relative h-48">
-                        {relatedCase.heroImage ? (
-                          <Image
-                            src={relatedCase.heroImage}
-                            alt={relatedCase.title}
-                            fill
-                            className="object-cover group-hover:scale-105 transition-transform duration-300"
-                          />
-                        ) : (
-                          <div className="absolute inset-0 flex items-center justify-center">
-                            <span className="text-primary/50 text-4xl font-bold">
-                              {relatedCase.title.charAt(0)}
-                            </span>
-                          </div>
-                        )}
+                        <Image
+                          src={relatedCase.heroImage || '/images/portfolio/default-hero.jpg'}
+                          alt={relatedCase.title}
+                          fill
+                          className="object-cover group-hover:scale-105 transition-transform duration-300"
+                        />
                       </div>
 
                       <CardContent className="p-6 flex-1 flex flex-col">

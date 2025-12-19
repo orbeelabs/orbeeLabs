@@ -34,24 +34,23 @@ export async function GET(request: NextRequest) {
 
     const { cases, total } = await fetchPortfolioCases(filters);
 
+    // Se não houver cases (pode ser erro de conexão tratado internamente)
+    // Retornar resposta válida com array vazio
     return createPaginatedResponse(
-      cases,
-      { page, limit, total },
-      "Cases recuperados com sucesso"
+      cases || [],
+      { page, limit, total: total || 0 },
+      cases && cases.length > 0 ? "Cases recuperados com sucesso" : "Nenhum case encontrado"
     );
   } catch (error) {
     const { logApiError } = await import('@/lib/logger');
     logApiError(error as Error, '/api/portfolio', 'GET', { message: 'Erro ao buscar cases' });
     
-    const errorMessage = error instanceof Error ? error.message : String(error);
-    
-    return createErrorResponse(
-      errorMessage || "Erro interno do servidor",
-      // Não expor stack trace em produção
-      process.env.NODE_ENV === 'development' && error instanceof Error 
-        ? { stack: error.stack } 
-        : undefined,
-      500
+    // Em caso de erro, retornar resposta válida com array vazio
+    // Isso permite que a página continue funcionando
+    return createPaginatedResponse(
+      [],
+      { page: 1, limit: 10, total: 0 },
+      "Erro ao conectar com o banco de dados. Tente novamente mais tarde."
     );
   }
 }

@@ -2,6 +2,7 @@
 
 import { motion } from 'framer-motion';
 import Link from 'next/link';
+import Image from 'next/image';
 
 export default function Footer() {
   const currentYear = new Date().getFullYear();
@@ -57,8 +58,14 @@ export default function Footer() {
             className="lg:col-span-1"
           >
             <div className="flex items-center space-x-3 mb-6">
-              <div className="w-12 h-12 bg-gradient-to-r from-primary to-yellow-500 rounded-full flex items-center justify-center">
-                <span className="text-primary-foreground font-bold text-xl">OL</span>
+              <div className="relative w-12 h-12">
+                <Image
+                  src="/images/logo/logo_final.png"
+                  alt="Orbee Labs Logo"
+                  fill
+                  className="object-contain"
+                  sizes="48px"
+                />
               </div>
               <div>
                 <h3 className="text-2xl font-bold text-white">Orbee Labs</h3>
