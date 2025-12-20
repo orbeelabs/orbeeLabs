@@ -40,19 +40,42 @@ export function usePaginatedData<T>({
         ...filters,
       });
 
-      const response = await fetch(`${endpoint}?${params.toString()}`);
+      const response = await fetch(`${endpoint}?${params.toString()}`, {
+        // Desabilitar cache para evitar problemas com RSC
+        cache: 'no-store',
+      });
+      
+      // Se a resposta não for OK, mas não for 404, tentar continuar
+      if (!response.ok && response.status !== 404) {
+        const result: PaginatedResponse<T> = await response.json().catch(() => ({}));
+        throw new Error(result.error || 'Erro ao buscar dados');
+      }
+      
+      // Se for 404, retornar array vazio sem erro
+      if (response.status === 404) {
+        setData([]);
+        setIsLoading(false);
+        return;
+      }
+      
       const result: PaginatedResponse<T> = await response.json();
       
-      if (!response.ok || !result.success) {
+      if (!result.success) {
         throw new Error(result.error || 'Erro ao buscar dados');
       }
 
       setData(result.data || []);
     } catch (err) {
+      // Silenciar erros 404 e de rede em produção
       const errorMessage = err instanceof Error ? err.message : 'Erro desconhecido';
-      console.error(`Erro ao buscar dados de ${endpoint}:`, err);
-      setError(errorMessage);
-      setData([]);
+      if (errorMessage.includes('404') || errorMessage.includes('Failed to fetch')) {
+        // Em caso de 404 ou erro de rede, apenas retornar array vazio
+        setData([]);
+      } else {
+        console.error(`Erro ao buscar dados de ${endpoint}:`, err);
+        setError(errorMessage);
+        setData([]);
+      }
     } finally {
       setIsLoading(false);
     }

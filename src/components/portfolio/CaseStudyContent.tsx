@@ -417,7 +417,7 @@ export default function CaseStudyContent({ caseStudy, relatedCases, breadcrumbIt
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.6, delay: index * 0.1 }}
                 >
-                  <Link href={`/portfolio/${relatedCase.slug}`}>
+                  <Link href={`/portfolio/${relatedCase.slug}`} prefetch={false}>
                     <Card className="glass glass-hover rounded-2xl overflow-hidden h-full flex flex-col group cursor-pointer">
                       {/* Image */}
                       <div className="aspect-video bg-gradient-to-br from-primary/20 to-yellow-500/20 flex items-center justify-center relative h-48">

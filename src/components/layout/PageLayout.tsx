@@ -1,5 +1,6 @@
 'use client';
 
+import { SessionProvider } from 'next-auth/react';
 import Navigation from '@/components/Navigation';
 import Footer from '@/components/Footer';
 import { BreadcrumbStructuredData } from '@/components/StructuredData';
@@ -18,7 +19,7 @@ export default function PageLayout({
   className = ""
 }: PageLayoutProps) {
   return (
-    <>
+    <SessionProvider>
       {breadcrumbItems && <BreadcrumbStructuredData items={breadcrumbItems} />}
       <Navigation />
       {breadcrumbItems && breadcrumbItems.length > 0 && (
@@ -30,6 +31,6 @@ export default function PageLayout({
         {children}
       </div>
       <Footer />
-    </>
+    </SessionProvider>
   );
 }

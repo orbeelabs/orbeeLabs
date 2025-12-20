@@ -6,7 +6,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useSession, signOut } from 'next-auth/react';
 
-export default function Navigation() {
+function NavigationContent() {
   const [isOpen, setIsOpen] = useState(false);
   const pathname = usePathname();
   const { data: session } = useSession();
@@ -39,7 +39,7 @@ export default function Navigation() {
       initial={{ y: -100 }}
       animate={{ y: 0 }}
       transition={{ duration: 0.6, ease: 'easeOut' }}
-      className="fixed top-0 left-0 right-0 z-50 glass backdrop-blur-xl border-b border-white/10 transition-all duration-300"
+      className="fixed top-0 left-0 right-0 z-[100] glass backdrop-blur-xl border-b border-white/10 transition-all duration-300"
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-20">
@@ -63,7 +63,7 @@ export default function Navigation() {
           </motion.div>
 
           {/* Desktop Navigation */}
-          <div className="hidden lg:flex items-center space-x-1">
+          <div className="hidden md:flex items-center space-x-1">
             {navItems.map((item, index) => (
               <motion.div
                 key={item.name}
@@ -100,7 +100,7 @@ export default function Navigation() {
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.5, delay: 0.6 }}
-            className="hidden lg:flex items-center space-x-4"
+            className="hidden md:flex items-center space-x-4"
           >
             {session ? (
               <>
@@ -131,7 +131,8 @@ export default function Navigation() {
           <motion.button
             whileTap={{ scale: 0.95 }}
             onClick={() => setIsOpen(!isOpen)}
-            className="lg:hidden relative w-10 h-10 flex items-center justify-center rounded-lg bg-white/10 hover:bg-white/20 transition-colors duration-200"
+            aria-label="Toggle menu"
+            className="md:hidden relative w-10 h-10 flex items-center justify-center rounded-lg bg-white/10 hover:bg-white/20 transition-colors duration-200 z-[101]"
           >
             <div className="relative w-6 h-6">
               <motion.span
@@ -158,7 +159,7 @@ export default function Navigation() {
               animate={{ opacity: 1, height: 'auto' }}
               exit={{ opacity: 0, height: 0 }}
               transition={{ duration: 0.3 }}
-              className="lg:hidden overflow-hidden"
+              className="md:hidden overflow-hidden z-[100]"
             >
               <div className="glass rounded-2xl mt-4 p-6 space-y-4">
                 {navItems.map((item, index) => (
@@ -202,5 +203,9 @@ export default function Navigation() {
       </div>
     </motion.nav>
   );
+}
+
+export default function Navigation() {
+  return <NavigationContent />;
 }
 

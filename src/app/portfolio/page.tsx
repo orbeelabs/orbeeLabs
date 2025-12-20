@@ -173,7 +173,7 @@ function CaseCard({ study, featured = false, delay = 0 }: CaseCardProps) {
       transition={{ duration: 0.6, delay }}
       viewport={{ once: true }}
     >
-      <Link href={`/portfolio/${study.slug}`}>
+      <Link href={`/portfolio/${study.slug}`} prefetch={false}>
         <div className="glass glass-hover rounded-2xl overflow-hidden group cursor-pointer h-full flex flex-col">
           {/* Hero Image */}
           <div className={`aspect-video bg-gradient-to-br from-primary/20 to-yellow-500/20 flex items-center justify-center relative ${featured ? 'h-64' : 'h-48'}`}>

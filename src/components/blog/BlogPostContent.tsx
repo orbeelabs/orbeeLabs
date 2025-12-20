@@ -258,12 +258,13 @@ export default function BlogPostContent({ post, relatedPosts, breadcrumbItems }:
                   <Link href={`/blog/${relatedPost.slug}`}>
                     <Card className="glass glass-hover rounded-2xl overflow-hidden h-full flex flex-col group cursor-pointer">
                       {/* Image */}
-                      <div className="aspect-video bg-gradient-to-br from-primary/20 to-yellow-500/20 flex items-center justify-center relative h-48">
+                      <div className="aspect-video bg-gradient-to-br from-primary/20 to-yellow-500/20 flex items-center justify-center relative h-48 overflow-hidden">
                         {relatedPost.ogImage ? (
                           <img
                             src={encodeImageUrl(relatedPost.ogImage)}
                             alt={relatedPost.title}
-                            className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                            className="absolute inset-0 w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-300"
+                            style={{ objectFit: 'cover', objectPosition: 'center' }}
                             loading="lazy"
                             onError={(e) => {
                               console.error('Erro ao carregar imagem relacionada:', {
