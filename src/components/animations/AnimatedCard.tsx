@@ -10,22 +10,20 @@ interface AnimatedCardProps {
   hover?: boolean;
 }
 
-export default function AnimatedCard({ 
-  children, 
-  delay = 0, 
-  className = '', 
-  hover = true 
+export default function AnimatedCard({
+  children,
+  delay = 0,
+  className = '',
+  hover = true
 }: AnimatedCardProps) {
   return (
     <motion.div
-      initial={{ opacity: 0, y: 50, scale: 0.95 }}
-      animate={{ opacity: 1, y: 0, scale: 1 }}
-      transition={{ 
-        duration: 0.6, 
+      initial={{ opacity: 0, y: 30 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: '-50px' }}
+      transition={{
+        duration: 0.5,
         delay,
-        type: 'spring',
-        stiffness: 100,
-        damping: 15
       }}
       whileHover={hover ? {
         y: -8,
@@ -38,4 +36,3 @@ export default function AnimatedCard({
     </motion.div>
   );
 }
-

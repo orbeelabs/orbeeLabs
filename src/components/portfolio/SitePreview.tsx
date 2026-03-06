@@ -1,6 +1,7 @@
 'use client';
 
 import { motion } from 'framer-motion';
+import Image from 'next/image';
 import { ExternalLink, Zap, Activity } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
@@ -70,11 +71,14 @@ export default function SitePreview({
         <div className="relative overflow-hidden desktop-frame shadow-2xl">
           {/* Screenshot */}
           {currentPreview && (
-            <img
+            <Image
               src={currentPreview}
               alt={`Preview desktop do site ${clientName || siteUrl}`}
+              width={1920}
+              height={1080}
               className="w-full h-auto"
               loading="lazy"
+              sizes="(max-width: 1920px) 100vw, 1920px"
             />
           )}
         </div>

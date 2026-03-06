@@ -23,7 +23,7 @@ export async function shareContent({ title, text, url }: ShareOptions): Promise<
       // Usuário cancelou ou erro na API nativa
       // Continuar com fallback
       if ((error as Error).name !== 'AbortError') {
-        console.log('Erro ao compartilhar via Web Share API:', error);
+        // Erro na Web Share API - fallback para clipboard
       }
     }
   }
@@ -34,8 +34,7 @@ export async function shareContent({ title, text, url }: ShareOptions): Promise<
     
     // Mostrar feedback ao usuário (se estiver em contexto de UI)
     if (typeof window !== 'undefined') {
-      // Pode usar toast/notification aqui se disponível
-      console.log('URL copiada para a área de transferência!');
+      // URL copiada com sucesso
     }
     
     return true;

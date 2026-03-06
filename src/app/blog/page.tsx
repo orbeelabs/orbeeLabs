@@ -3,6 +3,7 @@
 import { useState, useMemo } from 'react';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
+import Image from 'next/image';
 import { PageLayout } from '@/components/layout';
 import { Card, CardContent } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
@@ -238,20 +239,13 @@ function PostCard({ post, featured = false, delay = 0 }: PostCardProps) {
           {/* Image or Placeholder */}
           <div className={`aspect-video bg-gradient-to-br from-primary/20 to-yellow-500/20 flex items-center justify-center relative overflow-hidden ${featured ? 'h-64' : 'h-48'}`}>
             {post.ogImage ? (
-              <img
+              <Image
                 src={encodeImageUrl(post.ogImage)}
                 alt={post.title}
-                className="absolute inset-0 w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-300"
-                style={{ objectFit: 'cover', objectPosition: 'center' }}
+                fill
+                className="object-cover object-center group-hover:scale-105 transition-transform duration-300"
                 loading={featured ? "eager" : "lazy"}
-                onError={(e) => {
-                  console.error('Erro ao carregar imagem do blog:', {
-                    original: post.ogImage,
-                    encoded: encodeImageUrl(post.ogImage),
-                    title: post.title
-                  });
-                  e.currentTarget.style.display = 'none';
-                }}
+                sizes={featured ? "(max-width: 1024px) 100vw, 50vw" : "(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"}
               />
             ) : (
               <div className="absolute inset-0 flex items-center justify-center">
@@ -303,16 +297,13 @@ function PostCard({ post, featured = false, delay = 0 }: PostCardProps) {
                   {(() => {
                     const authorImg = getAuthorImage(post.author, post.authorImage || null);
                     return authorImg ? (
-                      <img
+                      <Image
                         src={authorImg}
                         alt={post.author}
                         width={24}
                         height={24}
                         className="rounded-full object-cover border border-primary/30"
                         loading="lazy"
-                        onError={(e) => {
-                          e.currentTarget.style.display = 'none';
-                        }}
                       />
                     ) : null;
                   })()}

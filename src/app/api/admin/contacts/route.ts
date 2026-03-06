@@ -51,6 +51,38 @@ async function handleGetContacts(request: NextRequest) {
   }
 }
 
+async function handleUpdateContact(request: NextRequest) {
+  try {
+    const body = await request.json();
+    const { id, status } = body;
+
+    if (!id) {
+      return createErrorResponse("ID do contato é obrigatório", null, 400);
+    }
+
+    const validStatuses = ['NEW', 'CONTACTED', 'QUALIFIED', 'CONVERTED', 'LOST'];
+    if (status && !validStatuses.includes(status)) {
+      return createErrorResponse("Status inválido", null, 400);
+    }
+
+    const updateData: Record<string, unknown> = {};
+    if (status) updateData.status = status;
+
+    const contact = await prisma.contact.update({
+      where: { id },
+      data: updateData,
+    });
+
+    return createSuccessResponse(contact, "Contato atualizado com sucesso");
+  } catch (error) {
+    Logger.error("Erro ao atualizar contato", {
+      endpoint: '/api/admin/contacts',
+      method: 'PATCH',
+    }, error as Error);
+    return createErrorResponse("Erro interno do servidor");
+  }
+}
+
 async function handleDeleteContact(request: NextRequest) {
   const { searchParams } = new URL(request.url);
   const contactId = searchParams.get('id');
@@ -88,4 +120,5 @@ async function handleDeleteContact(request: NextRequest) {
 }
 
 export const GET = withAdmin(handleGetContacts);
+export const PATCH = withAdmin(handleUpdateContact);
 export const DELETE = withAdmin(handleDeleteContact);

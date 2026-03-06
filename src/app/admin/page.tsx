@@ -9,7 +9,7 @@ import { motion } from 'framer-motion';
 import { PageLayout } from '@/components/layout';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { LogOut, Users, Mail, Search, BarChart3, FileText, Briefcase } from 'lucide-react';
+import { LogOut, Users, Mail, Search, BarChart3, FileText, Briefcase, Target } from 'lucide-react';
 
 interface DashboardStats {
   contacts: number;
@@ -272,6 +272,13 @@ export default function AdminDashboard() {
             <Card className="glass p-6">
               <h2 className="text-xl font-bold text-white mb-6 leading-tight tracking-tight">Ações Rápidas</h2>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                <Button
+                  onClick={() => router.push('/admin/crm')}
+                  className="flex items-center space-x-2 h-12 bg-gradient-to-r from-primary to-yellow-500 text-primary-foreground"
+                >
+                  <Target className="w-5 h-5" />
+                  <span>CRM Pipeline</span>
+                </Button>
                 <Button
                   onClick={() => router.push('/admin/contacts')}
                   className="flex items-center space-x-2 h-12"

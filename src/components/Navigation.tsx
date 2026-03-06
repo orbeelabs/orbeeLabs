@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Link from 'next/link';
+import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import { useSession, signOut } from 'next-auth/react';
 
@@ -51,12 +52,13 @@ function NavigationContent() {
           >
             <Link href="/" className="flex items-center group">
               <div className="relative w-48 h-48">
-                <img
+                <Image
                   src="/images/logo/logo_branca.webp"
-                  alt="Orbee Labs Logo"
-                  className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-300"
+                  alt="Orbee Labs — Agência de Marketing Digital e Desenvolvimento Web em BH"
                   width={192}
                   height={192}
+                  className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-300"
+                  priority
                 />
               </div>
             </Link>
@@ -131,7 +133,8 @@ function NavigationContent() {
           <motion.button
             whileTap={{ scale: 0.95 }}
             onClick={() => setIsOpen(!isOpen)}
-            aria-label="Toggle menu"
+            aria-label={isOpen ? "Fechar menu" : "Abrir menu"}
+            aria-expanded={isOpen}
             className="md:hidden relative w-10 h-10 flex items-center justify-center rounded-lg bg-white/10 hover:bg-white/20 transition-colors duration-200 z-[101]"
           >
             <div className="relative w-6 h-6">

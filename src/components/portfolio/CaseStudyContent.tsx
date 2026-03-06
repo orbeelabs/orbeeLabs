@@ -2,6 +2,7 @@
 
 import { motion } from 'framer-motion';
 import Link from 'next/link';
+import Image from 'next/image';
 import { PageLayout } from '@/components/layout';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -42,11 +43,13 @@ export default function CaseStudyContent({ caseStudy, relatedCases, breadcrumbIt
 
             {/* Hero Image */}
             <div className="relative w-full aspect-video rounded-2xl overflow-hidden mb-8">
-              <img
+              <Image
                 src={caseStudy.heroImage ? encodeURI(caseStudy.heroImage) : '/images/portfolio/default-hero.jpg'}
                 alt={caseStudy.title}
-                className="absolute inset-0 w-full h-full object-cover"
-                loading="eager"
+                fill
+                className="object-cover"
+                priority
+                sizes="(max-width: 1200px) 100vw, 1200px"
               />
             </div>
 
@@ -222,9 +225,9 @@ export default function CaseStudyContent({ caseStudy, relatedCases, breadcrumbIt
                       {caseStudy.gscBefore && (
                         <div>
                           <p className="text-sm text-gray-400 mb-2">Antes:</p>
-                          <img
+                          <Image
                             src={encodeURI(caseStudy.gscBefore)}
-                            alt="GSC Before"
+                            alt="Google Search Console - Antes"
                             width={600}
                             height={400}
                             className="rounded-lg"
@@ -235,9 +238,9 @@ export default function CaseStudyContent({ caseStudy, relatedCases, breadcrumbIt
                       {caseStudy.gscAfter && (
                         <div>
                           <p className="text-sm text-gray-400 mb-2">Depois:</p>
-                          <img
+                          <Image
                             src={encodeURI(caseStudy.gscAfter)}
-                            alt="GSC After"
+                            alt="Google Search Console - Depois"
                             width={600}
                             height={400}
                             className="rounded-lg"
@@ -257,9 +260,9 @@ export default function CaseStudyContent({ caseStudy, relatedCases, breadcrumbIt
                       {caseStudy.ga4Before && (
                         <div>
                           <p className="text-sm text-gray-400 mb-2">Antes:</p>
-                          <img
+                          <Image
                             src={encodeURI(caseStudy.ga4Before)}
-                            alt="GA4 Before"
+                            alt="Google Analytics 4 - Antes"
                             width={600}
                             height={400}
                             className="rounded-lg"
@@ -270,9 +273,9 @@ export default function CaseStudyContent({ caseStudy, relatedCases, breadcrumbIt
                       {caseStudy.ga4After && (
                         <div>
                           <p className="text-sm text-gray-400 mb-2">Depois:</p>
-                          <img
+                          <Image
                             src={encodeURI(caseStudy.ga4After)}
-                            alt="GA4 After"
+                            alt="Google Analytics 4 - Depois"
                             width={600}
                             height={400}
                             className="rounded-lg"
@@ -370,9 +373,9 @@ export default function CaseStudyContent({ caseStudy, relatedCases, breadcrumbIt
                   animate={{ opacity: 1, scale: 1 }}
                   transition={{ duration: 0.4, delay: index * 0.1 }}
                 >
-                  <img
+                  <Image
                     src={encodeURI(image)}
-                    alt={`Gallery ${index + 1}`}
+                    alt={`${caseStudy.title} - Imagem ${index + 1}`}
                     width={400}
                     height={300}
                     className="rounded-lg object-cover w-full h-full"
@@ -421,11 +424,13 @@ export default function CaseStudyContent({ caseStudy, relatedCases, breadcrumbIt
                     <Card className="glass glass-hover rounded-2xl overflow-hidden h-full flex flex-col group cursor-pointer">
                       {/* Image */}
                       <div className="aspect-video bg-gradient-to-br from-primary/20 to-yellow-500/20 flex items-center justify-center relative h-48">
-                        <img
+                        <Image
                           src={relatedCase.heroImage ? encodeURI(relatedCase.heroImage) : '/images/portfolio/default-hero.jpg'}
                           alt={relatedCase.title}
-                          className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                          fill
+                          className="object-cover group-hover:scale-105 transition-transform duration-300"
                           loading="lazy"
+                          sizes="(max-width: 768px) 100vw, 33vw"
                         />
                       </div>
 

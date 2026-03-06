@@ -153,8 +153,6 @@ export async function getAvailableTimeSlots(date: string) {
   try {
     // Verificar se há credenciais configuradas
     if (!oauth2Client.credentials?.access_token) {
-      // Se não houver autenticação, retornar horários padrão
-      console.log('Sem autenticação Google, retornando horários padrão');
       return defaultSlots;
     }
 

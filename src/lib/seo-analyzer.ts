@@ -95,32 +95,20 @@ export class SEOAnalyzer {
       const apiKey = process.env.GOOGLE_PAGESPEED_API_KEY;
       
       if (apiKey) {
-        console.log(`🔍 Buscando dados reais do PageSpeed Insights para: ${url}`);
-        
         const pageSpeedUrl = `https://www.googleapis.com/pagespeedonline/v5/runPagespeed?url=${encodeURIComponent(url)}&key=${apiKey}&strategy=mobile&category=performance`;
-        
+
         const response = await axios.get(pageSpeedUrl, {
           timeout: 15000,
         });
-        
-        console.log(`✅ Dados do PageSpeed Insights obtidos para: ${url}`);
+
         return response.data;
       } else {
-        console.warn('⚠️ GOOGLE_PAGESPEED_API_KEY não configurada, usando dados simulados');
-        console.warn('💡 Para métricas reais, adicione GOOGLE_PAGESPEED_API_KEY no .env.local');
         throw new Error('API key não configurada');
       }
     } catch (error) {
       // Fallback para dados simulados se API key não estiver configurada ou falhar
-      if (axios.isAxiosError(error)) {
-        console.warn('⚠️ Erro ao buscar PageSpeed Insights:', error.response?.status, error.response?.statusText);
-        if (error.response?.status === 400) {
-          console.warn('💡 Dica: Verifique se a URL está completa (com https://) e se a API key está correta');
-        }
-      } else {
-        console.warn('⚠️ Erro ao buscar PageSpeed Insights (usando dados simulados):', 
-          error instanceof Error ? error.message : 'Erro desconhecido'
-        );
+      if (axios.isAxiosError(error) && error.response?.status === 400) {
+        console.warn('PageSpeed Insights: URL ou API key inválida');
       }
       return this.generateSimulatedPageSpeedData();
     }

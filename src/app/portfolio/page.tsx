@@ -3,6 +3,7 @@
 import { useState, useMemo } from 'react';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
+import Image from 'next/image';
 import { PageLayout } from '@/components/layout';
 import { Clock } from 'lucide-react';
 import { usePaginatedData } from '@/hooks/usePaginatedData';
@@ -177,11 +178,13 @@ function CaseCard({ study, featured = false, delay = 0 }: CaseCardProps) {
         <div className="glass glass-hover rounded-2xl overflow-hidden group cursor-pointer h-full flex flex-col">
           {/* Hero Image */}
           <div className={`aspect-video bg-gradient-to-br from-primary/20 to-yellow-500/20 flex items-center justify-center relative ${featured ? 'h-64' : 'h-48'}`}>
-            <img
+            <Image
               src={study.heroImage ? encodeURI(study.heroImage) : '/images/portfolio/default-hero.jpg'}
               alt={study.title}
-              className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+              fill
+              className="object-cover group-hover:scale-105 transition-transform duration-300"
               loading={featured ? "eager" : "lazy"}
+              sizes={featured ? "(max-width: 1024px) 100vw, 50vw" : "(max-width: 1024px) 100vw, 50vw"}
             />
             {study.featured && (
               <div className="absolute top-4 left-4 bg-primary text-primary-foreground px-3 py-1 rounded-full text-sm font-semibold">

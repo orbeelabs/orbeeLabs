@@ -85,6 +85,16 @@ export default function ContactForm() {
         throw new Error(result.error || 'Erro ao enviar mensagem');
       }
       
+      // Enviar evento de conversão para GTM/GA4
+      if (typeof window !== 'undefined' && 'dataLayer' in window) {
+        (window as { dataLayer?: Array<Record<string, unknown>> }).dataLayer?.push({
+          event: 'generate_lead',
+          event_category: 'Contato',
+          event_label: data.company || 'Sem empresa',
+          value: 1,
+        });
+      }
+
       // Mostrar toast de sucesso
       toast({
         title: "Sucesso!",

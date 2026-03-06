@@ -164,13 +164,14 @@ export default function ShareButtons({
     show: boolean = true
   ) => {
     if (!show) return null;
-    
+
     return (
       <Button
         onClick={onClick}
         variant={variant}
         size={buttonSizeProp as 'default' | 'icon' | 'sm' | 'lg'}
         className={`${buttonSize[size]} ${showLabels ? 'gap-2' : ''}`}
+        aria-label={`Compartilhar no ${label}`}
       >
         <span className={iconSize[size]}>{icon}</span>
         {showLabels && <span>{label}</span>}

@@ -9,15 +9,16 @@ interface StaggerContainerProps {
   className?: string;
 }
 
-export default function StaggerContainer({ 
-  children, 
-  staggerDelay = 0.1, 
-  className = '' 
+export default function StaggerContainer({
+  children,
+  staggerDelay = 0.1,
+  className = ''
 }: StaggerContainerProps) {
   return (
     <motion.div
       initial="hidden"
-      animate="visible"
+      whileInView="visible"
+      viewport={{ once: true, margin: '-50px' }}
       variants={{
         hidden: { opacity: 0 },
         visible: {
@@ -33,4 +34,3 @@ export default function StaggerContainer({
     </motion.div>
   );
 }
-

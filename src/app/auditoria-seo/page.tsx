@@ -134,6 +134,16 @@ export default function AuditoriaSEO() {
       const dadosReais = await response.json();
       setProgress(80);
       
+      // Enviar evento de conversão para GTM/GA4
+      if (typeof window !== 'undefined' && 'dataLayer' in window) {
+        (window as { dataLayer?: Array<Record<string, unknown>> }).dataLayer?.push({
+          event: 'generate_lead',
+          event_category: 'Auditoria SEO',
+          event_label: dados.url,
+          value: 1,
+        });
+      }
+
       // Gerar resultado baseado em dados reais
       gerarResultado(dadosReais);
       setProgress(100);

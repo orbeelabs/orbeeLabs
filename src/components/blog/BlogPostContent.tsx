@@ -2,6 +2,7 @@
 
 import { motion } from 'framer-motion';
 import Link from 'next/link';
+import Image from 'next/image';
 import { PageLayout } from '@/components/layout';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -120,16 +121,13 @@ export default function BlogPostContent({ post, relatedPosts, breadcrumbItems }:
                 {(() => {
                   const authorImg = getAuthorImage(post.author, post.authorImage || null);
                   return authorImg ? (
-                    <img
+                    <Image
                       src={authorImg}
                       alt={post.author}
                       width={40}
                       height={40}
                       className="rounded-full object-cover border-2 border-primary/30"
                       loading="lazy"
-                      onError={(e) => {
-                        e.currentTarget.style.display = 'none';
-                      }}
                     />
                   ) : null;
                 })()}
@@ -162,19 +160,13 @@ export default function BlogPostContent({ post, relatedPosts, breadcrumbItems }:
             {/* Featured Image */}
             {post.ogImage && (
               <div className="relative w-full aspect-video rounded-2xl overflow-hidden mb-8">
-                <img
+                <Image
                   src={encodeImageUrl(post.ogImage)}
                   alt={post.title}
-                  className="absolute inset-0 w-full h-full object-cover"
-                  loading="eager"
-                  onError={(e) => {
-                    console.error('Erro ao carregar imagem do post:', {
-                      original: post.ogImage,
-                      encoded: encodeImageUrl(post.ogImage),
-                      title: post.title
-                    });
-                    e.currentTarget.style.display = 'none';
-                  }}
+                  fill
+                  className="object-cover"
+                  priority
+                  sizes="(max-width: 1024px) 100vw, 800px"
                 />
               </div>
             )}
@@ -260,20 +252,13 @@ export default function BlogPostContent({ post, relatedPosts, breadcrumbItems }:
                       {/* Image */}
                       <div className="aspect-video bg-gradient-to-br from-primary/20 to-yellow-500/20 flex items-center justify-center relative h-48 overflow-hidden">
                         {relatedPost.ogImage ? (
-                          <img
+                          <Image
                             src={encodeImageUrl(relatedPost.ogImage)}
                             alt={relatedPost.title}
-                            className="absolute inset-0 w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-300"
-                            style={{ objectFit: 'cover', objectPosition: 'center' }}
+                            fill
+                            className="object-cover object-center group-hover:scale-105 transition-transform duration-300"
                             loading="lazy"
-                            onError={(e) => {
-                              console.error('Erro ao carregar imagem relacionada:', {
-                                original: relatedPost.ogImage,
-                                encoded: encodeImageUrl(relatedPost.ogImage),
-                                title: relatedPost.title
-                              });
-                              e.currentTarget.style.display = 'none';
-                            }}
+                            sizes="(max-width: 768px) 100vw, 33vw"
                           />
                         ) : (
                           <div className="absolute inset-0 flex items-center justify-center">
